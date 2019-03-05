@@ -2,7 +2,6 @@
 // Generated from PLDComp.g4 by ANTLR 4.7.2
 
 
-#include "PLDCompListener.h"
 #include "PLDCompVisitor.h"
 
 #include "PLDCompParser.h"
@@ -45,18 +44,6 @@ PLDCompParser::Return_instructionContext* PLDCompParser::ProgContext::return_ins
 
 size_t PLDCompParser::ProgContext::getRuleIndex() const {
   return PLDCompParser::RuleProg;
-}
-
-void PLDCompParser::ProgContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterProg(this);
-}
-
-void PLDCompParser::ProgContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitProg(this);
 }
 
 
@@ -106,18 +93,6 @@ tree::TerminalNode* PLDCompParser::Return_instructionContext::NOMBRE() {
 
 size_t PLDCompParser::Return_instructionContext::getRuleIndex() const {
   return PLDCompParser::RuleReturn_instruction;
-}
-
-void PLDCompParser::Return_instructionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterReturn_instruction(this);
-}
-
-void PLDCompParser::Return_instructionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitReturn_instruction(this);
 }
 
 
