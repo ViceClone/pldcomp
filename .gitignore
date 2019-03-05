@@ -1,0 +1,8 @@
+ret42.c
+ret62.c
+main.o
+main.s
+a.out
+.vscode
+*.o
+*.out
