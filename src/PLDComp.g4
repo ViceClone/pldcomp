@@ -1,3 +1,5 @@
+grammar Expr;
+
 type_variable : 'char' | 'int';
 
 type_function : 'char' | 'int'; 
