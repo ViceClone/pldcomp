@@ -22,7 +22,6 @@ public:
   virtual antlrcpp::Any visitReturn_instruction(PLDCompParser::Return_instructionContext *ctx) override {
     return visitChildren(ctx);
   }
-
-
+  
 };
 
