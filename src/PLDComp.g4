@@ -1,4 +1,4 @@
-grammar Expr;
+grammar PLDComp;
 
 prog: 'int main() {' return_instruction '}' ;
 

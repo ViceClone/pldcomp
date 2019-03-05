@@ -2,49 +2,49 @@
 // Generated from PLDComp.g4 by ANTLR 4.7.2
 
 
-#include "ExprLexer.h"
+#include "PLDCompLexer.h"
 
 
 using namespace antlr4;
 
 
-ExprLexer::ExprLexer(CharStream *input) : Lexer(input) {
+PLDCompLexer::PLDCompLexer(CharStream *input) : Lexer(input) {
   _interpreter = new atn::LexerATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
 }
 
-ExprLexer::~ExprLexer() {
+PLDCompLexer::~PLDCompLexer() {
   delete _interpreter;
 }
 
-std::string ExprLexer::getGrammarFileName() const {
+std::string PLDCompLexer::getGrammarFileName() const {
   return "PLDComp.g4";
 }
 
-const std::vector<std::string>& ExprLexer::getRuleNames() const {
+const std::vector<std::string>& PLDCompLexer::getRuleNames() const {
   return _ruleNames;
 }
 
-const std::vector<std::string>& ExprLexer::getChannelNames() const {
+const std::vector<std::string>& PLDCompLexer::getChannelNames() const {
   return _channelNames;
 }
 
-const std::vector<std::string>& ExprLexer::getModeNames() const {
+const std::vector<std::string>& PLDCompLexer::getModeNames() const {
   return _modeNames;
 }
 
-const std::vector<std::string>& ExprLexer::getTokenNames() const {
+const std::vector<std::string>& PLDCompLexer::getTokenNames() const {
   return _tokenNames;
 }
 
-dfa::Vocabulary& ExprLexer::getVocabulary() const {
+dfa::Vocabulary& PLDCompLexer::getVocabulary() const {
   return _vocabulary;
 }
 
-const std::vector<uint16_t> ExprLexer::getSerializedATN() const {
+const std::vector<uint16_t> PLDCompLexer::getSerializedATN() const {
   return _serializedATN;
 }
 
-const atn::ATN& ExprLexer::getATN() const {
+const atn::ATN& PLDCompLexer::getATN() const {
   return _atn;
 }
 
@@ -52,38 +52,38 @@ const atn::ATN& ExprLexer::getATN() const {
 
 
 // Static vars and initialization.
-std::vector<dfa::DFA> ExprLexer::_decisionToDFA;
-atn::PredictionContextCache ExprLexer::_sharedContextCache;
+std::vector<dfa::DFA> PLDCompLexer::_decisionToDFA;
+atn::PredictionContextCache PLDCompLexer::_sharedContextCache;
 
 // We own the ATN which in turn owns the ATN states.
-atn::ATN ExprLexer::_atn;
-std::vector<uint16_t> ExprLexer::_serializedATN;
+atn::ATN PLDCompLexer::_atn;
+std::vector<uint16_t> PLDCompLexer::_serializedATN;
 
-std::vector<std::string> ExprLexer::_ruleNames = {
+std::vector<std::string> PLDCompLexer::_ruleNames = {
   u8"T__0", u8"T__1", u8"T__2", u8"T__3", u8"NOMBRE"
 };
 
-std::vector<std::string> ExprLexer::_channelNames = {
+std::vector<std::string> PLDCompLexer::_channelNames = {
   "DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 };
 
-std::vector<std::string> ExprLexer::_modeNames = {
+std::vector<std::string> PLDCompLexer::_modeNames = {
   u8"DEFAULT_MODE"
 };
 
-std::vector<std::string> ExprLexer::_literalNames = {
+std::vector<std::string> PLDCompLexer::_literalNames = {
   "", u8"'int main() {'", u8"'}'", u8"'return'", u8"';'"
 };
 
-std::vector<std::string> ExprLexer::_symbolicNames = {
+std::vector<std::string> PLDCompLexer::_symbolicNames = {
   "", "", "", "", "", u8"NOMBRE"
 };
 
-dfa::Vocabulary ExprLexer::_vocabulary(_literalNames, _symbolicNames);
+dfa::Vocabulary PLDCompLexer::_vocabulary(_literalNames, _symbolicNames);
 
-std::vector<std::string> ExprLexer::_tokenNames;
+std::vector<std::string> PLDCompLexer::_tokenNames;
 
-ExprLexer::Initializer::Initializer() {
+PLDCompLexer::Initializer::Initializer() {
   // This code could be in a static initializer lambda, but VS doesn't allow access to private class members from there.
 	for (size_t i = 0; i < _symbolicNames.size(); ++i) {
 		std::string name = _vocabulary.getLiteralName(i);
@@ -138,4 +138,4 @@ ExprLexer::Initializer::Initializer() {
   }
 }
 
-ExprLexer::Initializer ExprLexer::_init;
+PLDCompLexer::Initializer PLDCompLexer::_init;

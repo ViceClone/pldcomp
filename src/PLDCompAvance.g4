@@ -1,4 +1,4 @@
-grammar Expr;
+grammar PLDCompAvance;
 
 type_variable : 'char' | 'int';
 

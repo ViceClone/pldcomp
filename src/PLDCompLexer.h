@@ -9,14 +9,14 @@
 
 
 
-class  ExprLexer : public antlr4::Lexer {
+class  PLDCompLexer : public antlr4::Lexer {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, NOMBRE = 5
   };
 
-  ExprLexer(antlr4::CharStream *input);
-  ~ExprLexer();
+  PLDCompLexer(antlr4::CharStream *input);
+  ~PLDCompLexer();
 
   virtual std::string getGrammarFileName() const override;
   virtual const std::vector<std::string>& getRuleNames() const override;
