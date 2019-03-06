@@ -12,7 +12,7 @@
 class  PLDCompLexer : public antlr4::Lexer {
 public:
   enum {
-    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, NOMBRE = 5
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, INT = 5
   };
 
   PLDCompLexer(antlr4::CharStream *input);

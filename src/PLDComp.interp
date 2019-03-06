@@ -2,7 +2,7 @@ token literal names:
 null
 'int main() {'
 '}'
-'return'
+'return '
 ';'
 null
 
@@ -12,7 +12,7 @@ null
 null
 null
 null
-NOMBRE
+INT
 
 rule names:
 prog

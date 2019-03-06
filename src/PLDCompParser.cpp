@@ -2,6 +2,7 @@
 // Generated from PLDComp.g4 by ANTLR 4.7.2
 
 
+#include "PLDCompListener.h"
 #include "PLDCompVisitor.h"
 
 #include "PLDCompParser.h"
@@ -46,6 +47,18 @@ size_t PLDCompParser::ProgContext::getRuleIndex() const {
   return PLDCompParser::RuleProg;
 }
 
+void PLDCompParser::ProgContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterProg(this);
+}
+
+void PLDCompParser::ProgContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitProg(this);
+}
+
 
 antlrcpp::Any PLDCompParser::ProgContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
@@ -86,13 +99,25 @@ PLDCompParser::Return_instructionContext::Return_instructionContext(ParserRuleCo
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* PLDCompParser::Return_instructionContext::NOMBRE() {
-  return getToken(PLDCompParser::NOMBRE, 0);
+tree::TerminalNode* PLDCompParser::Return_instructionContext::INT() {
+  return getToken(PLDCompParser::INT, 0);
 }
 
 
 size_t PLDCompParser::Return_instructionContext::getRuleIndex() const {
   return PLDCompParser::RuleReturn_instruction;
+}
+
+void PLDCompParser::Return_instructionContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterReturn_instruction(this);
+}
+
+void PLDCompParser::Return_instructionContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitReturn_instruction(this);
 }
 
 
@@ -115,7 +140,7 @@ PLDCompParser::Return_instructionContext* PLDCompParser::return_instruction() {
     setState(8);
     match(PLDCompParser::T__2);
     setState(9);
-    match(PLDCompParser::NOMBRE);
+    match(PLDCompParser::INT);
     setState(10);
     match(PLDCompParser::T__3);
    
@@ -142,11 +167,11 @@ std::vector<std::string> PLDCompParser::_ruleNames = {
 };
 
 std::vector<std::string> PLDCompParser::_literalNames = {
-  "", "'int main() {'", "'}'", "'return'", "';'"
+  "", "'int main() {'", "'}'", "'return '", "';'"
 };
 
 std::vector<std::string> PLDCompParser::_symbolicNames = {
-  "", "", "", "", "", "NOMBRE"
+  "", "", "", "", "", "INT"
 };
 
 dfa::Vocabulary PLDCompParser::_vocabulary(_literalNames, _symbolicNames);

@@ -2,6 +2,6 @@ grammar PLDComp;
 
 prog: 'int main() {' return_instruction '}' ;
 
-return_instruction : 'return' NOMBRE ';' ;
+return_instruction : 'return ' INT ';' ;
 
-NOMBRE : [0-9]+ ;
+INT : [0-9]+ ;

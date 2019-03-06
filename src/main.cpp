@@ -2,24 +2,23 @@
 #include "PLDCompLexer.h"
 #include "PLDCompParser.h"
 #include "PLDCompBaseVisitor.h"
-#include "Visitor.h"
+#include "Generator.h"
 
 using namespace antlr4;
 using namespace std;
 
 int main() {
-    ANTLRInputStream input("1+3*6");
+    ANTLRInputStream input("int main() {return 40;}");
     PLDCompLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
 
     PLDCompParser parser(&tokens);
     tree::ParseTree* tree = parser.prog();
 
-    Visitor visitor;
+    Generator visitor("out.asm");
 
-    int resultat = (int)visitor.visit(tree);
+    visitor.visit(tree);
 
-    cout<<"Résultat "<<resultat<<endl;
     
     return 0;
 }
