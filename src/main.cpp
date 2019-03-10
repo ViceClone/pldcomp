@@ -3,11 +3,12 @@
 #include "PLDCompParser.h"
 #include "PLDCompBaseVisitor.h"
 #include "Generator.h"
+#include <iostream>
 
 using namespace antlr4;
 using namespace std;
 
-int main() {
+int main(int argv, char* argc[]) {
     ANTLRInputStream input("int main() {return 40;}");
     PLDCompLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
