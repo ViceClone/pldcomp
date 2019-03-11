@@ -41,7 +41,7 @@ public:
 
     antlrcpp::Any visitDeclaration(PLDCompParser::DeclarationContext *ctx) override {
         string funcname = ctx->ID()->getText();
-        os << funcname << endl;
+        os << funcname << ":" << endl;
         os << "    pushq "<<"%"<<"rbp" << endl;
         os << "    movq "<<"%"<<"rsp, "<<"%"<<"rbp" << endl;
         visitChildren(ctx);

@@ -12,8 +12,9 @@
 class  PLDCompParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, RETURN = 2, ID = 3, INT = 4, SEMICOLON = 5, RightBrace = 6, 
-    LeftBrace = 7, LeftParen = 8, RightParen = 9, Whitespace = 10
+    T__0 = 1, RETURN = 2, ID = 3, INT = 4, Assignment = 5, Semicolon = 6, 
+    RightBrace = 7, LeftBrace = 8, LeftParen = 9, RightParen = 10, Whitespace = 11, 
+    Newline = 12
   };
 
   enum {
@@ -44,6 +45,7 @@ public:
     ProgContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     DeclarationContext *declaration();
+    antlr4::tree::TerminalNode *EOF();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -112,7 +114,7 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *RETURN();
     ExprContext *expr();
-    antlr4::tree::TerminalNode *SEMICOLON();
+    antlr4::tree::TerminalNode *Semicolon();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

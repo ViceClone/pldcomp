@@ -1,6 +1,6 @@
 grammar PLDComp;
 
-prog: declaration ;
+prog: declaration EOF;
 
 declaration : type ID '(' ')' '{' statementseq '}'; 
 
@@ -18,9 +18,11 @@ type : 'int';
 RETURN: 'return';
 ID : [a-zA-Z_] [a-zA-Z0-9_]*;
 INT : [0-9]+ ;
-SEMICOLON: ';';
+Assignment: '=';
+Semicolon: ';';
 RightBrace: '}';
 LeftBrace : '{';
 LeftParen : '(';
 RightParen : ')';
 Whitespace : [ \t]+ -> skip;
+Newline : ('\r' '\n'? | '\n') -> skip;

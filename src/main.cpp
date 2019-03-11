@@ -8,8 +8,10 @@
 using namespace antlr4;
 using namespace std;
 
-int main(int argv, char* argc[]) {
-    ANTLRInputStream input("int main() {return 40;}");
+int main(int argc, char* argv[]) {
+    ifstream stream;
+    stream.open(argv[1]);
+    ANTLRInputStream input(stream);
     PLDCompLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
 
