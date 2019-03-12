@@ -8,6 +8,12 @@ statementseq : statement+;
 
 statement : returnstatement;
 
+vardeclaration = type ID # DeclWithAssignment
+    | type assignmentstat # DeclWithoutAssignment
+    ;
+
+assignmentstat : ID '=' expr;
+
 returnstatement : 'return' expr ';' ;
 expr : INT # const
     | '(' expr ')' # par
