@@ -86,11 +86,11 @@ public:
                     os << "    movl " << memTable[id2] << "(" << "%" << "rbp), " << "%" << "eax" << endl ;
                     os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl ;
                 } else {
-                    cout << "Compilation failed ! " << endl;
-                    // TODO : error name
+                    throw -1;
                 }
             }
-        } else {
+        }
+        else {
             throw -1;
         }
         return NULL;
@@ -115,8 +115,7 @@ public:
             os << "    movl $" << ctx->INT()->getText();
             os << ", " << memTable[id] << "(" << "%" << "rbp)" << endl;
         } else {
-            cout << "Compilation failed ! " << endl;
-            // TODO : delete out.asm
+            throw -1;
         }
         return NULL;
     }
@@ -132,12 +131,10 @@ public:
                 os << "    movl " << memTable[id2] << "(" << "%" << "rbp), " << "%" << "eax" << endl ;
                 os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl ;
             } else {
-                cout << "Compilation failed ! " << endl;
-                // TODO : error name
+                throw -1;
             }
         } else {
-            cout << "Compilation failed ! " << endl;
-            // TODO : delete out.asm
+            throw -2;
         }
         return NULL;
     }

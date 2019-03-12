@@ -23,9 +23,10 @@ int main(int argc, char* argv[]) {
 
     try {
         visitor.visit(tree);
+        cout << "Compilation Success!" << endl;
     } catch (int i) {
-        cout << "Compilation Failed!" << endl;
         remove("out.asm");
+        cout << "Compilation failed ! " << endl;
     }
 
     return 0;
