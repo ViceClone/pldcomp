@@ -1,5 +1,5 @@
-T__0=1
-RETURN=2
+RETURN=1
+INT_TYPE=2
 ID=3
 INT=4
 ASSIGNMENT=5
@@ -10,8 +10,8 @@ LEFT_PARENTHESE=9
 RIGHT_PARENTHESE=10
 WHITESPACE=11
 NEWLINE=12
-'int'=1
-'return'=2
+'return'=1
+'int'=2
 '='=5
 ';'=6
 '}'=7

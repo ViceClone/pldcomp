@@ -12,14 +12,15 @@
 class  PLDCompParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, RETURN = 2, ID = 3, INT = 4, ASSIGNMENT = 5, SEMICOLON = 6, 
+    RETURN = 1, INT_TYPE = 2, ID = 3, INT = 4, ASSIGNMENT = 5, SEMICOLON = 6, 
     RIGHT_BRACE = 7, LEFT_BRACE = 8, LEFT_PARENTHESE = 9, RIGHT_PARENTHESE = 10, 
     WHITESPACE = 11, NEWLINE = 12
   };
 
   enum {
     RuleProg = 0, RuleDeclaration = 1, RuleStatementseq = 2, RuleStatement = 3, 
-    RuleReturnstatement = 4, RuleExpr = 5, RuleType = 6
+    RuleVardeclaration = 4, RuleAssignmentstat = 5, RuleReturnstatement = 6, 
+    RuleExpr = 7, RuleType = 8
   };
 
   PLDCompParser(antlr4::TokenStream *input);
@@ -36,6 +37,8 @@ public:
   class DeclarationContext;
   class StatementseqContext;
   class StatementContext;
+  class VardeclarationContext;
+  class AssignmentstatContext;
   class ReturnstatementContext;
   class ExprContext;
   class TypeContext; 
@@ -91,6 +94,7 @@ public:
   public:
     StatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    VardeclarationContext *vardeclaration();
     ReturnstatementContext *returnstatement();
 
 
@@ -99,6 +103,60 @@ public:
   };
 
   StatementContext* statement();
+
+  class  VardeclarationContext : public antlr4::ParserRuleContext {
+  public:
+    VardeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+   
+    VardeclarationContext() = default;
+    void copyFrom(VardeclarationContext *context);
+    using antlr4::ParserRuleContext::copyFrom;
+
+    virtual size_t getRuleIndex() const override;
+
+   
+  };
+
+  class  DeclWithoutAssignmentContext : public VardeclarationContext {
+  public:
+    DeclWithoutAssignmentContext(VardeclarationContext *ctx);
+
+    TypeContext *type();
+    antlr4::tree::TerminalNode *ID();
+    antlr4::tree::TerminalNode *SEMICOLON();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  DeclWithAssignmentContext : public VardeclarationContext {
+  public:
+    DeclWithAssignmentContext(VardeclarationContext *ctx);
+
+    TypeContext *type();
+    antlr4::tree::TerminalNode *ID();
+    antlr4::tree::TerminalNode *ASSIGNMENT();
+    ExprContext *expr();
+    antlr4::tree::TerminalNode *SEMICOLON();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  VardeclarationContext* vardeclaration();
+
+  class  AssignmentstatContext : public antlr4::ParserRuleContext {
+  public:
+    AssignmentstatContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ID();
+    antlr4::tree::TerminalNode *ASSIGNMENT();
+    ExprContext *expr();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  AssignmentstatContext* assignmentstat();
 
   class  ReturnstatementContext : public antlr4::ParserRuleContext {
   public:
@@ -154,6 +212,7 @@ public:
   public:
     TypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *INT_TYPE();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
