@@ -30,18 +30,18 @@ public:
         return NULL;
     }
 
-    virtual antlrcpp::Any visitStatement(PLDCompParser::StatementContext *ctx) override {
+    antlrcpp::Any visitStatement(PLDCompParser::StatementContext *ctx) override {
         return visitChildren(ctx);
     }
 
-    virtual antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) override {
+    antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) override {
         os << "    movl ";
         visit(ctx->expr());
         os << ", "<<"%"<<"eax" << endl;
         return NULL;
     }
 
-    virtual antlrcpp::Any visitConst(PLDCompParser::ConstContext *ctx) override {
+    antlrcpp::Any visitConst(PLDCompParser::ConstContext *ctx) override {
         os << "$" << ctx->INT()->getText();
         return (int)stoi(ctx->INT()->getText());
     }
@@ -51,7 +51,7 @@ public:
         return visitChildren(ctx);
     }
 
-    virtual antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *ctx) override {
+    antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *ctx) override {
         string id = ctx->ID()->getText();
         map<string,int>::iterator it = memTable.find(id);
         if (it == memTable.end()) {
@@ -71,7 +71,8 @@ public:
         return NULL;
     }
     
-    virtual antlrcpp::Any visitDeclWithAssignmentID(PLDCompParser::DeclWithAssignmentIDContext *ctx) override {
+
+    antlrcpp::Any visitDeclWithAssignmentID(PLDCompParser::DeclWithAssignmentIDContext *ctx) override {
         string id = ctx->ID(0)->getText();
         map<string,int>::iterator it = memTable.find(id);
         if (it == memTable.end()) {
@@ -97,7 +98,7 @@ public:
         return NULL;
     }
 
-    virtual antlrcpp::Any visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx) override {
+    antlrcpp::Any visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx) override {
         string type = ctx->type()->getText();
         string id = ctx->ID()->getText();
         if (!type.compare("int")) {

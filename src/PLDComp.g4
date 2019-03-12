@@ -20,7 +20,12 @@ assignmentstat : ID '=' INT  # AssignmentINT
     | ID '=' ID  # AssignmentID
     ;
 
+<<<<<<< HEAD
 returnstatement : 'return' expr  ;
+=======
+returnstatement : 'return' expr ';' ;
+
+>>>>>>> 4f89f93d92512b399f7b31f416fee693bed40810
 expr : INT # const
     | ID # var
     | '(' expr ')' # par
