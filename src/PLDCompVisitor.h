@@ -33,7 +33,9 @@ public:
 
     virtual antlrcpp::Any visitDeclWithAssignmentID(PLDCompParser::DeclWithAssignmentIDContext *context) = 0;
 
-    virtual antlrcpp::Any visitAssignmentstat(PLDCompParser::AssignmentstatContext *context) = 0;
+    virtual antlrcpp::Any visitAssignmentINT(PLDCompParser::AssignmentINTContext *context) = 0;
+
+    virtual antlrcpp::Any visitAssignmentID(PLDCompParser::AssignmentIDContext *context) = 0;
 
     virtual antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *context) = 0;
 

@@ -82,6 +82,8 @@ public:
     virtual size_t getRuleIndex() const override;
     std::vector<StatementContext *> statement();
     StatementContext* statement(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> SEMICOLON();
+    antlr4::tree::TerminalNode* SEMICOLON(size_t i);
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -96,6 +98,7 @@ public:
     virtual size_t getRuleIndex() const override;
     VardeclarationContext *vardeclaration();
     ReturnstatementContext *returnstatement();
+    AssignmentstatContext *assignmentstat();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -123,7 +126,6 @@ public:
 
     TypeContext *type();
     antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *SEMICOLON();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -136,7 +138,6 @@ public:
     std::vector<antlr4::tree::TerminalNode *> ID();
     antlr4::tree::TerminalNode* ID(size_t i);
     antlr4::tree::TerminalNode *ASSIGNMENT();
-    antlr4::tree::TerminalNode *SEMICOLON();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -149,7 +150,6 @@ public:
     antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *ASSIGNMENT();
     antlr4::tree::TerminalNode *INT();
-    antlr4::tree::TerminalNode *SEMICOLON();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -159,14 +159,36 @@ public:
   class  AssignmentstatContext : public antlr4::ParserRuleContext {
   public:
     AssignmentstatContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *ASSIGNMENT();
-    ExprContext *expr();
+   
+    AssignmentstatContext() = default;
+    void copyFrom(AssignmentstatContext *context);
+    using antlr4::ParserRuleContext::copyFrom;
 
+    virtual size_t getRuleIndex() const override;
+
+   
+  };
+
+  class  AssignmentIDContext : public AssignmentstatContext {
+  public:
+    AssignmentIDContext(AssignmentstatContext *ctx);
+
+    std::vector<antlr4::tree::TerminalNode *> ID();
+    antlr4::tree::TerminalNode* ID(size_t i);
+    antlr4::tree::TerminalNode *ASSIGNMENT();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
+  };
+
+  class  AssignmentINTContext : public AssignmentstatContext {
+  public:
+    AssignmentINTContext(AssignmentstatContext *ctx);
+
+    antlr4::tree::TerminalNode *ID();
+    antlr4::tree::TerminalNode *ASSIGNMENT();
+    antlr4::tree::TerminalNode *INT();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
   AssignmentstatContext* assignmentstat();
@@ -177,7 +199,6 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *RETURN();
     ExprContext *expr();
-    antlr4::tree::TerminalNode *SEMICOLON();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
