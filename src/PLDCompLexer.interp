@@ -19,28 +19,28 @@ null
 RETURN
 ID
 INT
-Assignment
-Semicolon
-RightBrace
-LeftBrace
-LeftParen
-RightParen
-Whitespace
-Newline
+ASSIGNMENT
+SEMICOLON
+RIGHT_BRACE
+LEFT_BRACE
+LEFT_PARENTHESE
+RIGHT_PARENTHESE
+WHITESPACE
+NEWLINE
 
 rule names:
 T__0
 RETURN
 ID
 INT
-Assignment
-Semicolon
-RightBrace
-LeftBrace
-LeftParen
-RightParen
-Whitespace
-Newline
+ASSIGNMENT
+SEMICOLON
+RIGHT_BRACE
+LEFT_BRACE
+LEFT_PARENTHESE
+RIGHT_PARENTHESE
+WHITESPACE
+NEWLINE
 
 channel names:
 DEFAULT_TOKEN_CHANNEL
