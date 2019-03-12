@@ -15,7 +15,7 @@ null
 
 token symbolic names:
 null
-null
+TYPE
 RETURN
 ID
 INT
@@ -29,7 +29,7 @@ WHITESPACE
 NEWLINE
 
 rule names:
-T__0
+TYPE
 RETURN
 ID
 INT

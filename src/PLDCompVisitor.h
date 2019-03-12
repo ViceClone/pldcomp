@@ -33,8 +33,6 @@ public:
 
     virtual antlrcpp::Any visitPar(PLDCompParser::ParContext *context) = 0;
 
-    virtual antlrcpp::Any visitType(PLDCompParser::TypeContext *context) = 0;
-
 
 };
 
