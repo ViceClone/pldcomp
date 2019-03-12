@@ -35,7 +35,7 @@ public:
     }
 
     antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) override {
-        os << "    movl $" << (string)visit(ctx->expr());
+        os << "    movl $" << (int)visit(ctx->expr());
         os << ", "<<"%"<<"eax" << endl;
         return NULL;
     }
@@ -66,22 +66,29 @@ public:
         return NULL;
     }
     
+
     antlrcpp::Any visitDeclWithAssignmentID(PLDCompParser::DeclWithAssignmentIDContext *ctx) override {
-        string id = ctx->ID(1)->getText();
+        string id = ctx->ID(0)->getText();
         map<string,int>::iterator it = memTable.find(id);
         if (it == memTable.end()) {
             string type = ctx->type()->getText();
             if (!type.compare("int")) {
                 currentAddress -= 4;
                 memTable[id] = currentAddress;
+                string id2 = ctx->ID(1)->getText();
+                cout << id2 << endl;
+                map<string,int>::iterator it2 = memTable.find(id2);
+                if (it2 != memTable.end()) {
+                    os << "    movl " << memTable[id2] << "(" << "%" << "rbp), " << "%" << "eax" << endl ;
+                    os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl ;
+                }
                 
-                os << "    movl $" << ctx->INT()->getText();
-                os << ", " << currentAddress << "(" << "%" << "rbp)" << endl;
             }
         } else {
             cout << "Compilation failed ! " << endl;
             // TODO : delete out.asm
         }
+        return NULL;
     }
 
     antlrcpp::Any visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx) override {
