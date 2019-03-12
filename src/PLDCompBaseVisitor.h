@@ -39,6 +39,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitDeclWithAssignmentID(PLDCompParser::DeclWithAssignmentIDContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitAssignmentstat(PLDCompParser::AssignmentstatContext *ctx) override {
     return visitChildren(ctx);
   }
