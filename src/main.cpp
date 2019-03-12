@@ -9,6 +9,7 @@ using namespace antlr4;
 using namespace std;
 
 int main(int argc, char* argv[]) {
+    
     ifstream stream;
     stream.open(argv[1]);
     ANTLRInputStream input(stream);
@@ -20,8 +21,12 @@ int main(int argc, char* argv[]) {
 
     Generator visitor("out.asm");
 
-    visitor.visit(tree);
+    try {
+        visitor.visit(tree);
+    } catch (int i) {
+        cout << "Compilation Failed!" << endl;
+        remove("out.asm");
+    }
 
-    
     return 0;
 }

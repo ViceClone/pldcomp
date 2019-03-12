@@ -6,6 +6,8 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <stdio.h>
+
 using namespace std;
 
 class Generator : public PLDCompBaseVisitor {
@@ -59,10 +61,8 @@ public:
                 os << ", " << currentAddress << "(" << "%" << "rbp)" << endl;
             }
         } else {
-            cout << "Compilation failed ! " << endl;
-            // TODO : delete out.asm
+            throw -1;
         }
-        
         return NULL;
     }
     
@@ -76,17 +76,14 @@ public:
                 currentAddress -= 4;
                 memTable[id] = currentAddress;
                 string id2 = ctx->ID(1)->getText();
-                cout << id2 << endl;
                 map<string,int>::iterator it2 = memTable.find(id2);
                 if (it2 != memTable.end()) {
                     os << "    movl " << memTable[id2] << "(" << "%" << "rbp), " << "%" << "eax" << endl ;
                     os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl ;
                 }
-                
             }
         } else {
-            cout << "Compilation failed ! " << endl;
-            // TODO : delete out.asm
+            throw -1;
         }
         return NULL;
     }
