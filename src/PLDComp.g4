@@ -8,7 +8,7 @@ statementseq : statement+;
 
 statement : returnstatement;
 
-vardeclaration = type ID # DeclWithAssignment
+vardeclaration : type ID # DeclWithAssignment
     | type assignmentstat # DeclWithoutAssignment
     ;
 

@@ -29,21 +29,19 @@ public:
         return NULL;
     }
 
-    virtual antlrcpp::Any visitStatement(PLDCompParser::StatementContext *ctx) override {
+    antlrcpp::Any visitStatement(PLDCompParser::StatementContext *ctx) override {
         return visitChildren(ctx);
     }
 
-    virtual antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) override {
+    antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) override {
         os << "    movl $";
         visit(ctx->expr());
         os << ", "<<"%"<<"eax" << endl;
         return NULL;
     }
 
-    virtual antlrcpp::Any visitConst(PLDCompParser::ConstContext *ctx) override {
-        os << ctx->INT()->getText();
-        return NULL;
-    }
+    
+
 private: 
     ofstream os;
 };
