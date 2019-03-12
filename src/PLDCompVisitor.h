@@ -21,7 +21,19 @@ public:
    */
     virtual antlrcpp::Any visitProg(PLDCompParser::ProgContext *context) = 0;
 
-    virtual antlrcpp::Any visitReturn_instruction(PLDCompParser::Return_instructionContext *context) = 0;
+    virtual antlrcpp::Any visitDeclaration(PLDCompParser::DeclarationContext *context) = 0;
+
+    virtual antlrcpp::Any visitStatementseq(PLDCompParser::StatementseqContext *context) = 0;
+
+    virtual antlrcpp::Any visitStatement(PLDCompParser::StatementContext *context) = 0;
+
+    virtual antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *context) = 0;
+
+    virtual antlrcpp::Any visitConst(PLDCompParser::ConstContext *context) = 0;
+
+    virtual antlrcpp::Any visitPar(PLDCompParser::ParContext *context) = 0;
+
+    virtual antlrcpp::Any visitType(PLDCompParser::TypeContext *context) = 0;
 
 
 };

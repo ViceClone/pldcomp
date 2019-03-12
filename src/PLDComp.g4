@@ -1,7 +1,28 @@
 grammar PLDComp;
 
-prog: 'int main() {' return_instruction '}' ;
+prog: declaration EOF;
 
-return_instruction : 'return ' INT ';' ;
+declaration : type ID '(' ')' '{' statementseq '}'; 
 
+statementseq : statement+;
+
+statement : returnstatement;
+
+returnstatement : 'return' expr ';' ;
+expr : INT # const
+    | '(' expr ')' # par
+    ;
+
+type : 'int';
+
+RETURN: 'return';
+ID : [a-zA-Z_] [a-zA-Z0-9_]*;
 INT : [0-9]+ ;
+Assignment: '=';
+Semicolon: ';';
+RightBrace: '}';
+LeftBrace : '{';
+LeftParen : '(';
+RightParen : ')';
+Whitespace : [ \t]+ -> skip;
+Newline : ('\r' '\n'? | '\n') -> skip;
