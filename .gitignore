@@ -6,3 +6,6 @@ a.out
 .vscode
 *.o
 *.out
+test.c
+*.asm
+comp

@@ -2,7 +2,6 @@
 // Generated from PLDComp.g4 by ANTLR 4.7.2
 
 
-#include "PLDCompListener.h"
 #include "PLDCompVisitor.h"
 
 #include "PLDCompParser.h"
@@ -51,18 +50,6 @@ size_t PLDCompParser::ProgContext::getRuleIndex() const {
   return PLDCompParser::RuleProg;
 }
 
-void PLDCompParser::ProgContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterProg(this);
-}
-
-void PLDCompParser::ProgContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitProg(this);
-}
-
 
 antlrcpp::Any PLDCompParser::ProgContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
@@ -109,41 +96,29 @@ tree::TerminalNode* PLDCompParser::DeclarationContext::ID() {
   return getToken(PLDCompParser::ID, 0);
 }
 
-tree::TerminalNode* PLDCompParser::DeclarationContext::LeftParen() {
-  return getToken(PLDCompParser::LeftParen, 0);
+tree::TerminalNode* PLDCompParser::DeclarationContext::LEFT_PARENTHESE() {
+  return getToken(PLDCompParser::LEFT_PARENTHESE, 0);
 }
 
-tree::TerminalNode* PLDCompParser::DeclarationContext::RightParen() {
-  return getToken(PLDCompParser::RightParen, 0);
+tree::TerminalNode* PLDCompParser::DeclarationContext::RIGHT_PARENTHESE() {
+  return getToken(PLDCompParser::RIGHT_PARENTHESE, 0);
 }
 
-tree::TerminalNode* PLDCompParser::DeclarationContext::LeftBrace() {
-  return getToken(PLDCompParser::LeftBrace, 0);
+tree::TerminalNode* PLDCompParser::DeclarationContext::LEFT_BRACE() {
+  return getToken(PLDCompParser::LEFT_BRACE, 0);
 }
 
 PLDCompParser::StatementseqContext* PLDCompParser::DeclarationContext::statementseq() {
   return getRuleContext<PLDCompParser::StatementseqContext>(0);
 }
 
-tree::TerminalNode* PLDCompParser::DeclarationContext::RightBrace() {
-  return getToken(PLDCompParser::RightBrace, 0);
+tree::TerminalNode* PLDCompParser::DeclarationContext::RIGHT_BRACE() {
+  return getToken(PLDCompParser::RIGHT_BRACE, 0);
 }
 
 
 size_t PLDCompParser::DeclarationContext::getRuleIndex() const {
   return PLDCompParser::RuleDeclaration;
-}
-
-void PLDCompParser::DeclarationContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterDeclaration(this);
-}
-
-void PLDCompParser::DeclarationContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitDeclaration(this);
 }
 
 
@@ -168,15 +143,15 @@ PLDCompParser::DeclarationContext* PLDCompParser::declaration() {
     setState(18);
     match(PLDCompParser::ID);
     setState(19);
-    match(PLDCompParser::LeftParen);
+    match(PLDCompParser::LEFT_PARENTHESE);
     setState(20);
-    match(PLDCompParser::RightParen);
+    match(PLDCompParser::RIGHT_PARENTHESE);
     setState(21);
-    match(PLDCompParser::LeftBrace);
+    match(PLDCompParser::LEFT_BRACE);
     setState(22);
     statementseq();
     setState(23);
-    match(PLDCompParser::RightBrace);
+    match(PLDCompParser::RIGHT_BRACE);
    
   }
   catch (RecognitionException &e) {
@@ -205,18 +180,6 @@ PLDCompParser::StatementContext* PLDCompParser::StatementseqContext::statement(s
 
 size_t PLDCompParser::StatementseqContext::getRuleIndex() const {
   return PLDCompParser::RuleStatementseq;
-}
-
-void PLDCompParser::StatementseqContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterStatementseq(this);
-}
-
-void PLDCompParser::StatementseqContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitStatementseq(this);
 }
 
 
@@ -273,18 +236,6 @@ size_t PLDCompParser::StatementContext::getRuleIndex() const {
   return PLDCompParser::RuleStatement;
 }
 
-void PLDCompParser::StatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterStatement(this);
-}
-
-void PLDCompParser::StatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitStatement(this);
-}
-
 
 antlrcpp::Any PLDCompParser::StatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
@@ -329,25 +280,13 @@ PLDCompParser::ExprContext* PLDCompParser::ReturnstatementContext::expr() {
   return getRuleContext<PLDCompParser::ExprContext>(0);
 }
 
-tree::TerminalNode* PLDCompParser::ReturnstatementContext::Semicolon() {
-  return getToken(PLDCompParser::Semicolon, 0);
+tree::TerminalNode* PLDCompParser::ReturnstatementContext::SEMICOLON() {
+  return getToken(PLDCompParser::SEMICOLON, 0);
 }
 
 
 size_t PLDCompParser::ReturnstatementContext::getRuleIndex() const {
   return PLDCompParser::RuleReturnstatement;
-}
-
-void PLDCompParser::ReturnstatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterReturnstatement(this);
-}
-
-void PLDCompParser::ReturnstatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitReturnstatement(this);
 }
 
 
@@ -372,7 +311,7 @@ PLDCompParser::ReturnstatementContext* PLDCompParser::returnstatement() {
     setState(33);
     expr();
     setState(34);
-    match(PLDCompParser::Semicolon);
+    match(PLDCompParser::SEMICOLON);
    
   }
   catch (RecognitionException &e) {
@@ -401,30 +340,20 @@ void PLDCompParser::ExprContext::copyFrom(ExprContext *ctx) {
 
 //----------------- ParContext ------------------------------------------------------------------
 
-tree::TerminalNode* PLDCompParser::ParContext::LeftParen() {
-  return getToken(PLDCompParser::LeftParen, 0);
+tree::TerminalNode* PLDCompParser::ParContext::LEFT_PARENTHESE() {
+  return getToken(PLDCompParser::LEFT_PARENTHESE, 0);
 }
 
 PLDCompParser::ExprContext* PLDCompParser::ParContext::expr() {
   return getRuleContext<PLDCompParser::ExprContext>(0);
 }
 
-tree::TerminalNode* PLDCompParser::ParContext::RightParen() {
-  return getToken(PLDCompParser::RightParen, 0);
+tree::TerminalNode* PLDCompParser::ParContext::RIGHT_PARENTHESE() {
+  return getToken(PLDCompParser::RIGHT_PARENTHESE, 0);
 }
 
 PLDCompParser::ParContext::ParContext(ExprContext *ctx) { copyFrom(ctx); }
 
-void PLDCompParser::ParContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterPar(this);
-}
-void PLDCompParser::ParContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitPar(this);
-}
 
 antlrcpp::Any PLDCompParser::ParContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
@@ -440,16 +369,6 @@ tree::TerminalNode* PLDCompParser::ConstContext::INT() {
 
 PLDCompParser::ConstContext::ConstContext(ExprContext *ctx) { copyFrom(ctx); }
 
-void PLDCompParser::ConstContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterConst(this);
-}
-void PLDCompParser::ConstContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitConst(this);
-}
 
 antlrcpp::Any PLDCompParser::ConstContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
@@ -476,15 +395,15 @@ PLDCompParser::ExprContext* PLDCompParser::expr() {
         break;
       }
 
-      case PLDCompParser::LeftParen: {
+      case PLDCompParser::LEFT_PARENTHESE: {
         _localctx = dynamic_cast<ExprContext *>(_tracker.createInstance<PLDCompParser::ParContext>(_localctx));
         enterOuterAlt(_localctx, 2);
         setState(37);
-        match(PLDCompParser::LeftParen);
+        match(PLDCompParser::LEFT_PARENTHESE);
         setState(38);
         expr();
         setState(39);
-        match(PLDCompParser::RightParen);
+        match(PLDCompParser::RIGHT_PARENTHESE);
         break;
       }
 
@@ -511,18 +430,6 @@ PLDCompParser::TypeContext::TypeContext(ParserRuleContext *parent, size_t invoki
 
 size_t PLDCompParser::TypeContext::getRuleIndex() const {
   return PLDCompParser::RuleType;
-}
-
-void PLDCompParser::TypeContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterType(this);
-}
-
-void PLDCompParser::TypeContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<PLDCompListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitType(this);
 }
 
 
@@ -573,8 +480,8 @@ std::vector<std::string> PLDCompParser::_literalNames = {
 };
 
 std::vector<std::string> PLDCompParser::_symbolicNames = {
-  "", "", "RETURN", "ID", "INT", "Assignment", "Semicolon", "RightBrace", 
-  "LeftBrace", "LeftParen", "RightParen", "Whitespace", "Newline"
+  "", "", "RETURN", "ID", "INT", "ASSIGNMENT", "SEMICOLON", "RIGHT_BRACE", 
+  "LEFT_BRACE", "LEFT_PARENTHESE", "RIGHT_PARENTHESE", "WHITESPACE", "NEWLINE"
 };
 
 dfa::Vocabulary PLDCompParser::_vocabulary(_literalNames, _symbolicNames);
