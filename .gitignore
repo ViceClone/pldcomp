@@ -6,6 +6,8 @@ a.out
 .vscode
 *.o
 *.out
-test.c
-*.asm
 comp
+out.asm
+test.c
+*.c
+*.asm
