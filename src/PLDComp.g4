@@ -6,24 +6,29 @@ declaration : type ID '(' ')' '{' statementseq '}';
 
 statementseq : statement+;
 
-statement : returnstatement;
+statement :  vardeclaration
+    | returnstatement
+    ;
 
-vardeclaration : type ID # DeclWithAssignment
-    | type assignmentstat # DeclWithoutAssignment
+vardeclaration : type ID ';'# DeclWithoutAssignment
+    | type ID '=' expr ';'# DeclWithAssignment
     ;
 
 assignmentstat : ID '=' expr;
 
 returnstatement : 'return' expr ';' ;
+
 expr : INT # const
+    | ID # var
     | '(' expr ')' # par
     ;
 
 type : 'int';
 
 RETURN: 'return';
+INT_TYPE: 'int';
 ID : [a-zA-Z_] [a-zA-Z0-9_]*;
-INT : [0-9]+ ;
+INT : ('-')?[0-9]+ ;
 ASSIGNMENT: '=';
 SEMICOLON: ';';
 RIGHT_BRACE: '}';
