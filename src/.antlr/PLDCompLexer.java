@@ -16,7 +16,7 @@ public class PLDCompLexer extends Lexer {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, RETURN=2, ID=3, INT=4, ASSIGNMENT=5, SEMICOLON=6, RIGHT_BRACE=7, 
+		TYPE=1, RETURN=2, ID=3, INT=4, ASSIGNMENT=5, SEMICOLON=6, RIGHT_BRACE=7, 
 		LEFT_BRACE=8, LEFT_PARENTHESE=9, RIGHT_PARENTHESE=10, WHITESPACE=11, NEWLINE=12;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
@@ -27,7 +27,7 @@ public class PLDCompLexer extends Lexer {
 	};
 
 	public static final String[] ruleNames = {
-		"T__0", "RETURN", "ID", "INT", "ASSIGNMENT", "SEMICOLON", "RIGHT_BRACE", 
+		"TYPE", "RETURN", "ID", "INT", "ASSIGNMENT", "SEMICOLON", "RIGHT_BRACE", 
 		"LEFT_BRACE", "LEFT_PARENTHESE", "RIGHT_PARENTHESE", "WHITESPACE", "NEWLINE"
 	};
 
@@ -36,7 +36,7 @@ public class PLDCompLexer extends Lexer {
 		"')'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, "RETURN", "ID", "INT", "ASSIGNMENT", "SEMICOLON", "RIGHT_BRACE", 
+		null, "TYPE", "RETURN", "ID", "INT", "ASSIGNMENT", "SEMICOLON", "RIGHT_BRACE", 
 		"LEFT_BRACE", "LEFT_PARENTHESE", "RIGHT_PARENTHESE", "WHITESPACE", "NEWLINE"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);

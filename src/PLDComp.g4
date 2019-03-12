@@ -2,18 +2,18 @@ grammar PLDComp;
 
 prog: declaration EOF;
 
-declaration : type ID '(' ')' '{' statementseq '}'; 
+declaration : TYPE ID LEFT_PARENTHESE RIGHT_PARENTHESE RIGHT_BRACE statementseq RIGHT_BRACE; 
 
 statementseq : statement+;
 
 statement : returnstatement;
 
-returnstatement : 'return' expr ';' ;
+returnstatement : RETURN expr SEMICOLON ;
 expr : INT # const
-    | '(' expr ')' # par
+    | LEFT_PARENTHESE expr RIGHT_PARENTHESE # par
     ;
 
-type : 'int';
+TYPE : 'int';
 
 RETURN: 'return';
 ID : [a-zA-Z_] [a-zA-Z0-9_]*;
