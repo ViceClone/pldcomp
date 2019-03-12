@@ -43,6 +43,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitType(PLDCompParser::TypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
 
 };
 

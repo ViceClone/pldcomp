@@ -60,7 +60,7 @@ atn::ATN PLDCompLexer::_atn;
 std::vector<uint16_t> PLDCompLexer::_serializedATN;
 
 std::vector<std::string> PLDCompLexer::_ruleNames = {
-  u8"TYPE", u8"RETURN", u8"ID", u8"INT", u8"ASSIGNMENT", u8"SEMICOLON", 
+  u8"T__0", u8"RETURN", u8"ID", u8"INT", u8"ASSIGNMENT", u8"SEMICOLON", 
   u8"RIGHT_BRACE", u8"LEFT_BRACE", u8"LEFT_PARENTHESE", u8"RIGHT_PARENTHESE", 
   u8"WHITESPACE", u8"NEWLINE"
 };
@@ -79,9 +79,9 @@ std::vector<std::string> PLDCompLexer::_literalNames = {
 };
 
 std::vector<std::string> PLDCompLexer::_symbolicNames = {
-  "", u8"TYPE", u8"RETURN", u8"ID", u8"INT", u8"ASSIGNMENT", u8"SEMICOLON", 
-  u8"RIGHT_BRACE", u8"LEFT_BRACE", u8"LEFT_PARENTHESE", u8"RIGHT_PARENTHESE", 
-  u8"WHITESPACE", u8"NEWLINE"
+  "", "", u8"RETURN", u8"ID", u8"INT", u8"ASSIGNMENT", u8"SEMICOLON", u8"RIGHT_BRACE", 
+  u8"LEFT_BRACE", u8"LEFT_PARENTHESE", u8"RIGHT_PARENTHESE", u8"WHITESPACE", 
+  u8"NEWLINE"
 };
 
 dfa::Vocabulary PLDCompLexer::_vocabulary(_literalNames, _symbolicNames);
