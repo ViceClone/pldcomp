@@ -128,6 +128,19 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  DeclWithAssignmentIDContext : public VardeclarationContext {
+  public:
+    DeclWithAssignmentIDContext(VardeclarationContext *ctx);
+
+    TypeContext *type();
+    std::vector<antlr4::tree::TerminalNode *> ID();
+    antlr4::tree::TerminalNode* ID(size_t i);
+    antlr4::tree::TerminalNode *ASSIGNMENT();
+    antlr4::tree::TerminalNode *SEMICOLON();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  DeclWithAssignmentContext : public VardeclarationContext {
   public:
     DeclWithAssignmentContext(VardeclarationContext *ctx);
@@ -135,7 +148,7 @@ public:
     TypeContext *type();
     antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *ASSIGNMENT();
-    ExprContext *expr();
+    antlr4::tree::TerminalNode *INT();
     antlr4::tree::TerminalNode *SEMICOLON();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -202,6 +215,15 @@ public:
     ConstContext(ExprContext *ctx);
 
     antlr4::tree::TerminalNode *INT();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  VarContext : public ExprContext {
+  public:
+    VarContext(ExprContext *ctx);
+
+    antlr4::tree::TerminalNode *ID();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

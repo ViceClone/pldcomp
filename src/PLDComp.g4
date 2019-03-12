@@ -11,13 +11,15 @@ statement :  vardeclaration
     ;
 
 vardeclaration : type ID ';'# DeclWithoutAssignment
-    | type ID '=' expr ';'# DeclWithAssignment
+    | type ID '=' INT ';'# DeclWithAssignment
+    | type ID '=' ID ';' # DeclWithAssignmentID
     ;
 
 assignmentstat : ID '=' expr;
 
 returnstatement : 'return' expr ';' ;
 expr : INT # const
+    | ID # var
     | '(' expr ')' # par
     ;
 
