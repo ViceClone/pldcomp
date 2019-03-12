@@ -4,21 +4,28 @@ prog: declaration EOF;
 
 declaration : type ID '(' ')' '{' statementseq '}'; 
 
-statementseq : statement+;
+statementseq : (statement ';')+;
 
 statement :  vardeclaration
     | returnstatement
+    | assignmentstat
     ;
 
-vardeclaration : type ID ';'# DeclWithoutAssignment
-    | type ID '=' INT ';'# DeclWithAssignment
-    | type ID '=' ID ';' # DeclWithAssignmentID
+vardeclaration : type ID# DeclWithoutAssignment
+    | type ID '=' INT # DeclWithAssignment
+    | type ID '=' ID  # DeclWithAssignmentID
     ;
 
-assignmentstat : ID '=' expr;
+assignmentstat : ID '=' INT  # AssignmentINT
+    | ID '=' ID  # AssignmentID
+    ;
 
+<<<<<<< HEAD
+returnstatement : 'return' expr  ;
+=======
 returnstatement : 'return' expr ';' ;
 
+>>>>>>> 4f89f93d92512b399f7b31f416fee693bed40810
 expr : INT # const
     | ID # var
     | '(' expr ')' # par

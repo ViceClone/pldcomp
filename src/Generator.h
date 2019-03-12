@@ -37,15 +37,20 @@ public:
     }
 
     antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) override {
-        os << "    movl $" << (int)visit(ctx->expr());
+        os << "    movl ";
+        visit(ctx->expr());
         os << ", "<<"%"<<"eax" << endl;
         return NULL;
     }
 
-
     antlrcpp::Any visitConst(PLDCompParser::ConstContext *ctx) override {
-        //os << ctx->INT()->getText();
+        os << "$" << ctx->INT()->getText();
         return (int)stoi(ctx->INT()->getText());
+    }
+
+    antlrcpp::Any visitVar(PLDCompParser::VarContext *ctx) override {
+        os << memTable[ctx->ID()->getText()] << "(" << "%" << "rbp)" ;
+        return visitChildren(ctx);
     }
 
     antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *ctx) override {
@@ -80,6 +85,9 @@ public:
                 if (it2 != memTable.end()) {
                     os << "    movl " << memTable[id2] << "(" << "%" << "rbp), " << "%" << "eax" << endl ;
                     os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl ;
+                } else {
+                    cout << "Compilation failed ! " << endl;
+                    // TODO : error name
                 }
             }
         } else {
@@ -97,6 +105,41 @@ public:
             init[id] = false;
         }
         return visitChildren(ctx);
+    }
+
+    antlrcpp::Any visitAssignmentINT(PLDCompParser::AssignmentINTContext *ctx) override {
+        string id = ctx->ID()->getText();
+        map<string,int>::iterator it = memTable.find(id);
+        if (it != memTable.end()) {
+            init[id] = true;
+            os << "    movl $" << ctx->INT()->getText();
+            os << ", " << memTable[id] << "(" << "%" << "rbp)" << endl;
+        } else {
+            cout << "Compilation failed ! " << endl;
+            // TODO : delete out.asm
+        }
+        return NULL;
+    }
+
+    antlrcpp::Any visitAssignmentID(PLDCompParser::AssignmentIDContext *ctx) override {
+        string id = ctx->ID(0)->getText();
+        map<string,int>::iterator it = memTable.find(id);
+        if (it != memTable.end()) {
+            string id2 = ctx->ID(1)->getText();
+            map<string,int>::iterator it2 = memTable.find(id2);
+            if (it2 != memTable.end()) {
+                init[id] = true;
+                os << "    movl " << memTable[id2] << "(" << "%" << "rbp), " << "%" << "eax" << endl ;
+                os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl ;
+            } else {
+                cout << "Compilation failed ! " << endl;
+                // TODO : error name
+            }
+        } else {
+            cout << "Compilation failed ! " << endl;
+            // TODO : delete out.asm
+        }
+        return NULL;
     }
 
 private: 
