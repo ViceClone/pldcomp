@@ -38,7 +38,7 @@ expr : INT # const
     | ID # var
     | '(' expr ')' # par
     | expr op expr # BinaryOperator
-    | '-' expr #minusOperator
+    | '-' expr # NegativeOperator
     ;
 
 type : 'int';

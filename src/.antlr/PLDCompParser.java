@@ -1,4 +1,4 @@
-// Generated from /home/amine/repos/pldcomp/src/PLDComp.g4 by ANTLR 4.7.1
+// Generated from /home/coaxuanhuy/Documents/pldcomp/src/PLDComp.g4 by ANTLR 4.7.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -644,11 +644,11 @@ public class PLDCompParser extends Parser {
 		public TerminalNode ID() { return getToken(PLDCompParser.ID, 0); }
 		public VarContext(ExprContext ctx) { copyFrom(ctx); }
 	}
-	public static class MinusOperatorContext extends ExprContext {
+	public static class NegativeOperatorContext extends ExprContext {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public MinusOperatorContext(ExprContext ctx) { copyFrom(ctx); }
+		public NegativeOperatorContext(ExprContext ctx) { copyFrom(ctx); }
 	}
 	public static class BinaryOperatorContext extends ExprContext {
 		public List<ExprContext> expr() {
@@ -715,7 +715,7 @@ public class PLDCompParser extends Parser {
 				break;
 			case T__1:
 				{
-				_localctx = new MinusOperatorContext(_localctx);
+				_localctx = new NegativeOperatorContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(89);
