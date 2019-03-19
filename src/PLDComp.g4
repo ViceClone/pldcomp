@@ -24,7 +24,7 @@ statement :  vardeclaration
     ;
 
 vardeclaration : type ID # DeclWithoutAssignment
-    | type ID '=' INT # DeclWithAssignment
+    | type ID '=' expr # DeclWithAssignment
     | type ID '=' ID  # DeclWithAssignmentID
     ;
 

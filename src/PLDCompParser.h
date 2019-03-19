@@ -246,7 +246,7 @@ public:
     TypeContext *type();
     antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *ASSIGNMENT();
-    antlr4::tree::TerminalNode *INT();
+    ExprContext *expr();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
