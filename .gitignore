@@ -8,5 +8,4 @@ a.out
 *.out
 comp
 out.asm
-test.c
 *.asm
