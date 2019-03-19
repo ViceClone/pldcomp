@@ -1,4 +1,4 @@
-// Generated from /home/coaxuanhuy/Documents/pldcomp/src/PLDComp.g4 by ANTLR 4.7.1
+// Generated from /home/amine/repos/pldcomp/src/PLDComp.g4 by ANTLR 4.7.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -454,7 +454,9 @@ public class PLDCompParser extends Parser {
 			return getRuleContext(TypeContext.class,0);
 		}
 		public TerminalNode ID() { return getToken(PLDCompParser.ID, 0); }
-		public TerminalNode INT() { return getToken(PLDCompParser.INT, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
 		public DeclWithAssignmentContext(VardeclarationContext ctx) { copyFrom(ctx); }
 	}
 
@@ -486,7 +488,7 @@ public class PLDCompParser extends Parser {
 				setState(60);
 				match(ASSIGNMENT);
 				setState(61);
-				match(INT);
+				expr(0);
 				}
 				break;
 			case 3:
@@ -825,7 +827,7 @@ public class PLDCompParser extends Parser {
 		"\2\2/\61\3\2\2\2\60-\3\2\2\2\61\62\3\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2"+
 		"\63\t\3\2\2\2\648\5\f\7\2\658\5\20\t\2\668\5\16\b\2\67\64\3\2\2\2\67\65"+
 		"\3\2\2\2\67\66\3\2\2\28\13\3\2\2\29:\5\24\13\2:;\7\17\2\2;G\3\2\2\2<="+
-		"\5\24\13\2=>\7\17\2\2>?\7\21\2\2?@\7\20\2\2@G\3\2\2\2AB\5\24\13\2BC\7"+
+		"\5\24\13\2=>\7\17\2\2>?\7\21\2\2?@\5\22\n\2@G\3\2\2\2AB\5\24\13\2BC\7"+
 		"\17\2\2CD\7\21\2\2DE\7\17\2\2EG\3\2\2\2F9\3\2\2\2F<\3\2\2\2FA\3\2\2\2"+
 		"G\r\3\2\2\2HI\7\17\2\2IJ\7\21\2\2JO\7\20\2\2KL\7\17\2\2LM\7\21\2\2MO\7"+
 		"\17\2\2NH\3\2\2\2NK\3\2\2\2O\17\3\2\2\2PQ\7\r\2\2QR\5\22\n\2R\21\3\2\2"+

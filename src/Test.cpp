@@ -111,7 +111,7 @@ void Test::lexErrorTests() {
     cout << endl << endl << "*--------------------->LEXER ERROR TESTS<--------------------*" << endl << endl;
     for (int i=0 ; i<lexErrorFiles.size() ; i++) {
         cout << "Fichier : " << lexErrorFiles[i] << endl;
-
+        
         ifstream file(lexErrorFiles[i]);
         string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
 
@@ -122,13 +122,15 @@ void Test::lexErrorTests() {
         tree::ParseTree * tree = parser.prog();
 
         Generator visitor("out.asm");
-
         try {
             visitor.visit(tree);
             cout << "Compilation Success!" << endl;
         } catch (int i) {
             remove("out.asm");
             cout << "Compilation failed! " << endl;
+        } catch (exception& e) {
+            remove("out.asm");
+            cout << "Exception caught '" << e.what() << "'\n";
         }
     }
 }
@@ -156,6 +158,9 @@ void Test::semanticErrorTests() {
         } catch (int i) {
             remove("out.asm");
             cout << "Compilation failed! " << endl;
+        } catch (exception& e) {
+            remove("out.asm");
+            cout << "Exception caught '" << e.what() << "'\n";
         }
     }
 }
@@ -183,6 +188,9 @@ void Test::syntaxErrorTests() {
         } catch (int i) {
             remove("out.asm");
             cout << "Compilation failed! " << endl;
+        } catch (exception& e) {
+            remove("out.asm");
+            cout << "Exception caught '" << e.what() << "'\n";
         }
     }
 }
@@ -210,6 +218,9 @@ void Test::validProgramsTests() {
         } catch (int i) {
             remove("out.asm");
             cout << "Compilation failed! " << endl;
+        } catch (exception& e) {
+            remove("out.asm");
+            cout << "Exception caught '" << e.what() << "'\n";
         }
     }
 }
@@ -237,6 +248,9 @@ void Test::backendTests() {
         } catch (int i) {
             remove("out.asm");
             cout << "Compilation failed! " << endl;
+        } catch (exception& e) {
+            remove("out.asm");
+            cout << "Exception caught '" << e.what() << "'\n";
         }
     }
 }
@@ -264,6 +278,9 @@ void Test::customTests() {
         } catch (int i) {
             remove("out.asm");
             cout << "Compilation failed! " << endl;
+        } catch (exception& e) {
+            remove("out.asm");
+            cout << "Exception caught '" << e.what() << "'\n";
         }
     }
 }
