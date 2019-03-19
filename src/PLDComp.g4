@@ -2,11 +2,11 @@ grammar PLDComp;
 
 prog: declaration EOF;
 
-op : '+'    # add
-    | '-'   # substract
-    | '*'   # mult
+op : '*'   # mult
     | '/'   # div
     | '%'   # mod
+    | '+'    # add
+    | '-'   # substract
     | '+='   # addeq
     | '-='   # substracteq
     | '*='   # multeq
