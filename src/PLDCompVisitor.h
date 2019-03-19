@@ -21,6 +21,26 @@ public:
    */
     virtual antlrcpp::Any visitProg(PLDCompParser::ProgContext *context) = 0;
 
+    virtual antlrcpp::Any visitAdd(PLDCompParser::AddContext *context) = 0;
+
+    virtual antlrcpp::Any visitSubstract(PLDCompParser::SubstractContext *context) = 0;
+
+    virtual antlrcpp::Any visitMult(PLDCompParser::MultContext *context) = 0;
+
+    virtual antlrcpp::Any visitDiv(PLDCompParser::DivContext *context) = 0;
+
+    virtual antlrcpp::Any visitMod(PLDCompParser::ModContext *context) = 0;
+
+    virtual antlrcpp::Any visitAddeq(PLDCompParser::AddeqContext *context) = 0;
+
+    virtual antlrcpp::Any visitSubstracteq(PLDCompParser::SubstracteqContext *context) = 0;
+
+    virtual antlrcpp::Any visitMulteq(PLDCompParser::MulteqContext *context) = 0;
+
+    virtual antlrcpp::Any visitDiveq(PLDCompParser::DiveqContext *context) = 0;
+
+    virtual antlrcpp::Any visitModeq(PLDCompParser::ModeqContext *context) = 0;
+
     virtual antlrcpp::Any visitDeclaration(PLDCompParser::DeclarationContext *context) = 0;
 
     virtual antlrcpp::Any visitStatementseq(PLDCompParser::StatementseqContext *context) = 0;
@@ -39,11 +59,15 @@ public:
 
     virtual antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *context) = 0;
 
+    virtual antlrcpp::Any visitPar(PLDCompParser::ParContext *context) = 0;
+
     virtual antlrcpp::Any visitConst(PLDCompParser::ConstContext *context) = 0;
 
     virtual antlrcpp::Any visitVar(PLDCompParser::VarContext *context) = 0;
 
-    virtual antlrcpp::Any visitPar(PLDCompParser::ParContext *context) = 0;
+    virtual antlrcpp::Any visitMinusOperator(PLDCompParser::MinusOperatorContext *context) = 0;
+
+    virtual antlrcpp::Any visitBinaryOperator(PLDCompParser::BinaryOperatorContext *context) = 0;
 
     virtual antlrcpp::Any visitType(PLDCompParser::TypeContext *context) = 0;
 

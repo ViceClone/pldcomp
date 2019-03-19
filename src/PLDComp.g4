@@ -2,6 +2,18 @@ grammar PLDComp;
 
 prog: declaration EOF;
 
+op : '+'    # add
+    | '-'   # substract
+    | '*'   # mult
+    | '/'   # div
+    | '%'   # mod
+    | '+='   # addeq
+    | '-='   # substracteq
+    | '*='   # multeq
+    | '/='   # diveq
+    | '%='   # modeq
+    ;
+
 declaration : type ID '(' ')' '{' statementseq '}'; 
 
 statementseq : (statement ';')+;
@@ -11,7 +23,7 @@ statement :  vardeclaration
     | assignmentstat
     ;
 
-vardeclaration : type ID# DeclWithoutAssignment
+vardeclaration : type ID # DeclWithoutAssignment
     | type ID '=' INT # DeclWithAssignment
     | type ID '=' ID  # DeclWithAssignmentID
     ;
@@ -25,6 +37,8 @@ returnstatement : 'return' expr ';' ;
 expr : INT # const
     | ID # var
     | '(' expr ')' # par
+    | expr op expr # BinaryOperator
+    | '-' expr #minusOperator
     ;
 
 type : 'int';
