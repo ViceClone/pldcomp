@@ -9,5 +9,4 @@ a.out
 comp
 out.asm
 test.c
-*.c
 *.asm
