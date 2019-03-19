@@ -1,33 +1,24 @@
+#include <iostream>
+
 #include "antlr4-runtime.h"
 #include "PLDCompLexer.h"
 #include "PLDCompParser.h"
 #include "PLDCompBaseVisitor.h"
 #include "Generator.h"
-#include <iostream>
+#include "Test.h"
 
 using namespace antlr4;
 using namespace std;
 
+
 int main(int argc, char* argv[]) {
     
-    ifstream stream;
-    stream.open(argv[1]);
-    ANTLRInputStream input(stream);
-    PLDCompLexer lexer(&input);
-    CommonTokenStream tokens(&lexer);
-
-    PLDCompParser parser(&tokens);
-    tree::ParseTree* tree = parser.prog();
-
-    Generator visitor("out.asm");
-
-    try {
-        visitor.visit(tree);
-        cout << "Compilation Success!" << endl;
-    } catch (int i) {
-        remove("out.asm");
-        cout << "Compilation failed ! " << endl;
-    }
+    // Test::lexErrorTests();
+    // Test::semanticErrorTests();
+    // Test::syntaxErrorTests();
+    // Test::validProgramsTests();
+    // Test::backendTests();
+    Test::customTests();
 
     return 0;
 }
