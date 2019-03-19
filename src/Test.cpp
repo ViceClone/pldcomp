@@ -243,7 +243,7 @@ void Test::backendTests() {
 
 
 void Test::customTests() {
-    cout << endl << endl << "*--------------------->BACKEND TESTS<--------------------*" << endl << endl;
+    cout << endl << endl << "*--------------------->CUSTOM TESTS<--------------------*" << endl << endl;
     for (int i=0 ; i<customFiles.size() ; i++) {
         cout << "Fichier : " << customFiles[i] << endl;
 
