@@ -32,7 +32,7 @@ assignmentstat : ID '=' INT  # AssignmentINT
     | ID '=' ID  # AssignmentID
     ;
 
-returnstatement : 'return' expr ';' ;
+returnstatement : 'return' expr ;
 
 expr : INT # const
     | ID # var

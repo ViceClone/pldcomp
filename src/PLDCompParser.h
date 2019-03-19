@@ -72,17 +72,17 @@ public:
    
   };
 
-  class  AddContext : public OpContext {
+  class  DivContext : public OpContext {
   public:
-    AddContext(OpContext *ctx);
+    DivContext(OpContext *ctx);
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  DivContext : public OpContext {
+  class  AddContext : public OpContext {
   public:
-    DivContext(OpContext *ctx);
+    AddContext(OpContext *ctx);
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -296,7 +296,6 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *RETURN();
     ExprContext *expr();
-    antlr4::tree::TerminalNode *SEMICOLON();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -347,9 +346,9 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  MinusOperatorContext : public ExprContext {
+  class  NegativeOperatorContext : public ExprContext {
   public:
-    MinusOperatorContext(ExprContext *ctx);
+    NegativeOperatorContext(ExprContext *ctx);
 
     ExprContext *expr();
 

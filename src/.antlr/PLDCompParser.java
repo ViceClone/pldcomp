@@ -604,8 +604,6 @@ public class PLDCompParser extends Parser {
 			match(RETURN);
 			setState(79);
 			expr(0);
-			setState(80);
-			match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -678,7 +676,7 @@ public class PLDCompParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(91);
+			setState(90);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case INT:
@@ -687,7 +685,7 @@ public class PLDCompParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(83);
+				setState(82);
 				match(INT);
 				}
 				break;
@@ -696,7 +694,7 @@ public class PLDCompParser extends Parser {
 				_localctx = new VarContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(84);
+				setState(83);
 				match(ID);
 				}
 				break;
@@ -705,11 +703,11 @@ public class PLDCompParser extends Parser {
 				_localctx = new ParContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(85);
+				setState(84);
 				match(LEFT_PARENTHESE);
-				setState(86);
+				setState(85);
 				expr(0);
-				setState(87);
+				setState(86);
 				match(RIGHT_PARENTHESE);
 				}
 				break;
@@ -718,9 +716,9 @@ public class PLDCompParser extends Parser {
 				_localctx = new NegativeOperatorContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(89);
+				setState(88);
 				match(T__4);
-				setState(90);
+				setState(89);
 				expr(1);
 				}
 				break;
@@ -728,7 +726,7 @@ public class PLDCompParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(99);
+			setState(98);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -739,16 +737,16 @@ public class PLDCompParser extends Parser {
 					{
 					_localctx = new BinaryOperatorContext(new ExprContext(_parentctx, _parentState));
 					pushNewRecursionContext(_localctx, _startState, RULE_expr);
-					setState(93);
+					setState(92);
 					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-					setState(94);
+					setState(93);
 					op();
-					setState(95);
+					setState(94);
 					expr(3);
 					}
 					} 
 				}
-				setState(101);
+				setState(100);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			}
@@ -778,7 +776,7 @@ public class PLDCompParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(102);
+			setState(101);
 			match(INT_TYPE);
 			}
 		}
@@ -809,33 +807,33 @@ public class PLDCompParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\30k\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\30j\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\3"+
 		"\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3$\n\3\3\4\3\4\3"+
 		"\4\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5\6\5\61\n\5\r\5\16\5\62\3\6\3\6\3\6"+
 		"\5\68\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7G\n\7"+
-		"\3\b\3\b\3\b\3\b\3\b\3\b\5\bO\n\b\3\t\3\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n"+
-		"\3\n\3\n\3\n\3\n\5\n^\n\n\3\n\3\n\3\n\3\n\7\nd\n\n\f\n\16\ng\13\n\3\13"+
-		"\3\13\3\13\2\3\22\f\2\4\6\b\n\f\16\20\22\24\2\2\2s\2\26\3\2\2\2\4#\3\2"+
-		"\2\2\6%\3\2\2\2\b\60\3\2\2\2\n\67\3\2\2\2\fF\3\2\2\2\16N\3\2\2\2\20P\3"+
-		"\2\2\2\22]\3\2\2\2\24h\3\2\2\2\26\27\5\6\4\2\27\30\7\2\2\3\30\3\3\2\2"+
-		"\2\31$\7\3\2\2\32$\7\4\2\2\33$\7\5\2\2\34$\7\6\2\2\35$\7\7\2\2\36$\7\b"+
-		"\2\2\37$\7\t\2\2 $\7\n\2\2!$\7\13\2\2\"$\7\f\2\2#\31\3\2\2\2#\32\3\2\2"+
-		"\2#\33\3\2\2\2#\34\3\2\2\2#\35\3\2\2\2#\36\3\2\2\2#\37\3\2\2\2# \3\2\2"+
-		"\2#!\3\2\2\2#\"\3\2\2\2$\5\3\2\2\2%&\5\24\13\2&\'\7\17\2\2\'(\7\25\2\2"+
-		"()\7\26\2\2)*\7\24\2\2*+\5\b\5\2+,\7\23\2\2,\7\3\2\2\2-.\5\n\6\2./\7\22"+
+		"\3\b\3\b\3\b\3\b\3\b\3\b\5\bO\n\b\3\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n"+
+		"\3\n\3\n\3\n\5\n]\n\n\3\n\3\n\3\n\3\n\7\nc\n\n\f\n\16\nf\13\n\3\13\3\13"+
+		"\3\13\2\3\22\f\2\4\6\b\n\f\16\20\22\24\2\2\2r\2\26\3\2\2\2\4#\3\2\2\2"+
+		"\6%\3\2\2\2\b\60\3\2\2\2\n\67\3\2\2\2\fF\3\2\2\2\16N\3\2\2\2\20P\3\2\2"+
+		"\2\22\\\3\2\2\2\24g\3\2\2\2\26\27\5\6\4\2\27\30\7\2\2\3\30\3\3\2\2\2\31"+
+		"$\7\3\2\2\32$\7\4\2\2\33$\7\5\2\2\34$\7\6\2\2\35$\7\7\2\2\36$\7\b\2\2"+
+		"\37$\7\t\2\2 $\7\n\2\2!$\7\13\2\2\"$\7\f\2\2#\31\3\2\2\2#\32\3\2\2\2#"+
+		"\33\3\2\2\2#\34\3\2\2\2#\35\3\2\2\2#\36\3\2\2\2#\37\3\2\2\2# \3\2\2\2"+
+		"#!\3\2\2\2#\"\3\2\2\2$\5\3\2\2\2%&\5\24\13\2&\'\7\17\2\2\'(\7\25\2\2("+
+		")\7\26\2\2)*\7\24\2\2*+\5\b\5\2+,\7\23\2\2,\7\3\2\2\2-.\5\n\6\2./\7\22"+
 		"\2\2/\61\3\2\2\2\60-\3\2\2\2\61\62\3\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2"+
 		"\63\t\3\2\2\2\648\5\f\7\2\658\5\20\t\2\668\5\16\b\2\67\64\3\2\2\2\67\65"+
 		"\3\2\2\2\67\66\3\2\2\28\13\3\2\2\29:\5\24\13\2:;\7\17\2\2;G\3\2\2\2<="+
 		"\5\24\13\2=>\7\17\2\2>?\7\21\2\2?@\7\20\2\2@G\3\2\2\2AB\5\24\13\2BC\7"+
 		"\17\2\2CD\7\21\2\2DE\7\17\2\2EG\3\2\2\2F9\3\2\2\2F<\3\2\2\2FA\3\2\2\2"+
 		"G\r\3\2\2\2HI\7\17\2\2IJ\7\21\2\2JO\7\20\2\2KL\7\17\2\2LM\7\21\2\2MO\7"+
-		"\17\2\2NH\3\2\2\2NK\3\2\2\2O\17\3\2\2\2PQ\7\r\2\2QR\5\22\n\2RS\7\22\2"+
-		"\2S\21\3\2\2\2TU\b\n\1\2U^\7\20\2\2V^\7\17\2\2WX\7\25\2\2XY\5\22\n\2Y"+
-		"Z\7\26\2\2Z^\3\2\2\2[\\\7\7\2\2\\^\5\22\n\3]T\3\2\2\2]V\3\2\2\2]W\3\2"+
-		"\2\2][\3\2\2\2^e\3\2\2\2_`\f\4\2\2`a\5\4\3\2ab\5\22\n\5bd\3\2\2\2c_\3"+
-		"\2\2\2dg\3\2\2\2ec\3\2\2\2ef\3\2\2\2f\23\3\2\2\2ge\3\2\2\2hi\7\16\2\2"+
-		"i\25\3\2\2\2\t#\62\67FN]e";
+		"\17\2\2NH\3\2\2\2NK\3\2\2\2O\17\3\2\2\2PQ\7\r\2\2QR\5\22\n\2R\21\3\2\2"+
+		"\2ST\b\n\1\2T]\7\20\2\2U]\7\17\2\2VW\7\25\2\2WX\5\22\n\2XY\7\26\2\2Y]"+
+		"\3\2\2\2Z[\7\7\2\2[]\5\22\n\3\\S\3\2\2\2\\U\3\2\2\2\\V\3\2\2\2\\Z\3\2"+
+		"\2\2]d\3\2\2\2^_\f\4\2\2_`\5\4\3\2`a\5\22\n\5ac\3\2\2\2b^\3\2\2\2cf\3"+
+		"\2\2\2db\3\2\2\2de\3\2\2\2e\23\3\2\2\2fd\3\2\2\2gh\7\16\2\2h\25\3\2\2"+
+		"\2\t#\62\67FN\\d";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -38,19 +38,23 @@ public:
 
     antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) override {
         os << "    movl ";
-        visit(ctx->expr());
+        string expr = visit(ctx->expr());
+        os << expr;
         os << ", "<<"%"<<"eax" << endl;
         return NULL;
     }
 
     antlrcpp::Any visitConst(PLDCompParser::ConstContext *ctx) override {
-        os << "$" << ctx->INT()->getText();
-        return (int)stoi(ctx->INT()->getText());
+        // os << "$" << ctx->INT()->getText();
+        // return (int)stoi(ctx->INT()->getText());
+        return "$" + ctx->INT()->getText();
     }
 
     antlrcpp::Any visitVar(PLDCompParser::VarContext *ctx) override {
-        os << memTable[ctx->ID()->getText()] << "(" << "%" << "rbp)" ;
-        return visitChildren(ctx);
+        // os << memTable[ctx->ID()->getText()] << "(" << "%" << "rbp)" ;
+        // return visitChildren(ctx);
+
+        return to_string(memTable[ctx->ID()->getText()]) + "(" + "%" + "rbp)" ;
     }
 
     antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *ctx) override {
