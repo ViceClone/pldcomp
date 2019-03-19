@@ -2,11 +2,11 @@ grammar PLDComp;
 
 prog: declaration EOF;
 
-op : '+'    # add
-    | '-'   # substract
-    | '*'   # mult
+op : '*'   # mult
     | '/'   # div
     | '%'   # mod
+    | '+'    # add
+    | '-'   # substract
     | '+='   # addeq
     | '-='   # substracteq
     | '*='   # multeq
@@ -38,7 +38,7 @@ expr : INT # const
     | ID # var
     | '(' expr ')' # par
     | expr op expr # BinaryOperator
-    | '-' expr #minusOperator
+    | '-' expr # NegativeOperator
     ;
 
 type : 'int';

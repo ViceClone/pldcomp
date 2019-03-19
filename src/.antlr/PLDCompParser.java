@@ -30,7 +30,7 @@ public class PLDCompParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'+'", "'-'", "'*'", "'/'", "'%'", "'+='", "'-='", "'*='", "'/='", 
+		null, "'*'", "'/'", "'%'", "'+'", "'-'", "'+='", "'-='", "'*='", "'/='", 
 		"'%='", "'return'", "'int'", null, null, "'='", "';'", "'}'", "'{'", "'('", 
 		"')'"
 	};
@@ -133,11 +133,11 @@ public class PLDCompParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class AddContext extends OpContext {
-		public AddContext(OpContext ctx) { copyFrom(ctx); }
-	}
 	public static class DivContext extends OpContext {
 		public DivContext(OpContext ctx) { copyFrom(ctx); }
+	}
+	public static class AddContext extends OpContext {
+		public AddContext(OpContext ctx) { copyFrom(ctx); }
 	}
 	public static class MultContext extends OpContext {
 		public MultContext(OpContext ctx) { copyFrom(ctx); }
@@ -172,7 +172,7 @@ public class PLDCompParser extends Parser {
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__0:
-				_localctx = new AddContext(_localctx);
+				_localctx = new MultContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(23);
@@ -180,7 +180,7 @@ public class PLDCompParser extends Parser {
 				}
 				break;
 			case T__1:
-				_localctx = new SubstractContext(_localctx);
+				_localctx = new DivContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(24);
@@ -188,7 +188,7 @@ public class PLDCompParser extends Parser {
 				}
 				break;
 			case T__2:
-				_localctx = new MultContext(_localctx);
+				_localctx = new ModContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(25);
@@ -196,7 +196,7 @@ public class PLDCompParser extends Parser {
 				}
 				break;
 			case T__3:
-				_localctx = new DivContext(_localctx);
+				_localctx = new AddContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(26);
@@ -204,7 +204,7 @@ public class PLDCompParser extends Parser {
 				}
 				break;
 			case T__4:
-				_localctx = new ModContext(_localctx);
+				_localctx = new SubstractContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(27);
@@ -644,11 +644,11 @@ public class PLDCompParser extends Parser {
 		public TerminalNode ID() { return getToken(PLDCompParser.ID, 0); }
 		public VarContext(ExprContext ctx) { copyFrom(ctx); }
 	}
-	public static class MinusOperatorContext extends ExprContext {
+	public static class NegativeOperatorContext extends ExprContext {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public MinusOperatorContext(ExprContext ctx) { copyFrom(ctx); }
+		public NegativeOperatorContext(ExprContext ctx) { copyFrom(ctx); }
 	}
 	public static class BinaryOperatorContext extends ExprContext {
 		public List<ExprContext> expr() {
@@ -713,13 +713,13 @@ public class PLDCompParser extends Parser {
 				match(RIGHT_PARENTHESE);
 				}
 				break;
-			case T__1:
+			case T__4:
 				{
-				_localctx = new MinusOperatorContext(_localctx);
+				_localctx = new NegativeOperatorContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(89);
-				match(T__1);
+				match(T__4);
 				setState(90);
 				expr(1);
 				}
@@ -832,7 +832,7 @@ public class PLDCompParser extends Parser {
 		"G\r\3\2\2\2HI\7\17\2\2IJ\7\21\2\2JO\7\20\2\2KL\7\17\2\2LM\7\21\2\2MO\7"+
 		"\17\2\2NH\3\2\2\2NK\3\2\2\2O\17\3\2\2\2PQ\7\r\2\2QR\5\22\n\2RS\7\22\2"+
 		"\2S\21\3\2\2\2TU\b\n\1\2U^\7\20\2\2V^\7\17\2\2WX\7\25\2\2XY\5\22\n\2Y"+
-		"Z\7\26\2\2Z^\3\2\2\2[\\\7\4\2\2\\^\5\22\n\3]T\3\2\2\2]V\3\2\2\2]W\3\2"+
+		"Z\7\26\2\2Z^\3\2\2\2[\\\7\7\2\2\\^\5\22\n\3]T\3\2\2\2]V\3\2\2\2]W\3\2"+
 		"\2\2][\3\2\2\2^e\3\2\2\2_`\f\4\2\2`a\5\4\3\2ab\5\22\n\5bd\3\2\2\2c_\3"+
 		"\2\2\2dg\3\2\2\2ec\3\2\2\2ef\3\2\2\2f\23\3\2\2\2ge\3\2\2\2hi\7\16\2\2"+
 		"i\25\3\2\2\2\t#\62\67FN]e";
