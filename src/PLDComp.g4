@@ -16,23 +16,22 @@ op : '*'   # mult
 
 declaration : type ID '(' ')' '{' statementseq '}'; 
 
-statementseq : (statement ';')+;
+statementseq : statement+;
 
 statement :  vardeclaration
     | returnstatement
     | assignmentstat
     ;
 
-vardeclaration : type ID # DeclWithoutAssignment
-    | type ID '=' expr # DeclWithAssignment
-    | type ID '=' ID  # DeclWithAssignmentID
+vardeclaration : type ID '=' expr ';' # DeclWithAssignment
+    | type ID ';' #DeclWithoutAssignment
     ;
 
-assignmentstat : ID '=' INT  # AssignmentINT
-    | ID '=' ID  # AssignmentID
+assignmentstat : ID '=' INT ';' # AssignmentINT
+    | ID '=' ID ';' # AssignmentID
     ;
 
-returnstatement : 'return' expr ;
+returnstatement : 'return' expr ';' ;
 
 expr : INT # const
     | ID # var

@@ -48,15 +48,10 @@ public:
     Visitors for expression
     */
     antlrcpp::Any visitConst(PLDCompParser::ConstContext *ctx) override {
-        // os << "$" << ctx->INT()->getText();
-        // return (int)stoi(ctx->INT()->getText());
         return (string)("$" + ctx->INT()->getText());
     }
 
     antlrcpp::Any visitVar(PLDCompParser::VarContext *ctx) override {
-        // os << memTable[ctx->ID()->getText()] << "(" << "%" << "rbp)" ;
-        // return visitChildren(ctx);
-
         return (string)(to_string(memTable[ctx->ID()->getText()]) + "(" + "%" + "rbp)" );
     }
 
@@ -109,41 +104,21 @@ public:
         }
         return NULL;
     }
-    
-
-    antlrcpp::Any visitDeclWithAssignmentID(PLDCompParser::DeclWithAssignmentIDContext *ctx) override {
-        string id = ctx->ID(0)->getText();
-        map<string,int>::iterator it = memTable.find(id);
-        if (it == memTable.end()) {
-            string type = ctx->type()->getText();
-            if (!type.compare("int")) {
-                currentAddress -= 4;
-                memTable[id] = currentAddress;
-                string id2 = ctx->ID(1)->getText();
-                map<string,int>::iterator it2 = memTable.find(id2);
-                if (it2 != memTable.end()) {
-                    os << "    movl " << memTable[id2] << "(" << "%" << "rbp), " << "%" << "eax" << endl ;
-                    os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl ;
-                } else {
-                    throw -1;
-                }
-            }
-        }
-        else {
-            throw -1;
-        }
-        return NULL;
-    }
 
     antlrcpp::Any visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx) override {
         string type = ctx->type()->getText();
         string id = ctx->ID()->getText();
-        if (!type.compare("int")) {
-            currentAddress -= 4;
-            memTable[id] = currentAddress;
-            init[id] = false;
+        map<string,int>::iterator it = memTable.find(id);
+        if (it == memTable.end()) {
+            if (!type.compare("int")) {
+                currentAddress -= 4;
+                memTable[id] = currentAddress;
+                init[id] = false;
+            }
+        } else {
+            throw -1;
         }
-        return visitChildren(ctx);
+        return NULL;
     }
 
     /*
