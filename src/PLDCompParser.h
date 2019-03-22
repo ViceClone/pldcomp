@@ -266,6 +266,18 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  AssignmentExprContext : public AssignmentstatContext {
+  public:
+    AssignmentExprContext(AssignmentstatContext *ctx);
+
+    antlr4::tree::TerminalNode *ID();
+    antlr4::tree::TerminalNode *ASSIGNMENT();
+    ExprContext *expr();
+    antlr4::tree::TerminalNode *SEMICOLON();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  AssignmentINTContext : public AssignmentstatContext {
   public:
     AssignmentINTContext(AssignmentstatContext *ctx);

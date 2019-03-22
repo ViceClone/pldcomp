@@ -124,6 +124,22 @@ public:
     /*
     Visitors for assignment statement
     */
+
+    antlrcpp::Any visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) override {
+        string id = ctx->ID()->getText();
+        map<string,int>::iterator it = memTable.find(id);
+        if (it != memTable.end()) {
+            string expr = visit(ctx->expr());
+            os << "    movl " << expr << ", " << "%" << "eax" << endl;
+            currentAddress = memTable[id];
+            os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl;
+            cout << currentAddress << endl;
+        } else {
+            //TODO: Error: variable has not been declared
+            throw -1;
+        }
+        return NULL;
+    }
     antlrcpp::Any visitAssignmentINT(PLDCompParser::AssignmentINTContext *ctx) override {
         string id = ctx->ID()->getText();
         map<string,int>::iterator it = memTable.find(id);
@@ -132,6 +148,7 @@ public:
             os << "    movl $" << ctx->INT()->getText();
             os << ", " << memTable[id] << "(" << "%" << "rbp)" << endl;
         } else {
+            //TODO: Error: variable has not been declared
             throw -1;
         }
         return NULL;

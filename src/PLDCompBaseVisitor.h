@@ -79,6 +79,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitAssignmentINT(PLDCompParser::AssignmentINTContext *ctx) override {
     return visitChildren(ctx);
   }

@@ -27,7 +27,8 @@ vardeclaration : type ID '=' expr ';' # DeclWithAssignment
     | type ID ';' #DeclWithoutAssignment
     ;
 
-assignmentstat : ID '=' INT ';' # AssignmentINT
+assignmentstat : ID '=' expr ';' #AssignmentExpr
+    | ID '=' INT ';' # AssignmentINT
     | ID '=' ID ';' # AssignmentID
     ;
 
