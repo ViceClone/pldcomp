@@ -55,6 +55,11 @@ public:
         return (string)(to_string(memTable[ctx->ID()->getText()]) + "(" + "%" + "rbp)" );
     }
 
+    antlrcpp::Any visitPar(PLDCompParser::ParContext *ctx) override {
+        string expr = visit(ctx->expr());
+        return expr;
+    }
+
     antlrcpp::Any visitMultOp(PLDCompParser::MultOpContext *ctx) override {
         int address = currentAddress;
         string left = visit(ctx->expr(0));
@@ -70,24 +75,24 @@ public:
         int address = currentAddress;
         string left = visit(ctx->expr(0));
         string right = visit(ctx->expr(1));
-        os << "    movl " ;
-        os << left << ", " << "%" << "eax" << endl;
-
-        os << "    movl " ;
-        os << right << ", " << "%" << "ecx" << endl;
-
+        os << "    movl " << left << ", " << "%" << "eax" << endl;
+        os << "    movl " << right << ", " << "%" << "ecx" << endl;
         os << "    addl " << "%" << "ecx, " << "%" << "eax" << endl;
         currentAddress = address - 4;
         os << "    movl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
         return (string) (to_string(currentAddress) + "(" + "%" + "rbp)");
     }
 
-    antlrcpp::Any visitNegativeOperator(PLDCompParser::NegativeOperatorContext *ctx) override {
-        return "";
-    }
-
-    antlrcpp::Any visitPar(PLDCompParser::ParContext *ctx) override {
-        return "";
+    antlrcpp::Any visitSubOp(PLDCompParser::SubOpContext *ctx) override {
+        int address = currentAddress;
+        string left = visit(ctx->expr(0));
+        string right = visit(ctx->expr(1));
+        os << "    movl " << left << ", " << "%" << "eax" << endl;
+        os << "    movl " << right << ", " << "%" << "ecx" << endl;
+        os << "    addl " << "%" << "ecx, " << "%" << "eax" << endl;
+        currentAddress = address - 4;
+        os << "    subl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
+        return (string) (to_string(currentAddress) + "(" + "%" + "rbp)");
     }
 
     /*

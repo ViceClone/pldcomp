@@ -39,13 +39,21 @@ public:
 
     virtual antlrcpp::Any visitAddOp(PLDCompParser::AddOpContext *context) = 0;
 
+    virtual antlrcpp::Any visitModOp(PLDCompParser::ModOpContext *context) = 0;
+
     virtual antlrcpp::Any visitConst(PLDCompParser::ConstContext *context) = 0;
 
     virtual antlrcpp::Any visitVar(PLDCompParser::VarContext *context) = 0;
 
-    virtual antlrcpp::Any visitNegativeOperator(PLDCompParser::NegativeOperatorContext *context) = 0;
+    virtual antlrcpp::Any visitNegInt(PLDCompParser::NegIntContext *context) = 0;
+
+    virtual antlrcpp::Any visitNegExpr(PLDCompParser::NegExprContext *context) = 0;
 
     virtual antlrcpp::Any visitMultOp(PLDCompParser::MultOpContext *context) = 0;
+
+    virtual antlrcpp::Any visitSubOp(PLDCompParser::SubOpContext *context) = 0;
+
+    virtual antlrcpp::Any visitDivOp(PLDCompParser::DivOpContext *context) = 0;
 
     virtual antlrcpp::Any visitType(PLDCompParser::TypeContext *context) = 0;
 

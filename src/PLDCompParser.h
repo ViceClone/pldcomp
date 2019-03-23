@@ -12,9 +12,10 @@
 class  PLDCompParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, T__1 = 2, T__2 = 3, RETURN = 4, INT_TYPE = 5, ID = 6, INT = 7, 
-    ASSIGNMENT = 8, SEMICOLON = 9, RIGHT_BRACE = 10, LEFT_BRACE = 11, LEFT_PARENTHESE = 12, 
-    RIGHT_PARENTHESE = 13, WHITESPACE = 14, NEWLINE = 15
+    RETURN = 1, INT_TYPE = 2, ID = 3, INT = 4, ASSIGN = 5, SEMICOLON = 6, 
+    RIGHT_BRACE = 7, LEFT_BRACE = 8, LEFT_PARENTHESE = 9, RIGHT_PARENTHESE = 10, 
+    PLUS = 11, MINUS = 12, STAR = 13, DIV = 14, MOD = 15, WHITESPACE = 16, 
+    NEWLINE = 17, BLOCKCOMMENT = 18, LINECOMMENT = 19
   };
 
   enum {
@@ -135,7 +136,7 @@ public:
 
     TypeContext *type();
     antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *ASSIGNMENT();
+    antlr4::tree::TerminalNode *ASSIGN();
     ExprContext *expr();
     antlr4::tree::TerminalNode *SEMICOLON();
 
@@ -162,7 +163,7 @@ public:
     AssignmentExprContext(AssignmentstatContext *ctx);
 
     antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *ASSIGNMENT();
+    antlr4::tree::TerminalNode *ASSIGN();
     ExprContext *expr();
     antlr4::tree::TerminalNode *SEMICOLON();
 
@@ -216,6 +217,18 @@ public:
 
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
+    antlr4::tree::TerminalNode *PLUS();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  ModOpContext : public ExprContext {
+  public:
+    ModOpContext(ExprContext *ctx);
+
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    antlr4::tree::TerminalNode *MOD();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -238,11 +251,24 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  NegativeOperatorContext : public ExprContext {
+  class  NegIntContext : public ExprContext {
   public:
-    NegativeOperatorContext(ExprContext *ctx);
+    NegIntContext(ExprContext *ctx);
 
+    antlr4::tree::TerminalNode *MINUS();
+    antlr4::tree::TerminalNode *INT();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  NegExprContext : public ExprContext {
+  public:
+    NegExprContext(ExprContext *ctx);
+
+    antlr4::tree::TerminalNode *MINUS();
+    antlr4::tree::TerminalNode *LEFT_PARENTHESE();
     ExprContext *expr();
+    antlr4::tree::TerminalNode *RIGHT_PARENTHESE();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -253,6 +279,29 @@ public:
 
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
+    antlr4::tree::TerminalNode *STAR();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  SubOpContext : public ExprContext {
+  public:
+    SubOpContext(ExprContext *ctx);
+
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    antlr4::tree::TerminalNode *MINUS();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  DivOpContext : public ExprContext {
+  public:
+    DivOpContext(ExprContext *ctx);
+
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    antlr4::tree::TerminalNode *DIV();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
