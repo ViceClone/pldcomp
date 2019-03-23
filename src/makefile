@@ -3,3 +3,6 @@ comp:*.cpp
 
 clean:
 	rm -rf *.o comp
+
+antlr4:
+	antlr4 -no-listener -visitor -Dlanguage=Cpp PLDComp.g4

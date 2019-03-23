@@ -67,240 +67,10 @@ PLDCompParser::ProgContext* PLDCompParser::prog() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(20);
+    setState(18);
     declaration();
-    setState(21);
+    setState(19);
     match(PLDCompParser::EOF);
-   
-  }
-  catch (RecognitionException &e) {
-    _errHandler->reportError(this, e);
-    _localctx->exception = std::current_exception();
-    _errHandler->recover(this, _localctx->exception);
-  }
-
-  return _localctx;
-}
-
-//----------------- OpContext ------------------------------------------------------------------
-
-PLDCompParser::OpContext::OpContext(ParserRuleContext *parent, size_t invokingState)
-  : ParserRuleContext(parent, invokingState) {
-}
-
-
-size_t PLDCompParser::OpContext::getRuleIndex() const {
-  return PLDCompParser::RuleOp;
-}
-
-void PLDCompParser::OpContext::copyFrom(OpContext *ctx) {
-  ParserRuleContext::copyFrom(ctx);
-}
-
-//----------------- DivContext ------------------------------------------------------------------
-
-PLDCompParser::DivContext::DivContext(OpContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::DivContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitDiv(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- AddContext ------------------------------------------------------------------
-
-PLDCompParser::AddContext::AddContext(OpContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::AddContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitAdd(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- MultContext ------------------------------------------------------------------
-
-PLDCompParser::MultContext::MultContext(OpContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::MultContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitMult(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- ModContext ------------------------------------------------------------------
-
-PLDCompParser::ModContext::ModContext(OpContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::ModContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitMod(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- AddeqContext ------------------------------------------------------------------
-
-PLDCompParser::AddeqContext::AddeqContext(OpContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::AddeqContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitAddeq(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- SubstracteqContext ------------------------------------------------------------------
-
-PLDCompParser::SubstracteqContext::SubstracteqContext(OpContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::SubstracteqContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitSubstracteq(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- ModeqContext ------------------------------------------------------------------
-
-PLDCompParser::ModeqContext::ModeqContext(OpContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::ModeqContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitModeq(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- SubstractContext ------------------------------------------------------------------
-
-PLDCompParser::SubstractContext::SubstractContext(OpContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::SubstractContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitSubstract(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- MulteqContext ------------------------------------------------------------------
-
-PLDCompParser::MulteqContext::MulteqContext(OpContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::MulteqContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitMulteq(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- DiveqContext ------------------------------------------------------------------
-
-PLDCompParser::DiveqContext::DiveqContext(OpContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::DiveqContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitDiveq(this);
-  else
-    return visitor->visitChildren(this);
-}
-PLDCompParser::OpContext* PLDCompParser::op() {
-  OpContext *_localctx = _tracker.createInstance<OpContext>(_ctx, getState());
-  enterRule(_localctx, 2, PLDCompParser::RuleOp);
-
-  auto onExit = finally([=] {
-    exitRule();
-  });
-  try {
-    setState(33);
-    _errHandler->sync(this);
-    switch (_input->LA(1)) {
-      case PLDCompParser::T__0: {
-        _localctx = dynamic_cast<OpContext *>(_tracker.createInstance<PLDCompParser::MultContext>(_localctx));
-        enterOuterAlt(_localctx, 1);
-        setState(23);
-        match(PLDCompParser::T__0);
-        break;
-      }
-
-      case PLDCompParser::T__1: {
-        _localctx = dynamic_cast<OpContext *>(_tracker.createInstance<PLDCompParser::DivContext>(_localctx));
-        enterOuterAlt(_localctx, 2);
-        setState(24);
-        match(PLDCompParser::T__1);
-        break;
-      }
-
-      case PLDCompParser::T__2: {
-        _localctx = dynamic_cast<OpContext *>(_tracker.createInstance<PLDCompParser::ModContext>(_localctx));
-        enterOuterAlt(_localctx, 3);
-        setState(25);
-        match(PLDCompParser::T__2);
-        break;
-      }
-
-      case PLDCompParser::T__3: {
-        _localctx = dynamic_cast<OpContext *>(_tracker.createInstance<PLDCompParser::AddContext>(_localctx));
-        enterOuterAlt(_localctx, 4);
-        setState(26);
-        match(PLDCompParser::T__3);
-        break;
-      }
-
-      case PLDCompParser::T__4: {
-        _localctx = dynamic_cast<OpContext *>(_tracker.createInstance<PLDCompParser::SubstractContext>(_localctx));
-        enterOuterAlt(_localctx, 5);
-        setState(27);
-        match(PLDCompParser::T__4);
-        break;
-      }
-
-      case PLDCompParser::T__5: {
-        _localctx = dynamic_cast<OpContext *>(_tracker.createInstance<PLDCompParser::AddeqContext>(_localctx));
-        enterOuterAlt(_localctx, 6);
-        setState(28);
-        match(PLDCompParser::T__5);
-        break;
-      }
-
-      case PLDCompParser::T__6: {
-        _localctx = dynamic_cast<OpContext *>(_tracker.createInstance<PLDCompParser::SubstracteqContext>(_localctx));
-        enterOuterAlt(_localctx, 7);
-        setState(29);
-        match(PLDCompParser::T__6);
-        break;
-      }
-
-      case PLDCompParser::T__7: {
-        _localctx = dynamic_cast<OpContext *>(_tracker.createInstance<PLDCompParser::MulteqContext>(_localctx));
-        enterOuterAlt(_localctx, 8);
-        setState(30);
-        match(PLDCompParser::T__7);
-        break;
-      }
-
-      case PLDCompParser::T__8: {
-        _localctx = dynamic_cast<OpContext *>(_tracker.createInstance<PLDCompParser::DiveqContext>(_localctx));
-        enterOuterAlt(_localctx, 9);
-        setState(31);
-        match(PLDCompParser::T__8);
-        break;
-      }
-
-      case PLDCompParser::T__9: {
-        _localctx = dynamic_cast<OpContext *>(_tracker.createInstance<PLDCompParser::ModeqContext>(_localctx));
-        enterOuterAlt(_localctx, 10);
-        setState(32);
-        match(PLDCompParser::T__9);
-        break;
-      }
-
-    default:
-      throw NoViableAltException(this);
-    }
    
   }
   catch (RecognitionException &e) {
@@ -361,26 +131,26 @@ antlrcpp::Any PLDCompParser::DeclarationContext::accept(tree::ParseTreeVisitor *
 
 PLDCompParser::DeclarationContext* PLDCompParser::declaration() {
   DeclarationContext *_localctx = _tracker.createInstance<DeclarationContext>(_ctx, getState());
-  enterRule(_localctx, 4, PLDCompParser::RuleDeclaration);
+  enterRule(_localctx, 2, PLDCompParser::RuleDeclaration);
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(35);
+    setState(21);
     type();
-    setState(36);
+    setState(22);
     match(PLDCompParser::ID);
-    setState(37);
+    setState(23);
     match(PLDCompParser::LEFT_PARENTHESE);
-    setState(38);
+    setState(24);
     match(PLDCompParser::RIGHT_PARENTHESE);
-    setState(39);
+    setState(25);
     match(PLDCompParser::LEFT_BRACE);
-    setState(40);
+    setState(26);
     statementseq();
-    setState(41);
+    setState(27);
     match(PLDCompParser::RIGHT_BRACE);
    
   }
@@ -422,7 +192,7 @@ antlrcpp::Any PLDCompParser::StatementseqContext::accept(tree::ParseTreeVisitor 
 
 PLDCompParser::StatementseqContext* PLDCompParser::statementseq() {
   StatementseqContext *_localctx = _tracker.createInstance<StatementseqContext>(_ctx, getState());
-  enterRule(_localctx, 6, PLDCompParser::RuleStatementseq);
+  enterRule(_localctx, 4, PLDCompParser::RuleStatementseq);
   size_t _la = 0;
 
   auto onExit = finally([=] {
@@ -430,13 +200,13 @@ PLDCompParser::StatementseqContext* PLDCompParser::statementseq() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(44); 
+    setState(30); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(43);
+      setState(29);
       statement();
-      setState(46); 
+      setState(32); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while ((((_la & ~ 0x3fULL) == 0) &&
@@ -487,32 +257,32 @@ antlrcpp::Any PLDCompParser::StatementContext::accept(tree::ParseTreeVisitor *vi
 
 PLDCompParser::StatementContext* PLDCompParser::statement() {
   StatementContext *_localctx = _tracker.createInstance<StatementContext>(_ctx, getState());
-  enterRule(_localctx, 8, PLDCompParser::RuleStatement);
+  enterRule(_localctx, 6, PLDCompParser::RuleStatement);
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
-    setState(51);
+    setState(37);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case PLDCompParser::INT_TYPE: {
         enterOuterAlt(_localctx, 1);
-        setState(48);
+        setState(34);
         vardeclaration();
         break;
       }
 
       case PLDCompParser::RETURN: {
         enterOuterAlt(_localctx, 2);
-        setState(49);
+        setState(35);
         returnstatement();
         break;
       }
 
       case PLDCompParser::ID: {
         enterOuterAlt(_localctx, 3);
-        setState(50);
+        setState(36);
         assignmentstat();
         break;
       }
@@ -602,27 +372,27 @@ antlrcpp::Any PLDCompParser::DeclWithAssignmentContext::accept(tree::ParseTreeVi
 }
 PLDCompParser::VardeclarationContext* PLDCompParser::vardeclaration() {
   VardeclarationContext *_localctx = _tracker.createInstance<VardeclarationContext>(_ctx, getState());
-  enterRule(_localctx, 10, PLDCompParser::RuleVardeclaration);
+  enterRule(_localctx, 8, PLDCompParser::RuleVardeclaration);
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
-    setState(63);
+    setState(49);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 3, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 2, _ctx)) {
     case 1: {
       _localctx = dynamic_cast<VardeclarationContext *>(_tracker.createInstance<PLDCompParser::DeclWithAssignmentContext>(_localctx));
       enterOuterAlt(_localctx, 1);
-      setState(53);
+      setState(39);
       type();
-      setState(54);
+      setState(40);
       match(PLDCompParser::ID);
-      setState(55);
+      setState(41);
       match(PLDCompParser::ASSIGNMENT);
-      setState(56);
+      setState(42);
       expr(0);
-      setState(57);
+      setState(43);
       match(PLDCompParser::SEMICOLON);
       break;
     }
@@ -630,11 +400,11 @@ PLDCompParser::VardeclarationContext* PLDCompParser::vardeclaration() {
     case 2: {
       _localctx = dynamic_cast<VardeclarationContext *>(_tracker.createInstance<PLDCompParser::DeclWithoutAssignmentContext>(_localctx));
       enterOuterAlt(_localctx, 2);
-      setState(59);
+      setState(45);
       type();
-      setState(60);
+      setState(46);
       match(PLDCompParser::ID);
-      setState(61);
+      setState(47);
       match(PLDCompParser::SEMICOLON);
       break;
     }
@@ -666,33 +436,6 @@ void PLDCompParser::AssignmentstatContext::copyFrom(AssignmentstatContext *ctx) 
   ParserRuleContext::copyFrom(ctx);
 }
 
-//----------------- AssignmentIDContext ------------------------------------------------------------------
-
-std::vector<tree::TerminalNode *> PLDCompParser::AssignmentIDContext::ID() {
-  return getTokens(PLDCompParser::ID);
-}
-
-tree::TerminalNode* PLDCompParser::AssignmentIDContext::ID(size_t i) {
-  return getToken(PLDCompParser::ID, i);
-}
-
-tree::TerminalNode* PLDCompParser::AssignmentIDContext::ASSIGNMENT() {
-  return getToken(PLDCompParser::ASSIGNMENT, 0);
-}
-
-tree::TerminalNode* PLDCompParser::AssignmentIDContext::SEMICOLON() {
-  return getToken(PLDCompParser::SEMICOLON, 0);
-}
-
-PLDCompParser::AssignmentIDContext::AssignmentIDContext(AssignmentstatContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::AssignmentIDContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitAssignmentID(this);
-  else
-    return visitor->visitChildren(this);
-}
 //----------------- AssignmentExprContext ------------------------------------------------------------------
 
 tree::TerminalNode* PLDCompParser::AssignmentExprContext::ID() {
@@ -720,87 +463,24 @@ antlrcpp::Any PLDCompParser::AssignmentExprContext::accept(tree::ParseTreeVisito
   else
     return visitor->visitChildren(this);
 }
-//----------------- AssignmentINTContext ------------------------------------------------------------------
-
-tree::TerminalNode* PLDCompParser::AssignmentINTContext::ID() {
-  return getToken(PLDCompParser::ID, 0);
-}
-
-tree::TerminalNode* PLDCompParser::AssignmentINTContext::ASSIGNMENT() {
-  return getToken(PLDCompParser::ASSIGNMENT, 0);
-}
-
-tree::TerminalNode* PLDCompParser::AssignmentINTContext::INT() {
-  return getToken(PLDCompParser::INT, 0);
-}
-
-tree::TerminalNode* PLDCompParser::AssignmentINTContext::SEMICOLON() {
-  return getToken(PLDCompParser::SEMICOLON, 0);
-}
-
-PLDCompParser::AssignmentINTContext::AssignmentINTContext(AssignmentstatContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any PLDCompParser::AssignmentINTContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitAssignmentINT(this);
-  else
-    return visitor->visitChildren(this);
-}
 PLDCompParser::AssignmentstatContext* PLDCompParser::assignmentstat() {
   AssignmentstatContext *_localctx = _tracker.createInstance<AssignmentstatContext>(_ctx, getState());
-  enterRule(_localctx, 12, PLDCompParser::RuleAssignmentstat);
+  enterRule(_localctx, 10, PLDCompParser::RuleAssignmentstat);
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
-    setState(78);
-    _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 4, _ctx)) {
-    case 1: {
-      _localctx = dynamic_cast<AssignmentstatContext *>(_tracker.createInstance<PLDCompParser::AssignmentExprContext>(_localctx));
-      enterOuterAlt(_localctx, 1);
-      setState(65);
-      match(PLDCompParser::ID);
-      setState(66);
-      match(PLDCompParser::ASSIGNMENT);
-      setState(67);
-      expr(0);
-      setState(68);
-      match(PLDCompParser::SEMICOLON);
-      break;
-    }
-
-    case 2: {
-      _localctx = dynamic_cast<AssignmentstatContext *>(_tracker.createInstance<PLDCompParser::AssignmentINTContext>(_localctx));
-      enterOuterAlt(_localctx, 2);
-      setState(70);
-      match(PLDCompParser::ID);
-      setState(71);
-      match(PLDCompParser::ASSIGNMENT);
-      setState(72);
-      match(PLDCompParser::INT);
-      setState(73);
-      match(PLDCompParser::SEMICOLON);
-      break;
-    }
-
-    case 3: {
-      _localctx = dynamic_cast<AssignmentstatContext *>(_tracker.createInstance<PLDCompParser::AssignmentIDContext>(_localctx));
-      enterOuterAlt(_localctx, 3);
-      setState(74);
-      match(PLDCompParser::ID);
-      setState(75);
-      match(PLDCompParser::ASSIGNMENT);
-      setState(76);
-      match(PLDCompParser::ID);
-      setState(77);
-      match(PLDCompParser::SEMICOLON);
-      break;
-    }
-
-    }
+    _localctx = dynamic_cast<AssignmentstatContext *>(_tracker.createInstance<PLDCompParser::AssignmentExprContext>(_localctx));
+    enterOuterAlt(_localctx, 1);
+    setState(51);
+    match(PLDCompParser::ID);
+    setState(52);
+    match(PLDCompParser::ASSIGNMENT);
+    setState(53);
+    expr(0);
+    setState(54);
+    match(PLDCompParser::SEMICOLON);
    
   }
   catch (RecognitionException &e) {
@@ -845,18 +525,18 @@ antlrcpp::Any PLDCompParser::ReturnstatementContext::accept(tree::ParseTreeVisit
 
 PLDCompParser::ReturnstatementContext* PLDCompParser::returnstatement() {
   ReturnstatementContext *_localctx = _tracker.createInstance<ReturnstatementContext>(_ctx, getState());
-  enterRule(_localctx, 14, PLDCompParser::RuleReturnstatement);
+  enterRule(_localctx, 12, PLDCompParser::RuleReturnstatement);
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(80);
+    setState(56);
     match(PLDCompParser::RETURN);
-    setState(81);
+    setState(57);
     expr(0);
-    setState(82);
+    setState(58);
     match(PLDCompParser::SEMICOLON);
    
   }
@@ -907,6 +587,25 @@ antlrcpp::Any PLDCompParser::ParContext::accept(tree::ParseTreeVisitor *visitor)
   else
     return visitor->visitChildren(this);
 }
+//----------------- AddOpContext ------------------------------------------------------------------
+
+std::vector<PLDCompParser::ExprContext *> PLDCompParser::AddOpContext::expr() {
+  return getRuleContexts<PLDCompParser::ExprContext>();
+}
+
+PLDCompParser::ExprContext* PLDCompParser::AddOpContext::expr(size_t i) {
+  return getRuleContext<PLDCompParser::ExprContext>(i);
+}
+
+PLDCompParser::AddOpContext::AddOpContext(ExprContext *ctx) { copyFrom(ctx); }
+
+
+antlrcpp::Any PLDCompParser::AddOpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
+    return parserVisitor->visitAddOp(this);
+  else
+    return visitor->visitChildren(this);
+}
 //----------------- ConstContext ------------------------------------------------------------------
 
 tree::TerminalNode* PLDCompParser::ConstContext::INT() {
@@ -952,26 +651,22 @@ antlrcpp::Any PLDCompParser::NegativeOperatorContext::accept(tree::ParseTreeVisi
   else
     return visitor->visitChildren(this);
 }
-//----------------- BinaryOperatorContext ------------------------------------------------------------------
+//----------------- MultOpContext ------------------------------------------------------------------
 
-std::vector<PLDCompParser::ExprContext *> PLDCompParser::BinaryOperatorContext::expr() {
+std::vector<PLDCompParser::ExprContext *> PLDCompParser::MultOpContext::expr() {
   return getRuleContexts<PLDCompParser::ExprContext>();
 }
 
-PLDCompParser::ExprContext* PLDCompParser::BinaryOperatorContext::expr(size_t i) {
+PLDCompParser::ExprContext* PLDCompParser::MultOpContext::expr(size_t i) {
   return getRuleContext<PLDCompParser::ExprContext>(i);
 }
 
-PLDCompParser::OpContext* PLDCompParser::BinaryOperatorContext::op() {
-  return getRuleContext<PLDCompParser::OpContext>(0);
-}
-
-PLDCompParser::BinaryOperatorContext::BinaryOperatorContext(ExprContext *ctx) { copyFrom(ctx); }
+PLDCompParser::MultOpContext::MultOpContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-antlrcpp::Any PLDCompParser::BinaryOperatorContext::accept(tree::ParseTreeVisitor *visitor) {
+antlrcpp::Any PLDCompParser::MultOpContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitBinaryOperator(this);
+    return parserVisitor->visitMultOp(this);
   else
     return visitor->visitChildren(this);
 }
@@ -986,8 +681,8 @@ PLDCompParser::ExprContext* PLDCompParser::expr(int precedence) {
   PLDCompParser::ExprContext *_localctx = _tracker.createInstance<ExprContext>(_ctx, parentState);
   PLDCompParser::ExprContext *previousContext = _localctx;
   (void)previousContext; // Silence compiler, in case the context is not used by generated code.
-  size_t startState = 16;
-  enterRecursionRule(_localctx, 16, PLDCompParser::RuleExpr, precedence);
+  size_t startState = 14;
+  enterRecursionRule(_localctx, 14, PLDCompParser::RuleExpr, precedence);
 
     
 
@@ -997,7 +692,7 @@ PLDCompParser::ExprContext* PLDCompParser::expr(int precedence) {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(93);
+    setState(69);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case PLDCompParser::INT: {
@@ -1005,7 +700,7 @@ PLDCompParser::ExprContext* PLDCompParser::expr(int precedence) {
         _ctx = _localctx;
         previousContext = _localctx;
 
-        setState(85);
+        setState(61);
         match(PLDCompParser::INT);
         break;
       }
@@ -1014,7 +709,7 @@ PLDCompParser::ExprContext* PLDCompParser::expr(int precedence) {
         _localctx = _tracker.createInstance<VarContext>(_localctx);
         _ctx = _localctx;
         previousContext = _localctx;
-        setState(86);
+        setState(62);
         match(PLDCompParser::ID);
         break;
       }
@@ -1023,22 +718,22 @@ PLDCompParser::ExprContext* PLDCompParser::expr(int precedence) {
         _localctx = _tracker.createInstance<ParContext>(_localctx);
         _ctx = _localctx;
         previousContext = _localctx;
-        setState(87);
+        setState(63);
         match(PLDCompParser::LEFT_PARENTHESE);
-        setState(88);
+        setState(64);
         expr(0);
-        setState(89);
+        setState(65);
         match(PLDCompParser::RIGHT_PARENTHESE);
         break;
       }
 
-      case PLDCompParser::T__4: {
+      case PLDCompParser::T__2: {
         _localctx = _tracker.createInstance<NegativeOperatorContext>(_localctx);
         _ctx = _localctx;
         previousContext = _localctx;
-        setState(91);
-        match(PLDCompParser::T__4);
-        setState(92);
+        setState(67);
+        match(PLDCompParser::T__2);
+        setState(68);
         expr(1);
         break;
       }
@@ -1047,28 +742,50 @@ PLDCompParser::ExprContext* PLDCompParser::expr(int precedence) {
       throw NoViableAltException(this);
     }
     _ctx->stop = _input->LT(-1);
-    setState(101);
+    setState(79);
     _errHandler->sync(this);
-    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
       if (alt == 1) {
         if (!_parseListeners.empty())
           triggerExitRuleEvent();
         previousContext = _localctx;
-        auto newContext = _tracker.createInstance<BinaryOperatorContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
-        _localctx = newContext;
-        pushNewRecursionContext(newContext, startState, RuleExpr);
-        setState(95);
+        setState(77);
+        _errHandler->sync(this);
+        switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 4, _ctx)) {
+        case 1: {
+          auto newContext = _tracker.createInstance<MultOpContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
+          _localctx = newContext;
+          pushNewRecursionContext(newContext, startState, RuleExpr);
+          setState(71);
 
-        if (!(precpred(_ctx, 2))) throw FailedPredicateException(this, "precpred(_ctx, 2)");
-        setState(96);
-        op();
-        setState(97);
-        expr(3); 
+          if (!(precpred(_ctx, 6))) throw FailedPredicateException(this, "precpred(_ctx, 6)");
+          setState(72);
+          match(PLDCompParser::T__0);
+          setState(73);
+          expr(7);
+          break;
+        }
+
+        case 2: {
+          auto newContext = _tracker.createInstance<AddOpContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
+          _localctx = newContext;
+          pushNewRecursionContext(newContext, startState, RuleExpr);
+          setState(74);
+
+          if (!(precpred(_ctx, 5))) throw FailedPredicateException(this, "precpred(_ctx, 5)");
+          setState(75);
+          match(PLDCompParser::T__1);
+          setState(76);
+          expr(6);
+          break;
+        }
+
+        } 
       }
-      setState(103);
+      setState(81);
       _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx);
     }
   }
   catch (RecognitionException &e) {
@@ -1104,14 +821,14 @@ antlrcpp::Any PLDCompParser::TypeContext::accept(tree::ParseTreeVisitor *visitor
 
 PLDCompParser::TypeContext* PLDCompParser::type() {
   TypeContext *_localctx = _tracker.createInstance<TypeContext>(_ctx, getState());
-  enterRule(_localctx, 18, PLDCompParser::RuleType);
+  enterRule(_localctx, 16, PLDCompParser::RuleType);
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(104);
+    setState(82);
     match(PLDCompParser::INT_TYPE);
    
   }
@@ -1126,7 +843,7 @@ PLDCompParser::TypeContext* PLDCompParser::type() {
 
 bool PLDCompParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
   switch (ruleIndex) {
-    case 8: return exprSempred(dynamic_cast<ExprContext *>(context), predicateIndex);
+    case 7: return exprSempred(dynamic_cast<ExprContext *>(context), predicateIndex);
 
   default:
     break;
@@ -1136,7 +853,8 @@ bool PLDCompParser::sempred(RuleContext *context, size_t ruleIndex, size_t predi
 
 bool PLDCompParser::exprSempred(ExprContext *_localctx, size_t predicateIndex) {
   switch (predicateIndex) {
-    case 0: return precpred(_ctx, 2);
+    case 0: return precpred(_ctx, 6);
+    case 1: return precpred(_ctx, 5);
 
   default:
     break;
@@ -1153,20 +871,19 @@ atn::ATN PLDCompParser::_atn;
 std::vector<uint16_t> PLDCompParser::_serializedATN;
 
 std::vector<std::string> PLDCompParser::_ruleNames = {
-  "prog", "op", "declaration", "statementseq", "statement", "vardeclaration", 
+  "prog", "declaration", "statementseq", "statement", "vardeclaration", 
   "assignmentstat", "returnstatement", "expr", "type"
 };
 
 std::vector<std::string> PLDCompParser::_literalNames = {
-  "", "'*'", "'/'", "'%'", "'+'", "'-'", "'+='", "'-='", "'*='", "'/='", 
-  "'%='", "'return'", "'int'", "", "", "'='", "';'", "'}'", "'{'", "'('", 
-  "')'"
+  "", "'*'", "'+'", "'-'", "'return'", "'int'", "", "", "'='", "';'", "'}'", 
+  "'{'", "'('", "')'"
 };
 
 std::vector<std::string> PLDCompParser::_symbolicNames = {
-  "", "", "", "", "", "", "", "", "", "", "", "RETURN", "INT_TYPE", "ID", 
-  "INT", "ASSIGNMENT", "SEMICOLON", "RIGHT_BRACE", "LEFT_BRACE", "LEFT_PARENTHESE", 
-  "RIGHT_PARENTHESE", "WHITESPACE", "NEWLINE"
+  "", "", "", "", "RETURN", "INT_TYPE", "ID", "INT", "ASSIGNMENT", "SEMICOLON", 
+  "RIGHT_BRACE", "LEFT_BRACE", "LEFT_PARENTHESE", "RIGHT_PARENTHESE", "WHITESPACE", 
+  "NEWLINE"
 };
 
 dfa::Vocabulary PLDCompParser::_vocabulary(_literalNames, _symbolicNames);
@@ -1189,78 +906,60 @@ PLDCompParser::Initializer::Initializer() {
 
   _serializedATN = {
     0x3, 0x608b, 0xa72a, 0x8133, 0xb9ed, 0x417c, 0x3be7, 0x7786, 0x5964, 
-    0x3, 0x18, 0x6d, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 0x9, 
+    0x3, 0x11, 0x57, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 0x9, 
     0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x4, 0x7, 0x9, 0x7, 0x4, 
-    0x8, 0x9, 0x8, 0x4, 0x9, 0x9, 0x9, 0x4, 0xa, 0x9, 0xa, 0x4, 0xb, 0x9, 
-    0xb, 0x3, 0x2, 0x3, 0x2, 0x3, 0x2, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
-    0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x5, 
-    0x3, 0x24, 0xa, 0x3, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 
-    0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x5, 0x6, 0x5, 0x2f, 0xa, 0x5, 0xd, 
-    0x5, 0xe, 0x5, 0x30, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x5, 0x6, 0x36, 0xa, 
-    0x6, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 
-    0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x5, 0x7, 0x42, 0xa, 0x7, 0x3, 0x8, 
-    0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 
-    0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x5, 0x8, 0x51, 0xa, 
-    0x8, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0xa, 0x3, 0xa, 0x3, 
-    0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x5, 
-    0xa, 0x60, 0xa, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x7, 0xa, 
-    0x66, 0xa, 0xa, 0xc, 0xa, 0xe, 0xa, 0x69, 0xb, 0xa, 0x3, 0xb, 0x3, 0xb, 
-    0x3, 0xb, 0x2, 0x3, 0x12, 0xc, 0x2, 0x4, 0x6, 0x8, 0xa, 0xc, 0xe, 0x10, 
-    0x12, 0x14, 0x2, 0x2, 0x2, 0x75, 0x2, 0x16, 0x3, 0x2, 0x2, 0x2, 0x4, 
-    0x23, 0x3, 0x2, 0x2, 0x2, 0x6, 0x25, 0x3, 0x2, 0x2, 0x2, 0x8, 0x2e, 
-    0x3, 0x2, 0x2, 0x2, 0xa, 0x35, 0x3, 0x2, 0x2, 0x2, 0xc, 0x41, 0x3, 0x2, 
-    0x2, 0x2, 0xe, 0x50, 0x3, 0x2, 0x2, 0x2, 0x10, 0x52, 0x3, 0x2, 0x2, 
-    0x2, 0x12, 0x5f, 0x3, 0x2, 0x2, 0x2, 0x14, 0x6a, 0x3, 0x2, 0x2, 0x2, 
-    0x16, 0x17, 0x5, 0x6, 0x4, 0x2, 0x17, 0x18, 0x7, 0x2, 0x2, 0x3, 0x18, 
-    0x3, 0x3, 0x2, 0x2, 0x2, 0x19, 0x24, 0x7, 0x3, 0x2, 0x2, 0x1a, 0x24, 
-    0x7, 0x4, 0x2, 0x2, 0x1b, 0x24, 0x7, 0x5, 0x2, 0x2, 0x1c, 0x24, 0x7, 
-    0x6, 0x2, 0x2, 0x1d, 0x24, 0x7, 0x7, 0x2, 0x2, 0x1e, 0x24, 0x7, 0x8, 
-    0x2, 0x2, 0x1f, 0x24, 0x7, 0x9, 0x2, 0x2, 0x20, 0x24, 0x7, 0xa, 0x2, 
-    0x2, 0x21, 0x24, 0x7, 0xb, 0x2, 0x2, 0x22, 0x24, 0x7, 0xc, 0x2, 0x2, 
-    0x23, 0x19, 0x3, 0x2, 0x2, 0x2, 0x23, 0x1a, 0x3, 0x2, 0x2, 0x2, 0x23, 
-    0x1b, 0x3, 0x2, 0x2, 0x2, 0x23, 0x1c, 0x3, 0x2, 0x2, 0x2, 0x23, 0x1d, 
-    0x3, 0x2, 0x2, 0x2, 0x23, 0x1e, 0x3, 0x2, 0x2, 0x2, 0x23, 0x1f, 0x3, 
-    0x2, 0x2, 0x2, 0x23, 0x20, 0x3, 0x2, 0x2, 0x2, 0x23, 0x21, 0x3, 0x2, 
-    0x2, 0x2, 0x23, 0x22, 0x3, 0x2, 0x2, 0x2, 0x24, 0x5, 0x3, 0x2, 0x2, 
-    0x2, 0x25, 0x26, 0x5, 0x14, 0xb, 0x2, 0x26, 0x27, 0x7, 0xf, 0x2, 0x2, 
-    0x27, 0x28, 0x7, 0x15, 0x2, 0x2, 0x28, 0x29, 0x7, 0x16, 0x2, 0x2, 0x29, 
-    0x2a, 0x7, 0x14, 0x2, 0x2, 0x2a, 0x2b, 0x5, 0x8, 0x5, 0x2, 0x2b, 0x2c, 
-    0x7, 0x13, 0x2, 0x2, 0x2c, 0x7, 0x3, 0x2, 0x2, 0x2, 0x2d, 0x2f, 0x5, 
-    0xa, 0x6, 0x2, 0x2e, 0x2d, 0x3, 0x2, 0x2, 0x2, 0x2f, 0x30, 0x3, 0x2, 
-    0x2, 0x2, 0x30, 0x2e, 0x3, 0x2, 0x2, 0x2, 0x30, 0x31, 0x3, 0x2, 0x2, 
-    0x2, 0x31, 0x9, 0x3, 0x2, 0x2, 0x2, 0x32, 0x36, 0x5, 0xc, 0x7, 0x2, 
-    0x33, 0x36, 0x5, 0x10, 0x9, 0x2, 0x34, 0x36, 0x5, 0xe, 0x8, 0x2, 0x35, 
-    0x32, 0x3, 0x2, 0x2, 0x2, 0x35, 0x33, 0x3, 0x2, 0x2, 0x2, 0x35, 0x34, 
-    0x3, 0x2, 0x2, 0x2, 0x36, 0xb, 0x3, 0x2, 0x2, 0x2, 0x37, 0x38, 0x5, 
-    0x14, 0xb, 0x2, 0x38, 0x39, 0x7, 0xf, 0x2, 0x2, 0x39, 0x3a, 0x7, 0x11, 
-    0x2, 0x2, 0x3a, 0x3b, 0x5, 0x12, 0xa, 0x2, 0x3b, 0x3c, 0x7, 0x12, 0x2, 
-    0x2, 0x3c, 0x42, 0x3, 0x2, 0x2, 0x2, 0x3d, 0x3e, 0x5, 0x14, 0xb, 0x2, 
-    0x3e, 0x3f, 0x7, 0xf, 0x2, 0x2, 0x3f, 0x40, 0x7, 0x12, 0x2, 0x2, 0x40, 
-    0x42, 0x3, 0x2, 0x2, 0x2, 0x41, 0x37, 0x3, 0x2, 0x2, 0x2, 0x41, 0x3d, 
-    0x3, 0x2, 0x2, 0x2, 0x42, 0xd, 0x3, 0x2, 0x2, 0x2, 0x43, 0x44, 0x7, 
-    0xf, 0x2, 0x2, 0x44, 0x45, 0x7, 0x11, 0x2, 0x2, 0x45, 0x46, 0x5, 0x12, 
-    0xa, 0x2, 0x46, 0x47, 0x7, 0x12, 0x2, 0x2, 0x47, 0x51, 0x3, 0x2, 0x2, 
-    0x2, 0x48, 0x49, 0x7, 0xf, 0x2, 0x2, 0x49, 0x4a, 0x7, 0x11, 0x2, 0x2, 
-    0x4a, 0x4b, 0x7, 0x10, 0x2, 0x2, 0x4b, 0x51, 0x7, 0x12, 0x2, 0x2, 0x4c, 
-    0x4d, 0x7, 0xf, 0x2, 0x2, 0x4d, 0x4e, 0x7, 0x11, 0x2, 0x2, 0x4e, 0x4f, 
-    0x7, 0xf, 0x2, 0x2, 0x4f, 0x51, 0x7, 0x12, 0x2, 0x2, 0x50, 0x43, 0x3, 
-    0x2, 0x2, 0x2, 0x50, 0x48, 0x3, 0x2, 0x2, 0x2, 0x50, 0x4c, 0x3, 0x2, 
-    0x2, 0x2, 0x51, 0xf, 0x3, 0x2, 0x2, 0x2, 0x52, 0x53, 0x7, 0xd, 0x2, 
-    0x2, 0x53, 0x54, 0x5, 0x12, 0xa, 0x2, 0x54, 0x55, 0x7, 0x12, 0x2, 0x2, 
-    0x55, 0x11, 0x3, 0x2, 0x2, 0x2, 0x56, 0x57, 0x8, 0xa, 0x1, 0x2, 0x57, 
-    0x60, 0x7, 0x10, 0x2, 0x2, 0x58, 0x60, 0x7, 0xf, 0x2, 0x2, 0x59, 0x5a, 
-    0x7, 0x15, 0x2, 0x2, 0x5a, 0x5b, 0x5, 0x12, 0xa, 0x2, 0x5b, 0x5c, 0x7, 
-    0x16, 0x2, 0x2, 0x5c, 0x60, 0x3, 0x2, 0x2, 0x2, 0x5d, 0x5e, 0x7, 0x7, 
-    0x2, 0x2, 0x5e, 0x60, 0x5, 0x12, 0xa, 0x3, 0x5f, 0x56, 0x3, 0x2, 0x2, 
-    0x2, 0x5f, 0x58, 0x3, 0x2, 0x2, 0x2, 0x5f, 0x59, 0x3, 0x2, 0x2, 0x2, 
-    0x5f, 0x5d, 0x3, 0x2, 0x2, 0x2, 0x60, 0x67, 0x3, 0x2, 0x2, 0x2, 0x61, 
-    0x62, 0xc, 0x4, 0x2, 0x2, 0x62, 0x63, 0x5, 0x4, 0x3, 0x2, 0x63, 0x64, 
-    0x5, 0x12, 0xa, 0x5, 0x64, 0x66, 0x3, 0x2, 0x2, 0x2, 0x65, 0x61, 0x3, 
-    0x2, 0x2, 0x2, 0x66, 0x69, 0x3, 0x2, 0x2, 0x2, 0x67, 0x65, 0x3, 0x2, 
-    0x2, 0x2, 0x67, 0x68, 0x3, 0x2, 0x2, 0x2, 0x68, 0x13, 0x3, 0x2, 0x2, 
-    0x2, 0x69, 0x67, 0x3, 0x2, 0x2, 0x2, 0x6a, 0x6b, 0x7, 0xe, 0x2, 0x2, 
-    0x6b, 0x15, 0x3, 0x2, 0x2, 0x2, 0x9, 0x23, 0x30, 0x35, 0x41, 0x50, 0x5f, 
-    0x67, 
+    0x8, 0x9, 0x8, 0x4, 0x9, 0x9, 0x9, 0x4, 0xa, 0x9, 0xa, 0x3, 0x2, 0x3, 
+    0x2, 0x3, 0x2, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
+    0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x4, 0x6, 0x4, 0x21, 0xa, 0x4, 0xd, 0x4, 
+    0xe, 0x4, 0x22, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x5, 0x5, 0x28, 0xa, 0x5, 
+    0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 
+    0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x5, 0x6, 0x34, 0xa, 0x6, 0x3, 0x7, 0x3, 
+    0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 
+    0x8, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 
+    0x9, 0x3, 0x9, 0x3, 0x9, 0x5, 0x9, 0x48, 0xa, 0x9, 0x3, 0x9, 0x3, 0x9, 
+    0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x7, 0x9, 0x50, 0xa, 0x9, 0xc, 
+    0x9, 0xe, 0x9, 0x53, 0xb, 0x9, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x2, 0x3, 
+    0x10, 0xb, 0x2, 0x4, 0x6, 0x8, 0xa, 0xc, 0xe, 0x10, 0x12, 0x2, 0x2, 
+    0x2, 0x56, 0x2, 0x14, 0x3, 0x2, 0x2, 0x2, 0x4, 0x17, 0x3, 0x2, 0x2, 
+    0x2, 0x6, 0x20, 0x3, 0x2, 0x2, 0x2, 0x8, 0x27, 0x3, 0x2, 0x2, 0x2, 0xa, 
+    0x33, 0x3, 0x2, 0x2, 0x2, 0xc, 0x35, 0x3, 0x2, 0x2, 0x2, 0xe, 0x3a, 
+    0x3, 0x2, 0x2, 0x2, 0x10, 0x47, 0x3, 0x2, 0x2, 0x2, 0x12, 0x54, 0x3, 
+    0x2, 0x2, 0x2, 0x14, 0x15, 0x5, 0x4, 0x3, 0x2, 0x15, 0x16, 0x7, 0x2, 
+    0x2, 0x3, 0x16, 0x3, 0x3, 0x2, 0x2, 0x2, 0x17, 0x18, 0x5, 0x12, 0xa, 
+    0x2, 0x18, 0x19, 0x7, 0x8, 0x2, 0x2, 0x19, 0x1a, 0x7, 0xe, 0x2, 0x2, 
+    0x1a, 0x1b, 0x7, 0xf, 0x2, 0x2, 0x1b, 0x1c, 0x7, 0xd, 0x2, 0x2, 0x1c, 
+    0x1d, 0x5, 0x6, 0x4, 0x2, 0x1d, 0x1e, 0x7, 0xc, 0x2, 0x2, 0x1e, 0x5, 
+    0x3, 0x2, 0x2, 0x2, 0x1f, 0x21, 0x5, 0x8, 0x5, 0x2, 0x20, 0x1f, 0x3, 
+    0x2, 0x2, 0x2, 0x21, 0x22, 0x3, 0x2, 0x2, 0x2, 0x22, 0x20, 0x3, 0x2, 
+    0x2, 0x2, 0x22, 0x23, 0x3, 0x2, 0x2, 0x2, 0x23, 0x7, 0x3, 0x2, 0x2, 
+    0x2, 0x24, 0x28, 0x5, 0xa, 0x6, 0x2, 0x25, 0x28, 0x5, 0xe, 0x8, 0x2, 
+    0x26, 0x28, 0x5, 0xc, 0x7, 0x2, 0x27, 0x24, 0x3, 0x2, 0x2, 0x2, 0x27, 
+    0x25, 0x3, 0x2, 0x2, 0x2, 0x27, 0x26, 0x3, 0x2, 0x2, 0x2, 0x28, 0x9, 
+    0x3, 0x2, 0x2, 0x2, 0x29, 0x2a, 0x5, 0x12, 0xa, 0x2, 0x2a, 0x2b, 0x7, 
+    0x8, 0x2, 0x2, 0x2b, 0x2c, 0x7, 0xa, 0x2, 0x2, 0x2c, 0x2d, 0x5, 0x10, 
+    0x9, 0x2, 0x2d, 0x2e, 0x7, 0xb, 0x2, 0x2, 0x2e, 0x34, 0x3, 0x2, 0x2, 
+    0x2, 0x2f, 0x30, 0x5, 0x12, 0xa, 0x2, 0x30, 0x31, 0x7, 0x8, 0x2, 0x2, 
+    0x31, 0x32, 0x7, 0xb, 0x2, 0x2, 0x32, 0x34, 0x3, 0x2, 0x2, 0x2, 0x33, 
+    0x29, 0x3, 0x2, 0x2, 0x2, 0x33, 0x2f, 0x3, 0x2, 0x2, 0x2, 0x34, 0xb, 
+    0x3, 0x2, 0x2, 0x2, 0x35, 0x36, 0x7, 0x8, 0x2, 0x2, 0x36, 0x37, 0x7, 
+    0xa, 0x2, 0x2, 0x37, 0x38, 0x5, 0x10, 0x9, 0x2, 0x38, 0x39, 0x7, 0xb, 
+    0x2, 0x2, 0x39, 0xd, 0x3, 0x2, 0x2, 0x2, 0x3a, 0x3b, 0x7, 0x6, 0x2, 
+    0x2, 0x3b, 0x3c, 0x5, 0x10, 0x9, 0x2, 0x3c, 0x3d, 0x7, 0xb, 0x2, 0x2, 
+    0x3d, 0xf, 0x3, 0x2, 0x2, 0x2, 0x3e, 0x3f, 0x8, 0x9, 0x1, 0x2, 0x3f, 
+    0x48, 0x7, 0x9, 0x2, 0x2, 0x40, 0x48, 0x7, 0x8, 0x2, 0x2, 0x41, 0x42, 
+    0x7, 0xe, 0x2, 0x2, 0x42, 0x43, 0x5, 0x10, 0x9, 0x2, 0x43, 0x44, 0x7, 
+    0xf, 0x2, 0x2, 0x44, 0x48, 0x3, 0x2, 0x2, 0x2, 0x45, 0x46, 0x7, 0x5, 
+    0x2, 0x2, 0x46, 0x48, 0x5, 0x10, 0x9, 0x3, 0x47, 0x3e, 0x3, 0x2, 0x2, 
+    0x2, 0x47, 0x40, 0x3, 0x2, 0x2, 0x2, 0x47, 0x41, 0x3, 0x2, 0x2, 0x2, 
+    0x47, 0x45, 0x3, 0x2, 0x2, 0x2, 0x48, 0x51, 0x3, 0x2, 0x2, 0x2, 0x49, 
+    0x4a, 0xc, 0x8, 0x2, 0x2, 0x4a, 0x4b, 0x7, 0x3, 0x2, 0x2, 0x4b, 0x50, 
+    0x5, 0x10, 0x9, 0x9, 0x4c, 0x4d, 0xc, 0x7, 0x2, 0x2, 0x4d, 0x4e, 0x7, 
+    0x4, 0x2, 0x2, 0x4e, 0x50, 0x5, 0x10, 0x9, 0x8, 0x4f, 0x49, 0x3, 0x2, 
+    0x2, 0x2, 0x4f, 0x4c, 0x3, 0x2, 0x2, 0x2, 0x50, 0x53, 0x3, 0x2, 0x2, 
+    0x2, 0x51, 0x4f, 0x3, 0x2, 0x2, 0x2, 0x51, 0x52, 0x3, 0x2, 0x2, 0x2, 
+    0x52, 0x11, 0x3, 0x2, 0x2, 0x2, 0x53, 0x51, 0x3, 0x2, 0x2, 0x2, 0x54, 
+    0x55, 0x7, 0x7, 0x2, 0x2, 0x55, 0x13, 0x3, 0x2, 0x2, 0x2, 0x8, 0x22, 
+    0x27, 0x33, 0x47, 0x4f, 0x51, 
   };
 
   atn::ATNDeserializer deserializer;

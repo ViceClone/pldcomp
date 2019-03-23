@@ -12,16 +12,15 @@
 class  PLDCompParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, RETURN = 11, INT_TYPE = 12, ID = 13, 
-    INT = 14, ASSIGNMENT = 15, SEMICOLON = 16, RIGHT_BRACE = 17, LEFT_BRACE = 18, 
-    LEFT_PARENTHESE = 19, RIGHT_PARENTHESE = 20, WHITESPACE = 21, NEWLINE = 22
+    T__0 = 1, T__1 = 2, T__2 = 3, RETURN = 4, INT_TYPE = 5, ID = 6, INT = 7, 
+    ASSIGNMENT = 8, SEMICOLON = 9, RIGHT_BRACE = 10, LEFT_BRACE = 11, LEFT_PARENTHESE = 12, 
+    RIGHT_PARENTHESE = 13, WHITESPACE = 14, NEWLINE = 15
   };
 
   enum {
-    RuleProg = 0, RuleOp = 1, RuleDeclaration = 2, RuleStatementseq = 3, 
-    RuleStatement = 4, RuleVardeclaration = 5, RuleAssignmentstat = 6, RuleReturnstatement = 7, 
-    RuleExpr = 8, RuleType = 9
+    RuleProg = 0, RuleDeclaration = 1, RuleStatementseq = 2, RuleStatement = 3, 
+    RuleVardeclaration = 4, RuleAssignmentstat = 5, RuleReturnstatement = 6, 
+    RuleExpr = 7, RuleType = 8
   };
 
   PLDCompParser(antlr4::TokenStream *input);
@@ -35,7 +34,6 @@ public:
 
 
   class ProgContext;
-  class OpContext;
   class DeclarationContext;
   class StatementseqContext;
   class StatementContext;
@@ -58,101 +56,6 @@ public:
   };
 
   ProgContext* prog();
-
-  class  OpContext : public antlr4::ParserRuleContext {
-  public:
-    OpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-   
-    OpContext() = default;
-    void copyFrom(OpContext *context);
-    using antlr4::ParserRuleContext::copyFrom;
-
-    virtual size_t getRuleIndex() const override;
-
-   
-  };
-
-  class  DivContext : public OpContext {
-  public:
-    DivContext(OpContext *ctx);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  AddContext : public OpContext {
-  public:
-    AddContext(OpContext *ctx);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  MultContext : public OpContext {
-  public:
-    MultContext(OpContext *ctx);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  ModContext : public OpContext {
-  public:
-    ModContext(OpContext *ctx);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  AddeqContext : public OpContext {
-  public:
-    AddeqContext(OpContext *ctx);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  SubstracteqContext : public OpContext {
-  public:
-    SubstracteqContext(OpContext *ctx);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  ModeqContext : public OpContext {
-  public:
-    ModeqContext(OpContext *ctx);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  SubstractContext : public OpContext {
-  public:
-    SubstractContext(OpContext *ctx);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  MulteqContext : public OpContext {
-  public:
-    MulteqContext(OpContext *ctx);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  DiveqContext : public OpContext {
-  public:
-    DiveqContext(OpContext *ctx);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  OpContext* op();
 
   class  DeclarationContext : public antlr4::ParserRuleContext {
   public:
@@ -254,18 +157,6 @@ public:
    
   };
 
-  class  AssignmentIDContext : public AssignmentstatContext {
-  public:
-    AssignmentIDContext(AssignmentstatContext *ctx);
-
-    std::vector<antlr4::tree::TerminalNode *> ID();
-    antlr4::tree::TerminalNode* ID(size_t i);
-    antlr4::tree::TerminalNode *ASSIGNMENT();
-    antlr4::tree::TerminalNode *SEMICOLON();
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
   class  AssignmentExprContext : public AssignmentstatContext {
   public:
     AssignmentExprContext(AssignmentstatContext *ctx);
@@ -273,18 +164,6 @@ public:
     antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *ASSIGNMENT();
     ExprContext *expr();
-    antlr4::tree::TerminalNode *SEMICOLON();
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  AssignmentINTContext : public AssignmentstatContext {
-  public:
-    AssignmentINTContext(AssignmentstatContext *ctx);
-
-    antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *ASSIGNMENT();
-    antlr4::tree::TerminalNode *INT();
     antlr4::tree::TerminalNode *SEMICOLON();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -331,6 +210,16 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  AddOpContext : public ExprContext {
+  public:
+    AddOpContext(ExprContext *ctx);
+
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  ConstContext : public ExprContext {
   public:
     ConstContext(ExprContext *ctx);
@@ -358,13 +247,12 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  BinaryOperatorContext : public ExprContext {
+  class  MultOpContext : public ExprContext {
   public:
-    BinaryOperatorContext(ExprContext *ctx);
+    MultOpContext(ExprContext *ctx);
 
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
-    OpContext *op();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

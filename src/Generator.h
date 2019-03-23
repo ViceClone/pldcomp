@@ -28,7 +28,7 @@ public:
         os << "    movq "<<"%"<<"rsp, "<<"%"<<"rbp" << endl;
         visitChildren(ctx);
         os << "    popq "<<"%"<<"rbp" << endl;
-        os << "    ret " << endl;
+        os << "    retq " << endl;
         return NULL;
     }
 
@@ -55,23 +55,31 @@ public:
         return (string)(to_string(memTable[ctx->ID()->getText()]) + "(" + "%" + "rbp)" );
     }
 
-    antlrcpp::Any visitBinaryOperator(PLDCompParser::BinaryOperatorContext *ctx) override {
-        if ((ctx->op()->getText()).compare("+") == 0) {
-            int address = currentAddress;
-            string left = visit(ctx->expr(0));
-            os << "    movl " ;
-            os << left << ", " << "%" << "eax" << endl;
+    antlrcpp::Any visitMultOp(PLDCompParser::MultOpContext *ctx) override {
+        int address = currentAddress;
+        string left = visit(ctx->expr(0));
+        string right = visit(ctx->expr(1));
+        os << "    movl " << left << ", " << "%" << "eax" << endl;
+        os << "    imull " << right << ", " << "%" << "eax" << endl;
+        currentAddress = address - 4;
+        os << "    movl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
+        return (string) (to_string(currentAddress) + "(" + "%" + "rbp)");
+    }
 
-            string right = visit(ctx->expr(1));
-            os << "    movl " ;
-            os << right << ", " << "%" << "ecx" << endl;
+    antlrcpp::Any visitAddOp(PLDCompParser::AddOpContext *ctx) override {
+        int address = currentAddress;
+        string left = visit(ctx->expr(0));
+        string right = visit(ctx->expr(1));
+        os << "    movl " ;
+        os << left << ", " << "%" << "eax" << endl;
 
-            os << "    addl " << "%" << "ecx, " << "%" << "eax" << endl;
-            currentAddress = address - 4;
-            os << "    movl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
-            return (string) (to_string(currentAddress) + "(" + "%" + "rbp)");
-        }
-        return visitChildren(ctx);
+        os << "    movl " ;
+        os << right << ", " << "%" << "ecx" << endl;
+
+        os << "    addl " << "%" << "ecx, " << "%" << "eax" << endl;
+        currentAddress = address - 4;
+        os << "    movl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
+        return (string) (to_string(currentAddress) + "(" + "%" + "rbp)");
     }
 
     antlrcpp::Any visitNegativeOperator(PLDCompParser::NegativeOperatorContext *ctx) override {
@@ -137,38 +145,6 @@ public:
         } else {
             //TODO: Error: variable has not been declared
             throw -1;
-        }
-        return NULL;
-    }
-    antlrcpp::Any visitAssignmentINT(PLDCompParser::AssignmentINTContext *ctx) override {
-        string id = ctx->ID()->getText();
-        map<string,int>::iterator it = memTable.find(id);
-        if (it != memTable.end()) {
-            init[id] = true;
-            os << "    movl $" << ctx->INT()->getText();
-            os << ", " << memTable[id] << "(" << "%" << "rbp)" << endl;
-        } else {
-            //TODO: Error: variable has not been declared
-            throw -1;
-        }
-        return NULL;
-    }
-
-    antlrcpp::Any visitAssignmentID(PLDCompParser::AssignmentIDContext *ctx) override {
-        string id = ctx->ID(0)->getText();
-        map<string,int>::iterator it = memTable.find(id);
-        if (it != memTable.end()) {
-            string id2 = ctx->ID(1)->getText();
-            map<string,int>::iterator it2 = memTable.find(id2);
-            if (it2 != memTable.end()) {
-                init[id] = true;
-                os << "    movl " << memTable[id2] << "(" << "%" << "rbp), " << "%" << "eax" << endl ;
-                os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl ;
-            } else {
-                throw -1;
-            }
-        } else {
-            throw -2;
         }
         return NULL;
     }
