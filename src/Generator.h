@@ -51,6 +51,10 @@ public:
         return (string)("$" + ctx->INT()->getText());
     }
 
+    antlrcpp::Any visitNegConst(PLDCompParser::NegConstContext *ctx) override {
+        return (string)("$-" + ctx->INT()->getText());
+    }
+
     antlrcpp::Any visitVar(PLDCompParser::VarContext *ctx) override {
         return (string)(to_string(memTable[ctx->ID()->getText()]) + "(" + "%" + "rbp)" );
     }
@@ -60,40 +64,61 @@ public:
         return expr;
     }
 
-    antlrcpp::Any visitMultOp(PLDCompParser::MultOpContext *ctx) override {
+    antlrcpp::Any visitNegExpr(PLDCompParser::NegExprContext *ctx) override {
         int address = currentAddress;
-        string left = visit(ctx->expr(0));
-        string right = visit(ctx->expr(1));
-        os << "    movl " << left << ", " << "%" << "eax" << endl;
-        os << "    imull " << right << ", " << "%" << "eax" << endl;
+        string expr = visit(ctx->expr());
         currentAddress = address - 4;
+        os << "    movl " << expr << ", " << "%" << "eax" << endl;
+        os << "    negl " << endl;
         os << "    movl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
         return (string) (to_string(currentAddress) + "(" + "%" + "rbp)");
     }
 
-    antlrcpp::Any visitAddOp(PLDCompParser::AddOpContext *ctx) override {
+    antlrcpp::Any visitMultiplicativeOp(PLDCompParser::MultiplicativeOpContext *ctx) override {
+        int address = currentAddress;
+        string left = visit(ctx->expr(0));
+        string right = visit(ctx->expr(1));
+        os << "    movl " << left << ", " << "%" << "eax" << endl;
+        if ((ctx->op->getText()).compare("*") == 0) {
+            os << "    imull " << right << ", " << "%" << "eax" << endl;
+            currentAddress = address - 4;
+            os << "    movl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
+        } else if ((ctx->op->getText()).compare("/") == 0) {
+            os << "    cltd" << endl;
+            os << "    movl " << right << ", " << "%" << "ecx" << endl;
+            os << "    idivl " << "%" << "ecx" << endl;
+            currentAddress = address - 4;
+            os << "    movl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
+        } else if ((ctx->op->getText()).compare("%") == 0) {
+            os << "    cltd" << endl;
+            os << "    movl " << right << ", " << "%" << "ecx" << endl;
+            os << "    idivl " << "%" << "ecx" << endl;
+            currentAddress = address - 4;
+            os << "    movl " << "%" << "edx, " << currentAddress << "(" << "%" << "rbp)" << endl;
+        }
+        
+        return (string) (to_string(currentAddress) + "(" + "%" + "rbp)");
+    }
+
+    antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx) override {
         int address = currentAddress;
         string left = visit(ctx->expr(0));
         string right = visit(ctx->expr(1));
         os << "    movl " << left << ", " << "%" << "eax" << endl;
         os << "    movl " << right << ", " << "%" << "ecx" << endl;
-        os << "    addl " << "%" << "ecx, " << "%" << "eax" << endl;
+        if ((ctx->op->getText()).compare("+") == 0) {
+            os << "    addl " << "%" << "ecx, " << "%" << "eax" << endl;
+            cout << "+" << endl;
+        } else if ((ctx->op->getText()).compare("-") == 0) {
+            os << "    subl " << "%" << "ecx, " << "%" << "eax" << endl;
+            cout << "-" << endl;
+        }
         currentAddress = address - 4;
         os << "    movl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
         return (string) (to_string(currentAddress) + "(" + "%" + "rbp)");
     }
 
-    antlrcpp::Any visitSubOp(PLDCompParser::SubOpContext *ctx) override {
-        int address = currentAddress;
-        string left = visit(ctx->expr(0));
-        string right = visit(ctx->expr(1));
-        os << "    movl " << left << ", " << "%" << "eax" << endl;
-        os << "    movl " << right << ", " << "%" << "ecx" << endl;
-        os << "    addl " << "%" << "ecx, " << "%" << "eax" << endl;
-        currentAddress = address - 4;
-        os << "    subl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
-        return (string) (to_string(currentAddress) + "(" + "%" + "rbp)");
-    }
+    
 
     /*
     Visitors for declaration

@@ -21,15 +21,13 @@ assignmentstat : ID '=' expr ';' #AssignmentExpr
 returnstatement : 'return' expr ';' ;
 
 expr : '(' expr ')' # Par
-    | expr '*' expr # MultOp
-    | expr '/' expr # DivOp
-    | expr '%' expr # ModOp
-    | expr '+' expr # AddOp
-    | expr '-' expr # SubOp
-    | INT # const
-    | ID # var
     | '-' '(' expr ')' # NegExpr
-    | '-' INT # NegInt
+    | expr op=('*' | '/' | '%' ) expr # MultiplicativeOp
+    | expr op=('+' | '-') expr # AdditiveOp
+    | INT # Const
+    | '-' INT # NegConst
+    | '-' '(' expr ')' #NegExpr
+    | ID # Var
     ;
 
 type : 'int';
@@ -37,7 +35,7 @@ type : 'int';
 RETURN: 'return';
 INT_TYPE: 'int';
 ID : [a-zA-Z_] [a-zA-Z0-9_]*;
-INT : ('-')?[0-9]+ ;
+INT : [0-9]+ ;
 ASSIGN: '=';
 SEMICOLON: ';';
 RIGHT_BRACE: '}';

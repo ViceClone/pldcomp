@@ -51,11 +51,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAddOp(PLDCompParser::AddOpContext *ctx) override {
+  virtual antlrcpp::Any visitVar(PLDCompParser::VarContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitModOp(PLDCompParser::ModOpContext *ctx) override {
+  virtual antlrcpp::Any visitMultiplicativeOp(PLDCompParser::MultiplicativeOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -63,11 +63,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitVar(PLDCompParser::VarContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitNegInt(PLDCompParser::NegIntContext *ctx) override {
+  virtual antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -75,15 +71,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitMultOp(PLDCompParser::MultOpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitSubOp(PLDCompParser::SubOpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitDivOp(PLDCompParser::DivOpContext *ctx) override {
+  virtual antlrcpp::Any visitNegConst(PLDCompParser::NegConstContext *ctx) override {
     return visitChildren(ctx);
   }
 
