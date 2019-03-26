@@ -32,6 +32,12 @@ void IRInstr::gen_asm(ostream& o){
     }
 }
 
+void BasicBlock::gen_asm(ostream& o){
+    for(vector<IRInstr*>::iterator it=instrs.begin();it!=instrs.end();++it){
+        it.base.gen_asm(o);
+    }
+}
+
 int CFG::getSymbol(string index){
     return SymbolIndex[index];
 }
