@@ -49,10 +49,6 @@ private:
 };
 
 
-
-
-
-
 /**  The class for a basic block */
 
 /* A few important comments.
@@ -120,6 +116,7 @@ class CFG {
 	// basic block management
 	string new_BB_name();
 	BasicBlock* current_bb;
+	int getSymbol(string);
 
  protected:
 	map <string, Type> SymbolType; /**< part of the symbol table  */
