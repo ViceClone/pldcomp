@@ -6,18 +6,19 @@
 #include <iostream>
 #include <initializer_list>
 
-// Declarations from the parser -- replace with your own
-#include "type.h"
-#include "symbole.h"
+#include "antlr4-runtime.h"
+#include "PLDCompLexer.h"
+#include "PLDCompParser.h"
+#include "PLDCompBaseVisitor.h"
+using namespace std;
+
 class BasicBlock;
 class CFG;
-class DefFonction;
-
 
 //! The class for one 3-address instruction
 class IRInstr {
  
-   public:
+public:
 	/** The instructions themselves -- feel free to subclass instead */
 	typedef enum {
 		ldconst,
@@ -39,7 +40,7 @@ class IRInstr {
 	/** Actual code generation */
 	void gen_asm(ostream &o); /**< x86 assembly code generation for this IR instruction */
 	
- private:
+private:
 	BasicBlock* bb; /**< The BB this instruction belongs to, which provides a pointer to the CFG this instruction belong to */
 	Operation op;
 	Type t;
@@ -98,9 +99,9 @@ class BasicBlock {
  */
 class CFG {
  public:
-	CFG(DefFonction* ast);
+	CFG(tree::ParseTree* ast);
 
-	DefFonction* ast; /**< The AST this CFG comes from */
+	tree::ParseTree* ast; /**< The AST this CFG comes from */
 	
 	void add_bb(BasicBlock* bb); 
 
