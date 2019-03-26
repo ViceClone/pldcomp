@@ -1,4 +1,4 @@
 int main() {
-    int a = 2*(9/4);
+    int a = 6/-3;
     return a;
 }
