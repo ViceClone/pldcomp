@@ -99,6 +99,7 @@ class BasicBlock {
  */
 class CFG {
  public:
+  CFG() {}
 	CFG(tree::ParseTree* ast);
 
 	tree::ParseTree* ast; /**< The AST this CFG comes from */
