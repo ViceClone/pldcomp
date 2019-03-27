@@ -11,7 +11,7 @@
 
 class IRGenerator : public PLDCompBaseVisitor {
 public:
-    IRGenerator(tree::ParseTree* ast) : cfg(ast) {}
+    IRGenerator();
     antlrcpp::Any visitProg(PLDCompParser::ProgContext *ctx) override;
     antlrcpp::Any visitDeclaration(PLDCompParser::DeclarationContext *ctx) override;
     antlrcpp::Any visitStatementseq(PLDCompParser::StatementseqContext *ctx) override;

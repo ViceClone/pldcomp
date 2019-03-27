@@ -10,7 +10,7 @@ void IRInstr::gen_asm(ostream& o){
     switch (op){
         case ldconst: 
             //on suppose que la direction de memoire est stockee en forme de int
-             o<< "movl $"<< bb->cfg->getSymbol(params[1])<<", -"<< params[0]<<"("<<"%"<<"rbp)" << endl;
+            o<< "movl $"<< bb->cfg->getSymbol(params[1])<<", -"<< params[0]<<"("<<"%"<<"rbp)" << endl;
         break;
         case add:{
             o<< "movl "<< bb->cfg->getSymbol(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
@@ -18,17 +18,20 @@ void IRInstr::gen_asm(ostream& o){
             o<< "movl" << "%" <<"eax, " << bb->cfg->getSymbol(params[0])<<"("<<"%"<<"rbp) " <<endl;
         }
         break;
-        case sub:{
+        case sub: {
             o<< "movl "<< bb->cfg->getSymbol(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
             o<< "subl"<< "%"<<"eax"<< bb->cfg->getSymbol(params[2])<<"("<<"%"<<"rbp)" <<endl;
             o<< "movl" << "%" <<"eax, " << bb->cfg->getSymbol(params[0])<<"("<<"%"<<"rbp) " <<endl;
-        }break;
+        } 
+        break;
         case mul:{
             o<< "movl "<< bb->cfg->getSymbol(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
             o<< "imull"<< bb->cfg->getSymbol(params[2])<<"("<<"%"<<"rbp), "<< "%"<<"eax" <<endl;
             o<< "movl" << "%" <<"eax, " << bb->cfg->getSymbol(params[0])<<"("<<"%"<<"rbp) " <<endl;
         }
-        default: break;
+        break;
+        default: 
+        break;
     }
 }
 
