@@ -1,5 +1,4 @@
-#ifndef IR_H
-#define IR_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -11,13 +10,17 @@
 #include "PLDCompParser.h"
 #include "PLDCompBaseVisitor.h"
 using namespace std;
+using namespace antlr4;
 
 class BasicBlock;
 class CFG;
 
+typedef enum {
+    Int,
+} Type;
+
 //! The class for one 3-address instruction
 class IRInstr {
- 
 public:
 	/** The instructions themselves -- feel free to subclass instead */
 	typedef enum {
@@ -65,7 +68,7 @@ private:
 
 class BasicBlock {
  public:
-	BasicBlock(CFG* cfg, string entry_label);
+	BasicBlock(CFG* cfg, string entry_label); //set value for next basic block
 	void gen_asm(ostream &o); /**< x86 assembly code generation for this basic block (very simple) */
 
 	void add_IRInstr(IRInstr::Operation op, Type t, vector<string> params);
@@ -95,6 +98,7 @@ class BasicBlock {
  */
 class CFG {
  public:
+  CFG() {}
 	CFG(tree::ParseTree* ast);
 
 	tree::ParseTree* ast; /**< The AST this CFG comes from */
@@ -116,6 +120,8 @@ class CFG {
 	// basic block management
 	string new_BB_name();
 	BasicBlock* current_bb;
+
+	//gets correspondent int from SymbolIndex map
 	int getSymbol(string);
 
  protected:
@@ -127,5 +133,3 @@ class CFG {
 	vector <BasicBlock*> bbs; /**< all the basic blocks of this CFG*/
 };
 
-
-#endif
