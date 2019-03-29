@@ -25,8 +25,7 @@ int main(int argc, char* argv[]) {
 
     /* 
         Vous pouvez tester notre compilateur en changeant le test.c se trouvant dans ../test/custom/ comme mentionné 
-        dans notre rapport de conception section 3 Les éléments permettant la navigation dans le code, section Le test, 
-        section Nos tests personnalisés. 
+        dans notre rapport de conception section 3.3.2 sur les tests personnalisés, page 12.
     */
 
     Test::customTests();
