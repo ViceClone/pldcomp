@@ -24,10 +24,10 @@ int main(int argc, char* argv[]) {
     */
 
    /* Vous pouvez tester notre compilateur en changeant le test.c se trouvant dans ../test/custom/ comme mentionné 
-      dans notre rapport. 
+      dans notre rapport de conception. 
 
     */
-   
+
     Test::customTests();
 
     return 0;
