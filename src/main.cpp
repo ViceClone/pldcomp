@@ -12,12 +12,22 @@ using namespace std;
 
 
 int main(int argc, char* argv[]) {
-    
-    // Test::lexErrorTests();
-    // Test::semanticErrorTests();
-    // Test::syntaxErrorTests();
-    // Test::validProgramsTests();
-    // Test::backendTests();
+
+    /*
+        Test Moodle à faire passer pour la version finale de notre compilateur.
+
+        Test::lexErrorTests();
+        Test::semanticErrorTests();
+        Test::syntaxErrorTests();
+        Test::validProgramsTests();
+        Test::backendTests();
+    */
+
+   /* Vous pouvez tester notre compilateur en changeant le test.c se trouvant dans ../test/custom/ comme mentionné 
+      dans notre rapport. 
+
+    */
+   
     Test::customTests();
 
     return 0;
