@@ -23,9 +23,10 @@ int main(int argc, char* argv[]) {
         Test::backendTests();
     */
 
-   /* Vous pouvez tester notre compilateur en changeant le test.c se trouvant dans ../test/custom/ comme mentionné 
-      dans notre rapport de conception. 
-
+    /* 
+        Vous pouvez tester notre compilateur en changeant le test.c se trouvant dans ../test/custom/ comme mentionné 
+        dans notre rapport de conception section 3 Les éléments permettant la navigation dans le code, section Le test, 
+        section Nos tests personnalisés. 
     */
 
     Test::customTests();
