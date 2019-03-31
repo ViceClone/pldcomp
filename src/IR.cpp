@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 using namespace std;
+using namespace antlr4;
 
 IRInstr::IRInstr(BasicBlock* bb_, Operation op, Type t, vector<string> params) {
     this->op = op;
@@ -17,24 +18,24 @@ void IRInstr::gen_asm(ostream& o){
     switch (op){
         case ldconst: 
             //on suppose que la direction de memoire est stockee en forme de int
-            o<< "   movl $"<< bb->cfg->getSymbol(params[1])<<", -"<< params[0]<<"("<<"%"<<"rbp)" << endl;
+            o<< "   movl $"<< bb->cfg->get_var_index(params[1])<<", -"<< params[0]<<"("<<"%"<<"rbp)" << endl;
         break;
         case add:{
-            o<< "   movl "<< bb->cfg->getSymbol(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
-            o<< "   addl "<< bb->cfg->getSymbol(params[2])<<"("<<"%"<<"rbp), " <<"%"<<"eax"<< endl;
-            o<< "   movl " << "%" <<"eax, " << bb->cfg->getSymbol(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            o<< "   movl "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
+            o<< "   addl "<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), " <<"%"<<"eax"<< endl;
+            o<< "   movl " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
         }
         break;
         case sub: {
-            o<< "   movl "<< bb->cfg->getSymbol(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
-            o<< "   subl "<< "%"<<"eax"<< bb->cfg->getSymbol(params[2])<<"("<<"%"<<"rbp)" <<endl;
-            o<< "   movl " << "%" <<"eax, " << bb->cfg->getSymbol(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            o<< "   movl "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
+            o<< "   subl "<< "%"<<"eax"<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp)" <<endl;
+            o<< "   movl " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
         } 
         break;
         case mul:{
-            o<< "   movl "<< bb->cfg->getSymbol(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
-            o<< "   imull "<< bb->cfg->getSymbol(params[2])<<"("<<"%"<<"rbp), "<< "%"<<"eax" <<endl;
-            o<< "   movl " << "%" <<"eax, " << bb->cfg->getSymbol(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            o<< "   movl "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
+            o<< "   imull "<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), "<< "%"<<"eax" <<endl;
+            o<< "   movl " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
         }
         break;
         default: 
@@ -42,34 +43,57 @@ void IRInstr::gen_asm(ostream& o){
     }
 }
 
-void BasicBlock::gen_asm(ostream& o){
-    for(vector<IRInstr*>::iterator it=instrs.begin();it!=instrs.end();++it){
-        it.base.gen_asm(o);
-    }
-    if (exit_true==nullptr){
-        //???
-        o<< "retq"<<endl;
-    }
-    if(exit_false==nullptr){
-        //unconditional jump
-    }
-}
-
-void BasicBlock::add_IRInstr(IRInstr::Operation op, Type t, vector<string> params){
-    //on insere la nouvelle instr a la fin du vecteur
-    //peut etre il faut avancer de 1 le pointeur end?
-    instrs.insert(instrs.end(),new IRInstr(this,op,t,params));
-}
-void CFG::add_bb(BasicBlock* bb){
-    //peut etre il faut avancer de 1 le pointeur end?
-    bbs.insert(bbs.end(),bb);
-}
-
-int CFG::getSymbol(string index){
-    return SymbolIndex[index];
-}
+// Definitions of basicblock functions.
 
 BasicBlock::BasicBlock(CFG* cfg, string entry_label) {
     this->cfg = cfg;
     this->label = entry_label;
 }
+
+void BasicBlock::gen_asm(ostream& o){
+    for (auto it=instrs.begin();it!=instrs.end();++it){
+        (*it)->gen_asm(o);
+    }
+}
+
+void BasicBlock::add_IRInstr(IRInstr::Operation op, Type t, vector<string> params){
+    instrs.push_back(new IRInstr(this,op,t,params));
+}
+
+// Definitions of CFG functions.
+
+CFG::CFG(tree::ParseTree* ast) {
+    this->ast = ast;
+}
+
+void CFG::add_bb(BasicBlock* bb){
+    bbs.push_back(bb);
+}
+
+void CFG::gen_asm(ostream& o) {
+    for (auto it=bbs.begin(); it!=bbs.end(); ++it) {
+        (*it)->gen_asm(o);
+    }
+}
+void CFG::add_to_symbol_table(string name, Type t) {
+    if (t==Int) {
+        SymbolIndex[name] = nextFreeSymbolIndex;
+        SymbolType[name] = t;
+        nextFreeSymbolIndex -= 4;
+    }
+}
+
+string CFG::new_BB_name() {
+    string new_name = ".L" + to_string(nextBBnumber);
+    nextBBnumber++;
+    return new_name;
+}
+
+int CFG::get_var_index(string index){
+    return SymbolIndex[index];
+}
+
+Type CFG::get_var_type(string name) {
+    return SymbolType[name];
+}
+
