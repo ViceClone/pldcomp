@@ -15,6 +15,9 @@ antlrcpp::Any IRGenerator::visitDeclaration(PLDCompParser::DeclarationContext *c
     string name = ctx->ID()->getText();
     CFG* cfg = new CFG();
     cfg_list[name] = cfg;
+    BasicBlock* bb = new BasicBlock(cfg, name);
+    cfg->add_bb(bb);
+    cfg->current_bb = bb;
     visit(ctx->statementseq());
     return NULL;
 }
