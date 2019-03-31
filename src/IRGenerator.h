@@ -9,9 +9,13 @@
 #include "PLDCompLexer.h"
 #include "PLDCompParser.h"
 
+using namespace std;
+using namespace antlr4;
+
 class IRGenerator : public PLDCompBaseVisitor {
 public:
-    IRGenerator();
+    IRGenerator() {}
+    IRGenerator(tree::ParseTree* ast);
     antlrcpp::Any visitProg(PLDCompParser::ProgContext *ctx) override;
     antlrcpp::Any visitDeclaration(PLDCompParser::DeclarationContext *ctx) override;
     antlrcpp::Any visitStatementseq(PLDCompParser::StatementseqContext *ctx) override;
@@ -29,5 +33,6 @@ public:
     antlrcpp::Any visitNegConst(PLDCompParser::NegConstContext *ctx) override;
     antlrcpp::Any visitType(PLDCompParser::TypeContext *ctx) override;
 private:
-    CFG* cfg;
+    map<string,CFG*> cfg_list;
+    tree::ParseTree* ast;
 }
