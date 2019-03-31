@@ -120,6 +120,8 @@ class CFG {
 	// basic block management
 	string new_BB_name();
 	BasicBlock* current_bb;
+
+	//gets correspondent int from SymbolIndex map
 	int getSymbol(string);
 
  protected:

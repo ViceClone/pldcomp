@@ -42,6 +42,29 @@ void IRInstr::gen_asm(ostream& o){
     }
 }
 
+void BasicBlock::gen_asm(ostream& o){
+    for(vector<IRInstr*>::iterator it=instrs.begin();it!=instrs.end();++it){
+        it.base.gen_asm(o);
+    }
+    if (exit_true==nullptr){
+        //???
+        o<< "retq"<<endl;
+    }
+    if(exit_false==nullptr){
+        //unconditional jump
+    }
+}
+
+void BasicBlock::add_IRInstr(IRInstr::Operation op, Type t, vector<string> params){
+    //on insere la nouvelle instr a la fin du vecteur
+    //peut etre il faut avancer de 1 le pointeur end?
+    instrs.insert(instrs.end(),new IRInstr(this,op,t,params));
+}
+void CFG::add_bb(BasicBlock* bb){
+    //peut etre il faut avancer de 1 le pointeur end?
+    bbs.insert(bbs.end(),bb);
+}
+
 int CFG::getSymbol(string index){
     return SymbolIndex[index];
 }
