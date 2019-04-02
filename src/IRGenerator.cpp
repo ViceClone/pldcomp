@@ -40,6 +40,10 @@ antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOp
     string var2 = visit(ctx->expr(1));
     string var3 = current_cfg->create_new_tempvar(Int);
     vector<string> params = {var3, var1, var2};
-    current_cfg->current_bb->add_IRInstr(IRInstr::mul,Int,params);
+    IRInstr::Operation op;
+    if (ctx->op->getText().compare("*") == 0) {
+        op = IRInstr::mul;
+    }
+    current_cfg->current_bb->add_IRInstr(op,Int,params);
     return var3;
 }
