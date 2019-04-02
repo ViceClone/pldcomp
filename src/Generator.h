@@ -108,10 +108,8 @@ public:
         os << "    movl " << right << ", " << "%" << "ecx" << endl;
         if ((ctx->op->getText()).compare("+") == 0) {
             os << "    addl " << "%" << "ecx, " << "%" << "eax" << endl;
-            cout << "+" << endl;
         } else if ((ctx->op->getText()).compare("-") == 0) {
             os << "    subl " << "%" << "ecx, " << "%" << "eax" << endl;
-            cout << "-" << endl;
         }
         currentAddress = address - 4;
         os << "    movl " << "%" << "eax, " << currentAddress << "(" << "%" << "rbp)" << endl;
@@ -171,7 +169,6 @@ public:
             os << "    movl " << expr << ", " << "%" << "eax" << endl;
             currentAddress = memTable[id];
             os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl;
-            cout << currentAddress << endl;
         } else {
             //TODO: Error: variable has not been declared
             throw -1;

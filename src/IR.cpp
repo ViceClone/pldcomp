@@ -30,7 +30,6 @@ void IRInstr::gen_asm(ostream& o){
             }else{
                 //erreur, beacoup de params
             }
-
         }
         break;
         case ldconst: 
@@ -92,12 +91,30 @@ void CFG::gen_asm(ostream& o) {
         (*it)->gen_asm(o);
     }
 }
-void CFG::add_to_symbol_table(string name, Type t) {
+bool CFG::add_to_symbol_table(string name, Type t) {
+    map<string,int>::iterator it = SymbolIndex.find(name);
+    if (!(it==SymbolIndex.end())) {
+        return false;
+    }
     if (t==Int) {
         SymbolIndex[name] = nextFreeSymbolIndex;
         SymbolType[name] = t;
         nextFreeSymbolIndex -= 4;
+        return true;
     }
+    return false;
+}
+
+bool CFG::find_symbol(string name) {
+    map<string,int>::iterator it = SymbolIndex.find(name);
+    if (it==SymbolIndex.end()) {
+        return false;
+    }
+    return true;
+}
+
+string CFG::create_new_tempvar(Type t) {
+    
 }
 
 string CFG::new_BB_name() {

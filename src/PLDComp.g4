@@ -6,7 +6,7 @@ declaration : type ID '(' functiondeclarationparams ')' '{' statementseq '}';
 
 statementseq : statement+;
 
-statement :  vardeclaration
+statement : vardeclaration
     | returnstatement
     | assignmentstat
     | functioncall 
