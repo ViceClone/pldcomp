@@ -105,8 +105,12 @@ vector<string> backendFiles = {
 vector<string> customFiles = {
     BASE_TEST_CUSTOM_URL + "emptyMainFunction.c", // Not Working - TODO - mismatched input '}' expecting {'return', 'int', ID}
     // BASE_TEST_CUSTOM_URL + "emptyFile.c", // Not Working - TODO - Segmentation fault due to empty file - mismatched input '<EOF>' expecting 'int'
-    BASE_TEST_CUSTOM_URL + "declarationWithoutAssignement.c",
-    BASE_TEST_CUSTOM_URL + "declarationWithAssignement.c",
+    BASE_TEST_CUSTOM_URL + "declarationWithoutAssignment.c",
+    BASE_TEST_CUSTOM_URL + "doubleDeclaration.c",
+    BASE_TEST_CUSTOM_URL + "declarationWithAssignment.c",
+    BASE_TEST_CUSTOM_URL + "assignementWithoutDeclaration.c",
+    BASE_TEST_CUSTOM_URL + "declarationAssignmentEmptyRight.c",
+    BASE_TEST_CUSTOM_URL + "doubleDeclarationWithAssignement.c",
     BASE_TEST_CUSTOM_URL + "returnValue.c",
     BASE_TEST_CUSTOM_URL + "returnVariable.c",
     BASE_TEST_CUSTOM_URL + "expressionWithParentheses.c", 
@@ -118,7 +122,7 @@ vector<string> customFiles = {
     BASE_TEST_CUSTOM_URL + "negativeExpressionWithParentheses.c", // Not working - TODO - Error in the asm: number of operands mismatch for `neg'
     BASE_TEST_CUSTOM_URL + "negativeExpressionWithoutParentheses.c", // Not working - TODO - Error: no viable alternative at input '-a' Exception caught 'std::bad_cast'
     // BASE_TEST_CUSTOM_URL + "miParcoursTest.c", // Not Working - TODO - Compilation failed due to one ligne assignement
-    BASE_TEST_CUSTOM_URL + "multipleAssignementLine.c", // Not Working - TODO - Compilation failed due to one ligne assignement
+    BASE_TEST_CUSTOM_URL + "multipleAssignmentLine.c", // Not Working - TODO - Compilation failed due to one ligne assignement
     BASE_TEST_CUSTOM_URL + "multipleOperationsLine.c", // Not Working - TODO - Compilation failed due to one ligne assignement
     BASE_TEST_CUSTOM_URL + "customTest.c",
 
@@ -143,12 +147,9 @@ void Test::lexErrorTests() {
         try {
             visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
-        } catch (int i) {
-            remove("out.asm");
-            cout << "Compilation failed! " << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << endl << endl;
+            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
@@ -175,10 +176,10 @@ void Test::semanticErrorTests() {
             cout << "Compilation Success!" << endl << endl;
         } catch (int i) {
             remove("out.asm");
-            cout << "Compilation failed! " << endl << endl;
+            cout << "Compilation failed!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << endl << endl;
+            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
@@ -203,12 +204,9 @@ void Test::syntaxErrorTests() {
         try {
             visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
-        } catch (int i) {
-            remove("out.asm");
-            cout << "Compilation failed! " << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << endl << endl;
+            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
@@ -233,12 +231,9 @@ void Test::validProgramsTests() {
         try {
             visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
-        } catch (int i) {
-            remove("out.asm");
-            cout << "Compilation failed! " << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << endl << endl;
+            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
@@ -263,12 +258,9 @@ void Test::backendTests() {
         try {
             visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
-        } catch (int i) {
-            remove("out.asm");
-            cout << "Compilation failed! " << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << endl << endl;
+            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
@@ -293,12 +285,9 @@ void Test::customTests() {
         try {
             visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
-        } catch (int i) {
-            remove("out.asm");
-            cout << "Compilation failed! " << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << endl << endl;
+            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
