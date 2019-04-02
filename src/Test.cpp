@@ -103,9 +103,9 @@ vector<string> backendFiles = {
 };
 
 vector<string> customFiles = {
-    BASE_TEST_CUSTOM_URL + "declaration_without_assignement.c",
-    BASE_TEST_CUSTOM_URL + "declaration_without_assignement_without_function.c",
-    BASE_TEST_CUSTOM_URL + "test.c"
+    BASE_TEST_CUSTOM_URL + "declarationWithoutAssignement.c",
+    BASE_TEST_CUSTOM_URL + "declarationWithoutAssignementWithoutFunction.c",
+    BASE_TEST_CUSTOM_URL + "customTest.c"
 };
 
 
