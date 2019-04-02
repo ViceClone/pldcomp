@@ -97,6 +97,10 @@ bool CFG::find_symbol(string name) {
     return true;
 }
 
+string CFG::create_new_tempvar(Type t) {
+    
+}
+
 string CFG::new_BB_name() {
     string new_name = ".L" + to_string(nextBBnumber);
     nextBBnumber++;

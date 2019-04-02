@@ -6,7 +6,7 @@ declaration : type ID '(' ')' '{' statementseq '}';
 
 statementseq : statement+;
 
-statement :  vardeclaration
+statement : vardeclaration
     | returnstatement
     | assignmentstat
     ;
