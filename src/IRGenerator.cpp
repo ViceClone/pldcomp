@@ -80,3 +80,23 @@ antlrcpp::Any IRGenerator::visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx
     current_cfg->current_bb->add_IRInstr(op,Int,params);
     return var3;
 }
+
+antlrcpp::Any IRGenerator::visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitNegExpr(PLDCompParser::NegExprContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitType(PLDCompParser::TypeContext *ctx) {
+    return NULL;
+}
