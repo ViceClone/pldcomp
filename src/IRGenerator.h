@@ -19,9 +19,9 @@ public:
     antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *ctx);
     antlrcpp::Any visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx);
     antlrcpp::Any visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) override;
-    antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) override;
-    antlrcpp::Any visitPar(PLDCompParser::ParContext *ctx);
-    antlrcpp::Any visitVar(PLDCompParser::VarContext *ctx) override;
+    antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) ;
+    antlrcpp::Any visitPar(PLDCompParser::ParContext *ctx) override;
+    antlrcpp::Any visitVar(PLDCompParser::VarContext *ctx);
     antlrcpp::Any visitMultiplicativeOp(PLDCompParser::MultiplicativeOpContext *ctx) override;
     antlrcpp::Any visitConst(PLDCompParser::ConstContext *ctx) override;
     antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx) override;
@@ -31,5 +31,5 @@ public:
 private:
     map<string,CFG*> cfg_list;
     CFG* current_cfg;
-    tree::ParseTree* ast;
+
 };
