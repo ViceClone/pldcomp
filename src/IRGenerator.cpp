@@ -148,4 +148,3 @@ antlrcpp::Any IRGenerator::visitType(PLDCompParser::TypeContext *ctx) {
     return visitChildren(ctx);
 }
 
-// TODO: current memory address
