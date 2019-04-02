@@ -35,6 +35,24 @@ antlrcpp::Any IRGenerator::visitPar(PLDCompParser::ParContext *ctx) {
     return var;
 }
 
+antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx){
+    //ceci ne suporte pas le passage d'expressions
+    vector<string> params;
+    //le nom de la fonction est dans la premiere place du vecteur 
+    params.add(ctx->ID());
+    List<expr> expressions = ctx.expr()
+                    .stream()
+                    .map(expr -> expr.accept(exprVisitor))
+                    .collect(toList());
+    if(expressions.size()<=6){
+        for(int i=0;i<expressions.size();i++){
+            params.add(visit(expr(i)));
+        }
+    }else{
+        //error too many parameters
+    }
+    current_cfg->current_bb->add_IRInstr(IRInstr::call,Int,params);
+}
 
 antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOpContext *ctx) {
     string var1 = visit(ctx->expr(0));

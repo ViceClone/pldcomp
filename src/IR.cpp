@@ -16,27 +16,43 @@ IRInstr::IRInstr(BasicBlock* bb_, Operation op, Type t, vector<string> params) {
 
 void IRInstr::gen_asm(ostream& o){
     switch (op){
-        
+        case call:{
+            //on doit passer les parametres 
+            //ordre des registres pour 32 bits: %edi, %esi, %edx, %ecx, %r8d, %r9d
+            //le nom de la fonction est dans la premiere place du vecteur 
+            string funcname=params[0]; 
+            if(params.size()<=6){
+                vector<string> registres={"edi","esi","edx","ecx","r8d","r9d"};
+                for(int i=1;i<=params.size();i++){
+                    o<< bb->cfg->get_var_index(params[i])<<"("<<"%"<<"rbp), "<<"%"<<registres[i]<<endl;
+                }
+                o<< "callq "<< funcname<<endl;
+            }else{
+                //erreur, beacoup de params
+            }
+
+        }
+        break;
         case ldconst: 
             //on suppose que la direction de memoire est stockee en forme de int
-            o<< "   movq $"<< bb->cfg->get_var_index(params[1])<<", -"<< params[0]<<"("<<"%"<<"rbp)" << endl;
+            o<< "   movl $"<< bb->cfg->get_var_index(params[1])<<", -"<< params[0]<<"("<<"%"<<"rbp)" << endl;
         break;
         case add:{
-            o<< "   movq "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
-            o<< "   addq "<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), " <<"%"<<"eax"<< endl;
-            o<< "   movq " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            o<< "   movl "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
+            o<< "   addl "<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), " <<"%"<<"eax"<< endl;
+            o<< "   movl " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
         }
         break;
         case sub: {
-            o<< "   movq "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
-            o<< "   subq "<< "%"<<"eax"<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp)" <<endl;
-            o<< "   movq " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            o<< "   movl "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
+            o<< "   subl "<< "%"<<"eax"<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp)" <<endl;
+            o<< "   movl " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
         } 
         break;
         case mul:{
-            o<< "   movq "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
+            o<< "   movl "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
             o<< "   imull "<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), "<< "%"<<"eax" <<endl;
-            o<< "   movq " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            o<< "   movl " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
         }
         break;
         default: 
