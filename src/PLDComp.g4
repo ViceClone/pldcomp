@@ -9,7 +9,12 @@ statementseq : statement+;
 statement :  vardeclaration
     | returnstatement
     | assignmentstat
+    | functioncall
     ;
+
+functioncall :  ID '(' functionparams ')' ';' 
+
+functionparams : type ID (',' type ID)* 
 
 vardeclaration : type ID '=' expr ';' # DeclWithAssignment
     | type ID ';' #DeclWithoutAssignment
@@ -28,6 +33,7 @@ expr : '(' expr ')' # Par
     | '-' INT # NegConst
     | '-' '(' expr ')' #NegExpr
     | ID # Var
+    | functioncall
     ;
 
 type : 'int';
