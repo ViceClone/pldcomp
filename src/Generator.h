@@ -1,12 +1,14 @@
 #pragma once
 
-#include "antlr4-runtime.h"
-#include "PLDCompBaseVisitor.h"
 #include <fstream>
 #include <string>
 #include <map>
 #include <iostream>
 #include <stdio.h>
+
+#include "PLDCompBaseVisitor.h"
+#include "antlr4-runtime.h"
+#include "Exception.h"
 
 using namespace std;
 
@@ -136,7 +138,8 @@ public:
                 os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl;
             }
         } else {
-            throw -1;
+            doubleDeclarationAssignmentException ddae;
+            throw ddae;
         }
         return NULL;
     }
@@ -152,7 +155,8 @@ public:
                 init[id] = false;
             }
         } else {
-            throw -1;
+            doubleDeclarationException dde;
+            throw dde;
         }
         return NULL;
     }
@@ -170,8 +174,8 @@ public:
             currentAddress = memTable[id];
             os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl;
         } else {
-            //TODO: Error: variable has not been declared
-            throw -1;
+            assignmentWithoutDeclarationException awde;
+            throw awde;
         }
         return NULL;
     }

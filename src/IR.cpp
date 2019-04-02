@@ -143,4 +143,3 @@ int CFG::get_var_index(string index){
 Type CFG::get_var_type(string name) {
     return SymbolType[name];
 }
-

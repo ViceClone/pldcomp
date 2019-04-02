@@ -132,4 +132,3 @@ class CFG {
 	int nextTempAddress=0; /**< to allocate new temporary variable */
 	vector <BasicBlock*> bbs; /**< all the basic blocks of this CFG*/
 };
-
