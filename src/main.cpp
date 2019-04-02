@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     // Test::syntaxErrorTests();
     // Test::validProgramsTests();
     // Test::backendTests();
-    Test::customTests();
+    Test::customTests2();
 
     return 0;
 }

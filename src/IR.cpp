@@ -16,26 +16,40 @@ IRInstr::IRInstr(BasicBlock* bb_, Operation op, Type t, vector<string> params) {
 
 void IRInstr::gen_asm(ostream& o){
     switch (op){
-        case ldconst: 
-            //on suppose que la direction de memoire est stockee en forme de int
-            o<< "   movl $"<< bb->cfg->get_var_index(params[1])<<", -"<< params[0]<<"("<<"%"<<"rbp)" << endl;
+        case ldconst:
+            cout << "ldconst " << params[0] << " " << params[1] << endl;
+            o<< "    movl $"<< params[1]<<", -"<< bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp)";
+            o<< " # " << "ldconst " << params[0] << " " << params[1] << endl;
         break;
         case add:{
-            o<< "   movl "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
-            o<< "   addl "<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), " <<"%"<<"eax"<< endl;
-            o<< "   movl " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            cout << "add " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< "    movl -"<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax";
+            o<< " # " << "add " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< "    addl -"<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), " <<"%"<<"eax"<< endl;
+            o<< "    movl " << "%" <<"eax, -" << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
         }
         break;
         case sub: {
-            o<< "   movl "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
-            o<< "   subl "<< "%"<<"eax"<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp)" <<endl;
-            o<< "   movl " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            cout << "sub " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< "    movl -"<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax";
+            o<< " # " << "sub " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< "    subl -"<< bb->cfg->get_var_index(params[2]) << "("<<"%"<<"rbp) ," << "%" << "eax" << endl;
+            o<< "    movl " << "%" <<"eax, -" << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
         } 
         break;
         case mul:{
-            o<< "   movl "<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax"<< endl;
-            o<< "   imull "<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), "<< "%"<<"eax" <<endl;
-            o<< "   movl " << "%" <<"eax, " << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            cout << "mul " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< "    movl -"<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp), " << "%"<<"eax";
+            o<< " # " << "mul " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< "    imull -"<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), "<< "%"<<"eax" <<endl;
+            o<< "    movl " << "%" <<"eax, -" << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
+        }
+        break;
+        case cpy: {
+            cout << "cpy " << params[0] << " " << params[1] << endl;
+            o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax";
+            o << " # " << "cpy " << params[0] << " " << params[1] << endl;
+            o << "    movl " << "%" << "eax, -" <<  bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)"  << endl;
         }
         break;
         default: 
@@ -67,6 +81,7 @@ CFG::CFG(tree::ParseTree* ast) {
 }
 
 void CFG::add_bb(BasicBlock* bb){
+    bb->cfg = this;
     bbs.push_back(bb);
 }
 
@@ -81,9 +96,10 @@ bool CFG::add_to_symbol_table(string name, Type t) {
         return false;
     }
     if (t==Int) {
+        nextFreeSymbolIndex += 4;
         SymbolIndex[name] = nextFreeSymbolIndex;
         SymbolType[name] = t;
-        nextFreeSymbolIndex -= 4;
+        cout << "---------VAR DECLARATION: \"" << name << "\"  at address @" << nextFreeSymbolIndex << endl;
         return true;
     }
     return false;
@@ -98,7 +114,20 @@ bool CFG::find_symbol(string name) {
 }
 
 string CFG::create_new_tempvar(Type t) {
-    
+    nextTempAddress+=4;
+    string var_name = "!tmp" + to_string(nextTempAddress);
+    cout << "TEMP: " << var_name << "  " << nextTempAddress << endl;
+    SymbolIndex[var_name] = nextTempAddress;
+    SymbolType[var_name] = Int;
+    return var_name;
+}
+
+void CFG::reset_next_temp(int offset) {
+    nextTempAddress = nextFreeSymbolIndex+offset;
+}
+
+int CFG::get_current_address() {
+    return nextFreeSymbolIndex;
 }
 
 string CFG::new_BB_name() {

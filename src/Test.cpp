@@ -6,6 +6,7 @@
 #include "PLDCompParser.h"
 #include "PLDCompBaseVisitor.h"
 #include "Generator.h"
+#include "IRGenerator.h"
 #include "Test.h"
 
 using namespace antlr4;
@@ -301,4 +302,20 @@ void Test::customTests() {
             cout << "Exception caught '" << e.what() << endl << endl;
         }
     }
+}
+
+void Test::customTests2() {
+    ifstream file("irtest.c");
+    string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
+
+    ANTLRInputStream input (content);
+    PLDCompLexer lexer (&input);
+    CommonTokenStream token (&lexer);
+    PLDCompParser parser (&token);
+    tree::ParseTree * tree = parser.prog();
+
+    IRGenerator visitor;
+    visitor.visit(tree);
+    ofstream o("out.asm",ofstream::out);
+    visitor.output_asm(o);
 }

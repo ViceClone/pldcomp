@@ -5,6 +5,16 @@
 using namespace std;
 using namespace antlr4;
 
+void IRGenerator::output_asm(ostream& o) {
+    cout << "--------------------OUTPUT TO OUT.ASM--------" << endl;
+    o << ".text" << endl;
+    for (auto it=cfg_list.begin();it!=cfg_list.end();++it) {
+        it->second->gen_asm_prologue(o);
+        it->second->gen_asm(o);
+        it->second->gen_asm_epilogue(o);
+    }
+}
+
 antlrcpp::Any IRGenerator::visitProg(PLDCompParser::ProgContext *ctx) {
     return visitChildren(ctx);
 }
@@ -60,7 +70,10 @@ antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
 }
 
 antlrcpp::Any IRGenerator::visitNegExpr(PLDCompParser::NegExprContext *ctx) {
+    int address = current_cfg->get_current_address();
+    current_cfg->reset_next_temp(0);
     string var = visit(ctx->expr());
+    current_cfg->reset_next_temp(4);
     string temp = current_cfg->create_new_tempvar(Int);
     vector<string> params = {temp,"0"};
     current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params);
@@ -70,8 +83,12 @@ antlrcpp::Any IRGenerator::visitNegExpr(PLDCompParser::NegExprContext *ctx) {
 }
 
 antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOpContext *ctx) {
+    int address = current_cfg->get_current_address();
+    current_cfg->reset_next_temp(0);
     string var1 = visit(ctx->expr(0));
+    current_cfg->reset_next_temp(4);
     string var2 = visit(ctx->expr(1));
+    current_cfg->reset_next_temp(0);
     string var3 = current_cfg->create_new_tempvar(Int);
     vector<string> params = {var3, var1, var2};
     IRInstr::Operation op;
@@ -83,8 +100,12 @@ antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOp
 }
 
 antlrcpp::Any IRGenerator::visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx) {
+    int address = current_cfg->get_current_address();
+    current_cfg->reset_next_temp(0);
     string var1 = visit(ctx->expr(0));
+    current_cfg->reset_next_temp(4);
     string var2 = visit(ctx->expr(1));
+    current_cfg->reset_next_temp(0);
     string var3 = current_cfg->create_new_tempvar(Int);
     vector<string> params = {var3, var1, var2};
     IRInstr::Operation op;
@@ -109,6 +130,7 @@ antlrcpp::Any IRGenerator::visitDeclWithoutAssignment(PLDCompParser::DeclWithout
     if (!validDeclaration) {
         cout << "ERROR: invalid declaration " << endl;
     }
+    current_cfg->reset_next_temp(0);
     return NULL;
 }
 
@@ -125,6 +147,7 @@ antlrcpp::Any IRGenerator::visitDeclWithAssignment(PLDCompParser::DeclWithAssign
         cout << "ERROR: invalid declaration " << endl;
         return NULL;
     }
+    current_cfg->reset_next_temp(0);
     string temp = visit(ctx->expr());
     vector<string> params = {name, temp};
     current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
