@@ -9,7 +9,7 @@ statementseq : statement+;
 statement :  vardeclaration
     | returnstatement
     | assignmentstat
-    | functioncall
+    | functioncall 
     ;
 
 functioncall :  ID '(' functionparams ')' ';' 

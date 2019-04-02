@@ -35,6 +35,7 @@ antlrcpp::Any IRGenerator::visitPar(PLDCompParser::ParContext *ctx) {
     return var;
 }
 
+
 antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOpContext *ctx) {
     string var1 = visit(ctx->expr(0));
     string var2 = visit(ctx->expr(1));
