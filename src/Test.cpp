@@ -103,6 +103,8 @@ vector<string> backendFiles = {
 };
 
 vector<string> customFiles = {
+    BASE_TEST_CUSTOM_URL + "declaration_without_assignement.c",
+    BASE_TEST_CUSTOM_URL + "declaration_without_assignement_without_function.c",
     BASE_TEST_CUSTOM_URL + "test.c"
 };
 
@@ -274,10 +276,10 @@ void Test::customTests() {
 
         try {
             visitor.visit(tree);
-            cout << "Compilation Success!" << endl;
+            cout << "Compilation Success!" << endl << endl;
         } catch (int i) {
             remove("out.asm");
-            cout << "Compilation failed! " << endl;
+            cout << "Compilation failed! " << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
             cout << "Exception caught '" << e.what() << "'\n";
