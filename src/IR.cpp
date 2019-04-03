@@ -52,6 +52,11 @@ void IRInstr::gen_asm(ostream& o){
             o << "    movl " << "%" << "eax, -" <<  bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)"  << endl;
         }
         break;
+        case ret: {
+            cout << "ret " << params[0] << endl;
+            o<< "    movl -"<< bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp), " << "%"<<"eax";
+            o<< " # " << "ret " << params[0] << endl;
+        }
         default: 
         break;
     }
@@ -68,6 +73,10 @@ void BasicBlock::gen_asm(ostream& o){
     for (auto it=instrs.begin();it!=instrs.end();++it){
         (*it)->gen_asm(o);
     }
+    if (exit_true==nullptr) {
+        cfg->gen_asm_epilogue(o);
+    }
+    o << endl;
 }
 
 void BasicBlock::add_IRInstr(IRInstr::Operation op, Type t, vector<string> params){
@@ -86,10 +95,32 @@ void CFG::add_bb(BasicBlock* bb){
 }
 
 void CFG::gen_asm(ostream& o) {
-    for (auto it=bbs.begin(); it!=bbs.end(); ++it) {
+    gen_asm_prologue(o);
+    bbs[0]->gen_asm(o);
+    for (auto it=bbs.begin()+1; it!=bbs.end(); ++it) {
+        o << (*it)->label << ":" << endl;
         (*it)->gen_asm(o);
     }
 }
+
+void CFG::gen_asm_prologue(ostream& o) {
+    o << ".global " << label << endl;
+    o << ".type " << label << ", @function" << endl;
+    o << label << ":" << endl;
+    o << "    pushq "<<"%"<<"rbp" << endl;
+    o << "    movq "<<"%"<<"rsp, "<<"%"<<"rbp" << endl;
+    cout << "----------LOCAL MEM: " << nextFreeSymbolIndex << endl;
+    int local_mem = 16*((nextFreeSymbolIndex/16)+((nextFreeSymbolIndex%16)!=0));
+    o << "    subq $" << local_mem << ", " << "%" << "rsp" << endl; 
+}
+
+void CFG::gen_asm_epilogue(ostream& o) {
+    int local_mem = 16*((nextFreeSymbolIndex/16)+((nextFreeSymbolIndex%16)!=0));
+    o << "    addq $" << local_mem << ", " << "%" << "rsp" << endl; 
+    o << "    popq "<<"%"<<"rbp" << endl;
+    o << "    retq " << endl;
+}
+
 bool CFG::add_to_symbol_table(string name, Type t) {
     map<string,int>::iterator it = SymbolIndex.find(name);
     if (!(it==SymbolIndex.end())) {

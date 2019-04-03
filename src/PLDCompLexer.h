@@ -12,10 +12,10 @@
 class  PLDCompLexer : public antlr4::Lexer {
 public:
   enum {
-    RETURN = 1, INT_TYPE = 2, ID = 3, INT = 4, ASSIGN = 5, SEMICOLON = 6, 
-    RIGHT_BRACE = 7, LEFT_BRACE = 8, LEFT_PARENTHESE = 9, RIGHT_PARENTHESE = 10, 
-    PLUS = 11, MINUS = 12, STAR = 13, DIV = 14, MOD = 15, WHITESPACE = 16, 
-    NEWLINE = 17, BLOCKCOMMENT = 18, LINECOMMENT = 19
+    T__0 = 1, RETURN = 2, INT_TYPE = 3, ID = 4, INT = 5, ASSIGN = 6, SEMICOLON = 7, 
+    RIGHT_BRACE = 8, LEFT_BRACE = 9, LEFT_PARENTHESE = 10, RIGHT_PARENTHESE = 11, 
+    PLUS = 12, MINUS = 13, STAR = 14, DIV = 15, MOD = 16, WHITESPACE = 17, 
+    NEWLINE = 18, BLOCKCOMMENT = 19, LINECOMMENT = 20
   };
 
   PLDCompLexer(antlr4::CharStream *input);

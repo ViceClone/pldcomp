@@ -14,7 +14,8 @@ public:
     IRGenerator() {}
     void output_asm(ostream& o);
     antlrcpp::Any visitProg(PLDCompParser::ProgContext *ctx);
-    antlrcpp::Any visitDeclaration(PLDCompParser::DeclarationContext *ctx);
+    antlrcpp::Any visitFuncNoParams(PLDCompParser::FuncNoParamsContext *ctx);
+    antlrcpp::Any visitFuncWithParams(PLDCompParser::FuncWithParamsContext *ctx);
     antlrcpp::Any visitStatementseq(PLDCompParser::StatementseqContext *ctx);
     antlrcpp::Any visitStatement(PLDCompParser::StatementContext *ctx);
     antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *ctx);

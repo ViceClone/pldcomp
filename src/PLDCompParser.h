@@ -12,16 +12,16 @@
 class  PLDCompParser : public antlr4::Parser {
 public:
   enum {
-    RETURN = 1, INT_TYPE = 2, ID = 3, INT = 4, ASSIGN = 5, SEMICOLON = 6, 
-    RIGHT_BRACE = 7, LEFT_BRACE = 8, LEFT_PARENTHESE = 9, RIGHT_PARENTHESE = 10, 
-    PLUS = 11, MINUS = 12, STAR = 13, DIV = 14, MOD = 15, WHITESPACE = 16, 
-    NEWLINE = 17, BLOCKCOMMENT = 18, LINECOMMENT = 19
+    T__0 = 1, RETURN = 2, INT_TYPE = 3, ID = 4, INT = 5, ASSIGN = 6, SEMICOLON = 7, 
+    RIGHT_BRACE = 8, LEFT_BRACE = 9, LEFT_PARENTHESE = 10, RIGHT_PARENTHESE = 11, 
+    PLUS = 12, MINUS = 13, STAR = 14, DIV = 15, MOD = 16, WHITESPACE = 17, 
+    NEWLINE = 18, BLOCKCOMMENT = 19, LINECOMMENT = 20
   };
 
   enum {
-    RuleProg = 0, RuleDeclaration = 1, RuleStatementseq = 2, RuleStatement = 3, 
-    RuleVardeclaration = 4, RuleAssignmentstat = 5, RuleReturnstatement = 6, 
-    RuleExpr = 7, RuleType = 8
+    RuleProg = 0, RuleFunctiondefinition = 1, RuleStatementseq = 2, RuleStatement = 3, 
+    RuleCallstatement = 4, RuleVardeclaration = 5, RuleAssignmentstat = 6, 
+    RuleReturnstatement = 7, RuleExpr = 8, RuleType = 9
   };
 
   PLDCompParser(antlr4::TokenStream *input);
@@ -35,9 +35,10 @@ public:
 
 
   class ProgContext;
-  class DeclarationContext;
+  class FunctiondefinitionContext;
   class StatementseqContext;
   class StatementContext;
+  class CallstatementContext;
   class VardeclarationContext;
   class AssignmentstatContext;
   class ReturnstatementContext;
@@ -48,8 +49,9 @@ public:
   public:
     ProgContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    DeclarationContext *declaration();
     antlr4::tree::TerminalNode *EOF();
+    std::vector<FunctiondefinitionContext *> functiondefinition();
+    FunctiondefinitionContext* functiondefinition(size_t i);
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -58,10 +60,40 @@ public:
 
   ProgContext* prog();
 
-  class  DeclarationContext : public antlr4::ParserRuleContext {
+  class  FunctiondefinitionContext : public antlr4::ParserRuleContext {
   public:
-    DeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    FunctiondefinitionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+   
+    FunctiondefinitionContext() = default;
+    void copyFrom(FunctiondefinitionContext *context);
+    using antlr4::ParserRuleContext::copyFrom;
+
     virtual size_t getRuleIndex() const override;
+
+   
+  };
+
+  class  FuncWithParamsContext : public FunctiondefinitionContext {
+  public:
+    FuncWithParamsContext(FunctiondefinitionContext *ctx);
+
+    std::vector<TypeContext *> type();
+    TypeContext* type(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> ID();
+    antlr4::tree::TerminalNode* ID(size_t i);
+    antlr4::tree::TerminalNode *LEFT_PARENTHESE();
+    antlr4::tree::TerminalNode *RIGHT_PARENTHESE();
+    antlr4::tree::TerminalNode *LEFT_BRACE();
+    StatementseqContext *statementseq();
+    antlr4::tree::TerminalNode *RIGHT_BRACE();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  FuncNoParamsContext : public FunctiondefinitionContext {
+  public:
+    FuncNoParamsContext(FunctiondefinitionContext *ctx);
+
     TypeContext *type();
     antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *LEFT_PARENTHESE();
@@ -70,12 +102,10 @@ public:
     StatementseqContext *statementseq();
     antlr4::tree::TerminalNode *RIGHT_BRACE();
 
-
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
   };
 
-  DeclarationContext* declaration();
+  FunctiondefinitionContext* functiondefinition();
 
   class  StatementseqContext : public antlr4::ParserRuleContext {
   public:
@@ -96,6 +126,7 @@ public:
     StatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     VardeclarationContext *vardeclaration();
+    CallstatementContext *callstatement();
     ReturnstatementContext *returnstatement();
     AssignmentstatContext *assignmentstat();
 
@@ -105,6 +136,24 @@ public:
   };
 
   StatementContext* statement();
+
+  class  CallstatementContext : public antlr4::ParserRuleContext {
+  public:
+    CallstatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ID();
+    antlr4::tree::TerminalNode *LEFT_PARENTHESE();
+    antlr4::tree::TerminalNode *RIGHT_PARENTHESE();
+    antlr4::tree::TerminalNode *SEMICOLON();
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CallstatementContext* callstatement();
 
   class  VardeclarationContext : public antlr4::ParserRuleContext {
   public:

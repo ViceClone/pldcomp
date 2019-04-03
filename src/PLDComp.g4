@@ -1,14 +1,21 @@
 grammar PLDComp;
 
-prog: declaration EOF;
+prog: functiondefinition+ EOF;
 
-declaration : type ID '(' ')' '{' statementseq '}'; 
+functiondefinition : type ID '(' ')' '{' statementseq '}' # FuncNoParams
+    | type ID '(' type ID (',' type ID)* ')' '{' statementseq '}' # FuncWithParams
+    ;
 
 statementseq : statement+;
 
-statement : vardeclaration
+statement : vardeclaration 
+    | callstatement
     | returnstatement
     | assignmentstat
+    ;
+
+callstatement : ID '(' ')' ';'
+    | ID '('expr (',' expr)* ')' ';'
     ;
 
 vardeclaration : type ID '=' expr ';' # DeclWithAssignment

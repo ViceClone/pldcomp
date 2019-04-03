@@ -7,27 +7,35 @@ using namespace antlr4;
 
 void IRGenerator::output_asm(ostream& o) {
     cout << "--------------------OUTPUT TO OUT.ASM--------" << endl;
-    o << ".text" << endl;
+    o << ".text" << endl << endl;
     for (auto it=cfg_list.begin();it!=cfg_list.end();++it) {
-        it->second->gen_asm_prologue(o);
         it->second->gen_asm(o);
-        it->second->gen_asm_epilogue(o);
     }
+    cout << "--------------------END OUTPUT TO OUT.ASM--------" << endl;
 }
 
 antlrcpp::Any IRGenerator::visitProg(PLDCompParser::ProgContext *ctx) {
     return visitChildren(ctx);
 }
 
-antlrcpp::Any IRGenerator::visitDeclaration(PLDCompParser::DeclarationContext *ctx) {
+antlrcpp::Any IRGenerator::visitFuncNoParams(PLDCompParser::FuncNoParamsContext *ctx) {
     string name = ctx->ID()->getText();
     CFG* cfg = new CFG();
+    cfg->label = name;
     cfg_list[name] = cfg;
     BasicBlock* bb = new BasicBlock(cfg, name);
+    bb->exit_true = nullptr;
+    bb->exit_false = nullptr;
     cfg->add_bb(bb);
     cfg->current_bb = bb;
     current_cfg = cfg;
     visit(ctx->statementseq());
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitFuncWithParams(PLDCompParser::FuncWithParamsContext *ctx) {
+    vector<PLDCompParser::TypeContext*> type_list = ctx->type();
+    cout << "--------SIZE TYPE LIST---------: " << type_list.size() << endl;
     return NULL;
 }
 
@@ -41,6 +49,8 @@ antlrcpp::Any IRGenerator::visitStatement(PLDCompParser::StatementContext *ctx) 
 
 antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) {
     string var = visit(ctx->expr());
+    vector<string> params = {var};
+    current_cfg->current_bb->add_IRInstr(IRInstr::ret,Int,params);
     return var;
 }
 

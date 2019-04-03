@@ -19,11 +19,10 @@ public:
     antlrcpp::Any visitProg(PLDCompParser::ProgContext *ctx) override {
         os << ".text" << endl;
         os << ".global main" << endl;
-        visit(ctx->declaration());
-        return NULL;
+        return visitChildren(ctx);
     }
 
-    antlrcpp::Any visitDeclaration(PLDCompParser::DeclarationContext *ctx) override {
+    antlrcpp::Any visitFuncNoParams(PLDCompParser::FuncNoParamsContext *ctx) override {
         string funcname = ctx->ID()->getText();
         os << funcname << ":" << endl;
         os << "    pushq "<<"%"<<"rbp" << endl;
@@ -32,6 +31,10 @@ public:
         os << "    popq "<<"%"<<"rbp" << endl;
         os << "    retq " << endl;
         return NULL;
+    }
+
+    antlrcpp::Any visitFuncWithParams(PLDCompParser::FuncWithParamsContext *ctx) override {
+        return visitChildren(ctx);
     }
 
     antlrcpp::Any visitStatement(PLDCompParser::StatementContext *ctx) override {

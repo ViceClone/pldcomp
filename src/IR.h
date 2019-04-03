@@ -34,7 +34,8 @@ public:
 		call, 
 		cmp_eq,
 		cmp_lt,
-		cmp_le
+		cmp_le,
+		ret
 	} Operation;
 
 
@@ -105,6 +106,7 @@ class CFG {
 	tree::ParseTree* ast; /**< The AST this CFG comes from */
 	
 	void add_bb(BasicBlock* bb); 
+	string label;
 
 	// x86 code generation: could be encapsulated in a processor class in a retargetable compiler
 	void gen_asm(ostream& o);

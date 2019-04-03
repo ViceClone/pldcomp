@@ -21,11 +21,15 @@ public:
    */
     virtual antlrcpp::Any visitProg(PLDCompParser::ProgContext *context) = 0;
 
-    virtual antlrcpp::Any visitDeclaration(PLDCompParser::DeclarationContext *context) = 0;
+    virtual antlrcpp::Any visitFuncNoParams(PLDCompParser::FuncNoParamsContext *context) = 0;
+
+    virtual antlrcpp::Any visitFuncWithParams(PLDCompParser::FuncWithParamsContext *context) = 0;
 
     virtual antlrcpp::Any visitStatementseq(PLDCompParser::StatementseqContext *context) = 0;
 
     virtual antlrcpp::Any visitStatement(PLDCompParser::StatementContext *context) = 0;
+
+    virtual antlrcpp::Any visitCallstatement(PLDCompParser::CallstatementContext *context) = 0;
 
     virtual antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *context) = 0;
 
