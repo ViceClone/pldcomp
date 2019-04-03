@@ -373,6 +373,21 @@ public class PLDCompParser extends Parser {
 	}
 
 	public static class CallstatementContext extends ParserRuleContext {
+		public CallstatementContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_callstatement; }
+	 
+		public CallstatementContext() { }
+		public void copyFrom(CallstatementContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class CallNoParamsContext extends CallstatementContext {
+		public TerminalNode ID() { return getToken(PLDCompParser.ID, 0); }
+		public CallNoParamsContext(CallstatementContext ctx) { copyFrom(ctx); }
+	}
+	public static class CallWithParamsContext extends CallstatementContext {
 		public TerminalNode ID() { return getToken(PLDCompParser.ID, 0); }
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
@@ -380,10 +395,7 @@ public class PLDCompParser extends Parser {
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public CallstatementContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_callstatement; }
+		public CallWithParamsContext(CallstatementContext ctx) { copyFrom(ctx); }
 	}
 
 	public final CallstatementContext callstatement() throws RecognitionException {
@@ -395,6 +407,7 @@ public class PLDCompParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
+				_localctx = new CallNoParamsContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(67);
@@ -408,6 +421,7 @@ public class PLDCompParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new CallWithParamsContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(71);

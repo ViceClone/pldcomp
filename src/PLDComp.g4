@@ -14,8 +14,8 @@ statement : vardeclaration
     | assignmentstat
     ;
 
-callstatement : ID '(' ')' ';'
-    | ID '('expr (',' expr)* ')' ';'
+callstatement : ID '(' ')' ';' # CallNoParams
+    | ID '('expr (',' expr)* ')' ';' #CallWithParams
     ;
 
 vardeclaration : type ID '=' expr ';' # DeclWithAssignment

@@ -431,43 +431,77 @@ PLDCompParser::CallstatementContext::CallstatementContext(ParserRuleContext *par
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* PLDCompParser::CallstatementContext::ID() {
-  return getToken(PLDCompParser::ID, 0);
-}
-
-tree::TerminalNode* PLDCompParser::CallstatementContext::LEFT_PARENTHESE() {
-  return getToken(PLDCompParser::LEFT_PARENTHESE, 0);
-}
-
-tree::TerminalNode* PLDCompParser::CallstatementContext::RIGHT_PARENTHESE() {
-  return getToken(PLDCompParser::RIGHT_PARENTHESE, 0);
-}
-
-tree::TerminalNode* PLDCompParser::CallstatementContext::SEMICOLON() {
-  return getToken(PLDCompParser::SEMICOLON, 0);
-}
-
-std::vector<PLDCompParser::ExprContext *> PLDCompParser::CallstatementContext::expr() {
-  return getRuleContexts<PLDCompParser::ExprContext>();
-}
-
-PLDCompParser::ExprContext* PLDCompParser::CallstatementContext::expr(size_t i) {
-  return getRuleContext<PLDCompParser::ExprContext>(i);
-}
-
 
 size_t PLDCompParser::CallstatementContext::getRuleIndex() const {
   return PLDCompParser::RuleCallstatement;
 }
 
+void PLDCompParser::CallstatementContext::copyFrom(CallstatementContext *ctx) {
+  ParserRuleContext::copyFrom(ctx);
+}
 
-antlrcpp::Any PLDCompParser::CallstatementContext::accept(tree::ParseTreeVisitor *visitor) {
+//----------------- CallNoParamsContext ------------------------------------------------------------------
+
+tree::TerminalNode* PLDCompParser::CallNoParamsContext::ID() {
+  return getToken(PLDCompParser::ID, 0);
+}
+
+tree::TerminalNode* PLDCompParser::CallNoParamsContext::LEFT_PARENTHESE() {
+  return getToken(PLDCompParser::LEFT_PARENTHESE, 0);
+}
+
+tree::TerminalNode* PLDCompParser::CallNoParamsContext::RIGHT_PARENTHESE() {
+  return getToken(PLDCompParser::RIGHT_PARENTHESE, 0);
+}
+
+tree::TerminalNode* PLDCompParser::CallNoParamsContext::SEMICOLON() {
+  return getToken(PLDCompParser::SEMICOLON, 0);
+}
+
+PLDCompParser::CallNoParamsContext::CallNoParamsContext(CallstatementContext *ctx) { copyFrom(ctx); }
+
+
+antlrcpp::Any PLDCompParser::CallNoParamsContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitCallstatement(this);
+    return parserVisitor->visitCallNoParams(this);
   else
     return visitor->visitChildren(this);
 }
+//----------------- CallWithParamsContext ------------------------------------------------------------------
 
+tree::TerminalNode* PLDCompParser::CallWithParamsContext::ID() {
+  return getToken(PLDCompParser::ID, 0);
+}
+
+tree::TerminalNode* PLDCompParser::CallWithParamsContext::LEFT_PARENTHESE() {
+  return getToken(PLDCompParser::LEFT_PARENTHESE, 0);
+}
+
+std::vector<PLDCompParser::ExprContext *> PLDCompParser::CallWithParamsContext::expr() {
+  return getRuleContexts<PLDCompParser::ExprContext>();
+}
+
+PLDCompParser::ExprContext* PLDCompParser::CallWithParamsContext::expr(size_t i) {
+  return getRuleContext<PLDCompParser::ExprContext>(i);
+}
+
+tree::TerminalNode* PLDCompParser::CallWithParamsContext::RIGHT_PARENTHESE() {
+  return getToken(PLDCompParser::RIGHT_PARENTHESE, 0);
+}
+
+tree::TerminalNode* PLDCompParser::CallWithParamsContext::SEMICOLON() {
+  return getToken(PLDCompParser::SEMICOLON, 0);
+}
+
+PLDCompParser::CallWithParamsContext::CallWithParamsContext(CallstatementContext *ctx) { copyFrom(ctx); }
+
+
+antlrcpp::Any PLDCompParser::CallWithParamsContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
+    return parserVisitor->visitCallWithParams(this);
+  else
+    return visitor->visitChildren(this);
+}
 PLDCompParser::CallstatementContext* PLDCompParser::callstatement() {
   CallstatementContext *_localctx = _tracker.createInstance<CallstatementContext>(_ctx, getState());
   enterRule(_localctx, 8, PLDCompParser::RuleCallstatement);
@@ -481,6 +515,7 @@ PLDCompParser::CallstatementContext* PLDCompParser::callstatement() {
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx)) {
     case 1: {
+      _localctx = dynamic_cast<CallstatementContext *>(_tracker.createInstance<PLDCompParser::CallNoParamsContext>(_localctx));
       enterOuterAlt(_localctx, 1);
       setState(67);
       match(PLDCompParser::ID);
@@ -494,6 +529,7 @@ PLDCompParser::CallstatementContext* PLDCompParser::callstatement() {
     }
 
     case 2: {
+      _localctx = dynamic_cast<CallstatementContext *>(_tracker.createInstance<PLDCompParser::CallWithParamsContext>(_localctx));
       enterOuterAlt(_localctx, 2);
       setState(71);
       match(PLDCompParser::ID);

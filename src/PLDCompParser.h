@@ -140,17 +140,40 @@ public:
   class  CallstatementContext : public antlr4::ParserRuleContext {
   public:
     CallstatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+   
+    CallstatementContext() = default;
+    void copyFrom(CallstatementContext *context);
+    using antlr4::ParserRuleContext::copyFrom;
+
     virtual size_t getRuleIndex() const override;
+
+   
+  };
+
+  class  CallNoParamsContext : public CallstatementContext {
+  public:
+    CallNoParamsContext(CallstatementContext *ctx);
+
     antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *LEFT_PARENTHESE();
     antlr4::tree::TerminalNode *RIGHT_PARENTHESE();
     antlr4::tree::TerminalNode *SEMICOLON();
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
-
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
+  };
+
+  class  CallWithParamsContext : public CallstatementContext {
+  public:
+    CallWithParamsContext(CallstatementContext *ctx);
+
+    antlr4::tree::TerminalNode *ID();
+    antlr4::tree::TerminalNode *LEFT_PARENTHESE();
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    antlr4::tree::TerminalNode *RIGHT_PARENTHESE();
+    antlr4::tree::TerminalNode *SEMICOLON();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
   CallstatementContext* callstatement();

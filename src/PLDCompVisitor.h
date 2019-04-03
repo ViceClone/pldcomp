@@ -29,7 +29,9 @@ public:
 
     virtual antlrcpp::Any visitStatement(PLDCompParser::StatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitCallstatement(PLDCompParser::CallstatementContext *context) = 0;
+    virtual antlrcpp::Any visitCallNoParams(PLDCompParser::CallNoParamsContext *context) = 0;
+
+    virtual antlrcpp::Any visitCallWithParams(PLDCompParser::CallWithParamsContext *context) = 0;
 
     virtual antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *context) = 0;
 
