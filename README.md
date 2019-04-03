@@ -2,6 +2,12 @@
 
 ## Useful commands
 
+### Build
+```
+make clean
+make
+```
+
 ### ANTLR Code Generation
 
 ```
