@@ -19,11 +19,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFuncNoParams(PLDCompParser::FuncNoParamsContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitFuncWithParams(PLDCompParser::FuncWithParamsContext *ctx) override {
+  virtual antlrcpp::Any visitFunctiondefinition(PLDCompParser::FunctiondefinitionContext *ctx) override {
     return visitChildren(ctx);
   }
 

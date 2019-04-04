@@ -15,7 +15,7 @@ public:
     T__0 = 1, RETURN = 2, INT_TYPE = 3, ID = 4, INT = 5, ASSIGN = 6, SEMICOLON = 7, 
     RIGHT_BRACE = 8, LEFT_BRACE = 9, LEFT_PARENTHESE = 10, RIGHT_PARENTHESE = 11, 
     PLUS = 12, MINUS = 13, STAR = 14, DIV = 15, MOD = 16, WHITESPACE = 17, 
-    NEWLINE = 18, BLOCKCOMMENT = 19, LINECOMMENT = 20
+    NEWLINE = 18, BLOCKCOMMENT = 19, LINECOMMENT = 20, ERROR = 21
   };
 
   enum {
@@ -63,20 +63,7 @@ public:
   class  FunctiondefinitionContext : public antlr4::ParserRuleContext {
   public:
     FunctiondefinitionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-   
-    FunctiondefinitionContext() = default;
-    void copyFrom(FunctiondefinitionContext *context);
-    using antlr4::ParserRuleContext::copyFrom;
-
     virtual size_t getRuleIndex() const override;
-
-   
-  };
-
-  class  FuncWithParamsContext : public FunctiondefinitionContext {
-  public:
-    FuncWithParamsContext(FunctiondefinitionContext *ctx);
-
     std::vector<TypeContext *> type();
     TypeContext* type(size_t i);
     std::vector<antlr4::tree::TerminalNode *> ID();
@@ -87,22 +74,9 @@ public:
     StatementseqContext *statementseq();
     antlr4::tree::TerminalNode *RIGHT_BRACE();
 
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  FuncNoParamsContext : public FunctiondefinitionContext {
-  public:
-    FuncNoParamsContext(FunctiondefinitionContext *ctx);
-
-    TypeContext *type();
-    antlr4::tree::TerminalNode *ID();
-    antlr4::tree::TerminalNode *LEFT_PARENTHESE();
-    antlr4::tree::TerminalNode *RIGHT_PARENTHESE();
-    antlr4::tree::TerminalNode *LEFT_BRACE();
-    StatementseqContext *statementseq();
-    antlr4::tree::TerminalNode *RIGHT_BRACE();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
   };
 
   FunctiondefinitionContext* functiondefinition();

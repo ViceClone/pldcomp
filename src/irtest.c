@@ -4,12 +4,8 @@ int func() {
 }
 
 int func1(int a, int b, int c) {
-    return 10;
+    int !sadsad = a+b+c;
+    int e = 0;
+    return d;
 }
 
-int main() {
-    int a = 3;
-    int b = 10;
-    b = a-b;
-    return b;
-}

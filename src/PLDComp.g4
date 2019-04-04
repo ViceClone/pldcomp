@@ -2,8 +2,7 @@ grammar PLDComp;
 
 prog: functiondefinition+ EOF;
 
-functiondefinition : type ID '(' ')' '{' statementseq '}' # FuncNoParams
-    | type ID '(' type ID (',' type ID)* ')' '{' statementseq '}' # FuncWithParams
+functiondefinition : type ID '('(type ID (',' type ID)*)? ')' '{' statementseq '}'
     ;
 
 statementseq : statement+;
@@ -58,3 +57,7 @@ WHITESPACE : [ \t]+ -> skip;
 NEWLINE : ('\r' '\n'? | '\n') -> skip;
 BLOCKCOMMENT : '/*' .*? '*/' -> skip;
 LINECOMMENT :'//' ~[\r\n]* -> skip;
+
+ERROR
+    : .
+    ;

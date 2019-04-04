@@ -1,6 +1,7 @@
 #include "IRGenerator.h"
 #include "antlr4-runtime.h"
 #include "PLDCompBaseVisitor.h"
+#include "PLDCompParser.h"
 #include "IR.h"
 using namespace std;
 using namespace antlr4;
@@ -18,6 +19,7 @@ antlrcpp::Any IRGenerator::visitProg(PLDCompParser::ProgContext *ctx) {
     return visitChildren(ctx);
 }
 
+/*
 antlrcpp::Any IRGenerator::visitFuncNoParams(PLDCompParser::FuncNoParamsContext *ctx) {
     string name = ctx->ID()->getText();
     CFG* cfg = new CFG();
@@ -29,13 +31,49 @@ antlrcpp::Any IRGenerator::visitFuncNoParams(PLDCompParser::FuncNoParamsContext 
     cfg->add_bb(bb);
     cfg->current_bb = bb;
     current_cfg = cfg;
+    cout << reg_name[0] << endl;
+    visit(ctx->statementseq());
+    return NULL;
+}
+*/
+antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::FunctiondefinitionContext *ctx) {
+    string name = ctx->ID(0)->getText();
+    CFG* cfg = new CFG();
+    cfg->label = name;
+    cfg_list[name] = cfg;
+    BasicBlock* bb = new BasicBlock(cfg, name);
+    bb->exit_true = nullptr;
+    bb->exit_false = nullptr;
+    cfg->add_bb(bb);
+    cfg->current_bb = bb;
+    current_cfg = cfg;
+
+    // Can merge with visitFuncNoParams -> TODO
+    int n_params = (ctx->ID()).size()-1;
+    current_cfg->set_n_params(n_params);
+    vector<PLDCompParser::TypeContext *> type = ctx->type();
+    vector<tree::TerminalNode*> list_id = ctx->ID();
+    // Parameters of the function are returned in list_id[1] to list[n_params]
+    for (int i=1; i<=n_params; i++) {
+        string name = list_id[i]->getText();
+        // We dont care about type this time
+        // string t = type[i]->getText();
+        bool valid = current_cfg->add_to_symbol_table(name,Int);
+        if (!valid) {
+            cout << "ERROR: Variable name " << name <<  " is redundant";
+            return NULL;
+        }
+        current_cfg->add_param(name, Int);
+    }
     visit(ctx->statementseq());
     return NULL;
 }
 
-antlrcpp::Any IRGenerator::visitFuncWithParams(PLDCompParser::FuncWithParamsContext *ctx) {
-    vector<PLDCompParser::TypeContext*> type_list = ctx->type();
-    cout << "--------SIZE TYPE LIST---------: " << type_list.size() << endl;
+antlrcpp::Any IRGenerator::visitCallNoParams(PLDCompParser::CallNoParamsContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitCallWithParams(PLDCompParser::CallWithParamsContext *ctx) {
     return NULL;
 }
 
@@ -172,7 +210,7 @@ antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprCont
         vector<string> params = {name, temp};
         current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
     } else {
-        cout << "ERROR: variable has been declared yet" << endl;
+        cout << "ERROR: variable has not been declared yet" << endl;
     }
     return NULL;
 }

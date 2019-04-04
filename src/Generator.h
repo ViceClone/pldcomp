@@ -22,18 +22,7 @@ public:
         return visitChildren(ctx);
     }
 
-    antlrcpp::Any visitFuncNoParams(PLDCompParser::FuncNoParamsContext *ctx) override {
-        string funcname = ctx->ID()->getText();
-        os << funcname << ":" << endl;
-        os << "    pushq "<<"%"<<"rbp" << endl;
-        os << "    movq "<<"%"<<"rsp, "<<"%"<<"rbp" << endl;
-        visitChildren(ctx);
-        os << "    popq "<<"%"<<"rbp" << endl;
-        os << "    retq " << endl;
-        return NULL;
-    }
-
-    antlrcpp::Any visitFuncWithParams(PLDCompParser::FuncWithParamsContext *ctx) override {
+    antlrcpp::Any visitFunctiondefinition(PLDCompParser::FunctiondefinitionContext *ctx) override {
         return visitChildren(ctx);
     }
 

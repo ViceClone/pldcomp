@@ -19,6 +19,8 @@ typedef enum {
     Int,
 } Type;
 
+const string reg_name[] = {"%edi", "%esi", "%edx", "%ecx", "%r8d", "%r9d"};
+
 //! The class for one 3-address instruction
 class IRInstr {
 public:
@@ -122,6 +124,10 @@ class CFG {
 	Type get_var_type(string name);
 	void reset_next_temp(int offset);
 	int get_current_address();
+	int set_n_params(int n);
+
+	void add_param(string name, Type t);
+	
 	// basic block management
 	string new_BB_name();
 	BasicBlock* current_bb;
@@ -133,4 +139,7 @@ class CFG {
 	int nextBBnumber=0; /**< just for naming */
 	int nextTempAddress=0; /**< to allocate new temporary variable */
 	vector <BasicBlock*> bbs; /**< all the basic blocks of this CFG*/
+	int n_params;
+	vector<string> params_name;
+	vector<Type> params_type;
 };

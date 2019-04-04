@@ -104,6 +104,7 @@ void CFG::gen_asm(ostream& o) {
 }
 
 void CFG::gen_asm_prologue(ostream& o) {
+    o << "# prologue" << endl;
     o << ".global " << label << endl;
     o << ".type " << label << ", @function" << endl;
     o << label << ":" << endl;
@@ -112,6 +113,11 @@ void CFG::gen_asm_prologue(ostream& o) {
     cout << "----------LOCAL MEM: " << nextFreeSymbolIndex << endl;
     int local_mem = 16*((nextFreeSymbolIndex/16)+((nextFreeSymbolIndex%16)!=0));
     o << "    subq $" << local_mem << ", " << "%" << "rsp" << endl; 
+    for (int i=0; i<n_params; i++) {
+        o << "    movl " << reg_name[i] << ", -" 
+            << SymbolIndex[params_name[i]] << "("<<"%"<<"rbp)" << endl; 
+    }
+    o << "# end of prologue" << endl;
 }
 
 void CFG::gen_asm_epilogue(ostream& o) {
@@ -119,6 +125,10 @@ void CFG::gen_asm_epilogue(ostream& o) {
     o << "    addq $" << local_mem << ", " << "%" << "rsp" << endl; 
     o << "    popq "<<"%"<<"rbp" << endl;
     o << "    retq " << endl;
+}
+
+int CFG::set_n_params(int n) {
+    n_params = n;
 }
 
 bool CFG::add_to_symbol_table(string name, Type t) {
@@ -151,6 +161,11 @@ string CFG::create_new_tempvar(Type t) {
     SymbolIndex[var_name] = nextTempAddress;
     SymbolType[var_name] = Int;
     return var_name;
+}
+
+void CFG::add_param(string name, Type t) {
+    params_name.push_back(name);
+    params_type.push_back(t);
 }
 
 void CFG::reset_next_temp(int offset) {

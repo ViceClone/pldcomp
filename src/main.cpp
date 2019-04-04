@@ -4,7 +4,7 @@
 #include "PLDCompLexer.h"
 #include "PLDCompParser.h"
 #include "PLDCompBaseVisitor.h"
-#include "Generator.h"
+#include "IRGenerator.h"
 #include "Test.h"
 
 using namespace antlr4;

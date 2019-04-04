@@ -1,8 +1,18 @@
-comp:*.cpp
-	g++ -std=c++11 -I antlr4-runtime/ -o comp *.cpp lib/libantlr.so
+CPP=g++
+CFLAGS= -std=c++11 -I antlr4-runtime/
+DEPS = PLDCompVisitor.h PLDCompParser.h PLDCompLexer.h PLDCompBaseVisitor.h IRGenerator.h IR.h Exception.h Test.h
+OBJ = $(DEPS:.h=.o) lib/libantlr.so main.cpp
+EXE = comp
+
+
+comp: $(OBJ)
+	$(CPP) -o $(EXE) $^ $(CFLAGS)
+
+%.o: %.cpp $(DEPS)
+	$(CPP) -c -o $@ $< $(CFLAGS)
 
 clean:
 	rm -rf *.o comp
 
-antlr4:
-	antlr4 -no-listener -visitor -Dlanguage=Cpp PLDComp.g4
+test:
+	echo "---------------EXECUTING TEST---------------"
