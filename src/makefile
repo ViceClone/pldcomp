@@ -12,7 +12,7 @@ comp: $(OBJ)
 	$(CPP) -c -o $@ $< $(CFLAGS)
 
 clean:
-	rm -rf *.o comp
+	rm -rf *.o comp a.out out.asm
 
 test:
 	echo "---------------EXECUTING TEST---------------"

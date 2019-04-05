@@ -39,6 +39,10 @@ int main(int argc, char** argv) {
     if (n_syntax_errors>0) {
         cout << n_syntax_errors << " syntax errors" << endl;
     }
+
+    if (n_lex_errors+n_syntax_errors>0) {
+        return 0;
+    }
     cout << "------CODE GENERATOR-----" << endl;
     
     IRGenerator visitor;

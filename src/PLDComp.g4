@@ -13,9 +13,10 @@ statement : vardeclaration
     | assignmentstat
     ;
 
-callstatement : ID '(' ')' ';' # CallNoParams
-    | ID '('expr (',' expr)* ')' ';' #CallWithParams
+callstatement : call ';'
     ;
+
+call : ID '(' (expr (',' expr)*)? ')';
 
 vardeclaration : type ID '=' expr ';' # DeclWithAssignment
     | type ID ';' #DeclWithoutAssignment
@@ -28,11 +29,11 @@ returnstatement : 'return' expr ';' ;
 
 expr : '(' expr ')' # Par
     | '-' '(' expr ')' # NegExpr
+    | call # CallExpr
     | expr op=('*' | '/' | '%' ) expr # MultiplicativeOp
     | expr op=('+' | '-') expr # AdditiveOp
     | INT # Const
     | '-' INT # NegConst
-    | '-' '(' expr ')' #NegExpr
     | ID # Var
     ;
 

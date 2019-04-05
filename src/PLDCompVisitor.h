@@ -27,9 +27,9 @@ public:
 
     virtual antlrcpp::Any visitStatement(PLDCompParser::StatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitCallNoParams(PLDCompParser::CallNoParamsContext *context) = 0;
+    virtual antlrcpp::Any visitCallstatement(PLDCompParser::CallstatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitCallWithParams(PLDCompParser::CallWithParamsContext *context) = 0;
+    virtual antlrcpp::Any visitCall(PLDCompParser::CallContext *context) = 0;
 
     virtual antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *context) = 0;
 
@@ -50,6 +50,8 @@ public:
     virtual antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *context) = 0;
 
     virtual antlrcpp::Any visitNegExpr(PLDCompParser::NegExprContext *context) = 0;
+
+    virtual antlrcpp::Any visitCallExpr(PLDCompParser::CallExprContext *context) = 0;
 
     virtual antlrcpp::Any visitNegConst(PLDCompParser::NegConstContext *context) = 0;
 

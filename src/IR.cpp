@@ -47,14 +47,33 @@ void IRInstr::gen_asm(ostream& o){
         break;
         case cpy: {
             cout << "cpy " << params[0] << " " << params[1] << endl;
-            o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax";
             o << " # " << "cpy " << params[0] << " " << params[1] << endl;
-            o << "    movl " << "%" << "eax, -" <<  bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)"  << endl;
+            if (params[1].compare("!return_reg") != 0) {
+                o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax" << endl;
+            }
+            if (params[0].compare("!return_reg") != 0) {
+                o << "    movl " << "%" << "eax, -" <<  bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)"  << endl;
+            }
+        }
+        break;
+        case call: {
+            cout << "call " << params[0] << " ";
+            o << "# function call" << params[0] << endl;
+            int n_params = params.size();
+            for (int i=1; i<n_params; i++) {
+                cout << (params[i]) << " ";
+                o << "    movl -" << bb->cfg->get_var_index(params[i]) << "(" << "%"
+                    << "rbp), " << reg_name[i-1] << endl;
+            }
+            cout << endl;
+            o << "    call " << params[0] << endl;
         }
         break;
         case ret: {
             cout << "ret " << params[0] << endl;
-            o<< "    movl -"<< bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp), " << "%"<<"eax";
+            if (params[0].compare("!return_reg") != 0) {
+                o<< "    movl -"<< bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp), " << "%"<<"eax";
+            }
             o<< " # " << "ret " << params[0] << endl;
         }
         default: 

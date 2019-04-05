@@ -21,8 +21,9 @@ public:
     
     antlrcpp::Any visitStatement(PLDCompParser::StatementContext *ctx);
 
-    antlrcpp::Any visitCallNoParams(PLDCompParser::CallNoParamsContext *ctx);
-    antlrcpp::Any visitCallWithParams(PLDCompParser::CallWithParamsContext *ctx);
+    antlrcpp::Any visitCallstatement(PLDCompParser::CallstatementContext *ctx);
+
+    antlrcpp::Any visitCall(PLDCompParser::CallContext *ctx);
 
     antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *ctx);
     antlrcpp::Any visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx);
@@ -38,6 +39,7 @@ public:
     antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx);
     antlrcpp::Any visitNegExpr(PLDCompParser::NegExprContext *ctx);
     antlrcpp::Any visitNegConst(PLDCompParser::NegConstContext *ctx);
+    antlrcpp::Any visitCallExpr(PLDCompParser::CallExprContext *ctx);
     
     antlrcpp::Any visitType(PLDCompParser::TypeContext *ctx);
 private:

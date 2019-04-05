@@ -31,11 +31,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCallNoParams(PLDCompParser::CallNoParamsContext *ctx) override {
+  virtual antlrcpp::Any visitCallstatement(PLDCompParser::CallstatementContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCallWithParams(PLDCompParser::CallWithParamsContext *ctx) override {
+  virtual antlrcpp::Any visitCall(PLDCompParser::CallContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -76,6 +76,10 @@ public:
   }
 
   virtual antlrcpp::Any visitNegExpr(PLDCompParser::NegExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCallExpr(PLDCompParser::CallExprContext *ctx) override {
     return visitChildren(ctx);
   }
 

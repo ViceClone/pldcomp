@@ -19,23 +19,6 @@ antlrcpp::Any IRGenerator::visitProg(PLDCompParser::ProgContext *ctx) {
     return visitChildren(ctx);
 }
 
-/*
-antlrcpp::Any IRGenerator::visitFuncNoParams(PLDCompParser::FuncNoParamsContext *ctx) {
-    string name = ctx->ID()->getText();
-    CFG* cfg = new CFG();
-    cfg->label = name;
-    cfg_list[name] = cfg;
-    BasicBlock* bb = new BasicBlock(cfg, name);
-    bb->exit_true = nullptr;
-    bb->exit_false = nullptr;
-    cfg->add_bb(bb);
-    cfg->current_bb = bb;
-    current_cfg = cfg;
-    cout << reg_name[0] << endl;
-    visit(ctx->statementseq());
-    return NULL;
-}
-*/
 antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::FunctiondefinitionContext *ctx) {
     string name = ctx->ID(0)->getText();
     CFG* cfg = new CFG();
@@ -55,25 +38,17 @@ antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::Functiondefini
     vector<tree::TerminalNode*> list_id = ctx->ID();
     // Parameters of the function are returned in list_id[1] to list[n_params]
     for (int i=1; i<=n_params; i++) {
-        string name = list_id[i]->getText();
+        string name_var = list_id[i]->getText();
         // We dont care about type this time
         // string t = type[i]->getText();
-        bool valid = current_cfg->add_to_symbol_table(name,Int);
+        bool valid = current_cfg->add_to_symbol_table(name_var,Int);
         if (!valid) {
-            cout << "ERROR: Variable name " << name <<  " is redundant";
+            cout << "ERROR: Variable name " << name_var <<  " is redundant";
             return NULL;
         }
-        current_cfg->add_param(name, Int);
+        current_cfg->add_param(name_var, Int);
     }
     visit(ctx->statementseq());
-    return NULL;
-}
-
-antlrcpp::Any IRGenerator::visitCallNoParams(PLDCompParser::CallNoParamsContext *ctx) {
-    return NULL;
-}
-
-antlrcpp::Any IRGenerator::visitCallWithParams(PLDCompParser::CallWithParamsContext *ctx) {
     return NULL;
 }
 
@@ -85,15 +60,47 @@ antlrcpp::Any IRGenerator::visitStatement(PLDCompParser::StatementContext *ctx) 
     return visitChildren(ctx);
 }
 
+ antlrcpp::Any IRGenerator::visitCallstatement(PLDCompParser::CallstatementContext *ctx) {
+    return visitChildren(ctx);
+ }
+
 antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) {
     string var = visit(ctx->expr());
+    if (!current_cfg->find_symbol(var)) {
+        // TODO: Exception
+        cout << "ERROR: " << var << " has not been declared yet " << endl;
+        return NULL;
+    }
     vector<string> params = {var};
     current_cfg->current_bb->add_IRInstr(IRInstr::ret,Int,params);
     return var;
 }
 
+antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
+    vector<PLDCompParser::ExprContext *> list_expr = ctx->expr();
+    vector<string> params;
+    params.push_back(ctx->ID()->getText());
+    int n_params = list_expr.size();
+    for (int i=0; i<n_params; i++) {
+        string var = visit(ctx->expr(i));
+        if (var.compare("!return_reg") == 0) {
+            cout << "HERE" << endl;
+            var = current_cfg->create_new_tempvar(Int);
+            vector<string> cpy_params = {var,"!return_reg"};
+            current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+        }
+        params.push_back(var);
+    }
+    current_cfg->current_bb->add_IRInstr(IRInstr::call,Int,params);
+    return NULL;
+}
 
 // Expression
+
+antlrcpp::Any IRGenerator::visitCallExpr(PLDCompParser::CallExprContext *ctx) {
+    visit(ctx->call());
+    return (string)("!return_reg");
+}
 antlrcpp::Any IRGenerator::visitConst(PLDCompParser::ConstContext *ctx) {
     string var = current_cfg->create_new_tempvar(Int);
     vector<string> params = {var,ctx->INT()->getText()};
