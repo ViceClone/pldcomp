@@ -20,10 +20,11 @@ void IRInstr::gen_asm(ostream& o){
             //on doit passer les parametres 
             //ordre des registres pour 32 bits: %edi, %esi, %edx, %ecx, %r8d, %r9d
             //le nom de la fonction est dans la premiere place du vecteur 
-            string funcname=params[0]; 
+            string funcname=params[0];
             if(params.size()<=6){
                 vector<string> registres={"edi","esi","edx","ecx","r8d","r9d"};
                 for(int i=1;i<=params.size();i++){
+
                     o<< bb->cfg->get_var_index(params[i])<<"("<<"%"<<"rbp), "<<"%"<<registres[i]<<endl;
                 }
                 o<< "callq "<< funcname<<endl;
@@ -60,7 +61,6 @@ void IRInstr::gen_asm(ostream& o){
 }
 
 // Definitions of basicblock functions.
-
 BasicBlock::BasicBlock(CFG* cfg, string entry_label) {
     this->cfg = cfg;
     this->label = entry_label;

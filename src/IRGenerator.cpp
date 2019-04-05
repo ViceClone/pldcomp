@@ -17,7 +17,26 @@ antlrcpp::Any IRGenerator::visitDeclaration(PLDCompParser::DeclarationContext *c
     cfg->add_bb(bb);
     cfg->current_bb = bb;
     current_cfg = cfg;
+    visit(ctx->functiondeclarationparams());
     visit(ctx->statementseq());
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitFunctiondecalrationparams(
+    PLDCompParser::FunctiondeclarationparamsContext *ctx){
+    List<type> types = ctx.type().toList();
+    if(types.size()>0){
+        List<ID> IDs = ctx.ID().toList();
+        vector<string> paramsAux;
+        string registres [6]={"edi","esi","edx","ecx","r8d","r9d"};
+        for(int i=0;i<types.size();i++){
+            string var = current_cfg->create_new_tempvar(Int);
+            //on stocke la valquer pasee dans le registre(parametre) dans une variable
+            paramsAux={var,registres[i]};
+            current_cfg->add_IRInstr(IRInstr::ldconst,Int,paramsAux);
+            paramsAux.clear();
+        }
+    }
     return NULL;
 }
 
@@ -33,7 +52,6 @@ antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementCo
     string var = visit(ctx->expr());
     return var;
 }
-
 
 // Expression
 antlrcpp::Any IRGenerator::visitConst(PLDCompParser::ConstContext *ctx) {
@@ -60,10 +78,7 @@ antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx){
     vector<string> params;
     //le nom de la fonction est dans la premiere place du vecteur 
     params.add(ctx->ID());
-    List<expr> expressions = ctx.expr()
-                    .stream()
-                    .map(expr -> expr.accept(exprVisitor))
-                    .collect(toList());
+    List<expr> expressions = ctx.expr().toList();
     if(expressions.size()<=6){
         for(int i=0;i<expressions.size();i++){
             params.add(visit(expr(i)));

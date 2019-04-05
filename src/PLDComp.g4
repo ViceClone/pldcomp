@@ -2,7 +2,7 @@ grammar PLDComp;
 
 prog: declaration EOF;
 
-declaration : type ID '(' functiondeclarationparams ')' '{' statementseq '}'; 
+declaration : type ID '(' (functiondeclarationparams)* ')' '{' statementseq '}'; 
 
 statementseq : statement+;
 
@@ -12,10 +12,9 @@ statement : vardeclaration
     | functioncall 
     ;
 
-functiondeclarationparams : type ID (','  type ID)* ;
+functiondeclarationparams : type ID (','  type ID)* ; 
 
 functioncall :  ID '(' expr (','  expr)*  ')' ';' ;
-
 
 vardeclaration : type ID '=' expr ';' # DeclWithAssignment
     | type ID ';' #DeclWithoutAssignment
