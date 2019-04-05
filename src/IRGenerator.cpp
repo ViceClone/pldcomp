@@ -73,6 +73,7 @@ antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementCo
     }
     vector<string> params = {var};
     current_cfg->current_bb->add_IRInstr(IRInstr::ret,Int,params);
+    current_cfg->reset_next_temp();
     return var;
 }
 
@@ -84,7 +85,7 @@ antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
     for (int i=0; i<n_params; i++) {
         string var = visit(ctx->expr(i));
         if (var.compare("!return_reg") == 0) {
-            cout << "HERE" << endl;
+            //current_cfg->move_next_temp(4);
             var = current_cfg->create_new_tempvar(Int);
             vector<string> cpy_params = {var,"!return_reg"};
             current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
@@ -92,6 +93,8 @@ antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
         params.push_back(var);
     }
     current_cfg->current_bb->add_IRInstr(IRInstr::call,Int,params);
+    current_cfg->move_next_temp(-4*n_params);
+    //current_cfg->reset_next_temp();
     return NULL;
 }
 
@@ -125,25 +128,29 @@ antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
 }
 
 antlrcpp::Any IRGenerator::visitNegExpr(PLDCompParser::NegExprContext *ctx) {
-    int address = current_cfg->get_current_address();
-    current_cfg->reset_next_temp(0);
     string var = visit(ctx->expr());
-    current_cfg->reset_next_temp(4);
+    //current_cfg->move_next_temp(4);
     string temp = current_cfg->create_new_tempvar(Int);
     vector<string> params = {temp,"0"};
     current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params);
     params = {var,temp,var};
     current_cfg->current_bb->add_IRInstr(IRInstr::sub,Int,params);
+    current_cfg->move_next_temp(-4);
     return var;
 }
 
 antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOpContext *ctx) {
     int address = current_cfg->get_current_address();
-    current_cfg->reset_next_temp(0);
     string var1 = visit(ctx->expr(0));
-    current_cfg->reset_next_temp(4);
     string var2 = visit(ctx->expr(1));
-    current_cfg->reset_next_temp(0);
+    if (var1.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+
+    if (var2.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    
     string var3 = current_cfg->create_new_tempvar(Int);
     vector<string> params = {var3, var1, var2};
     IRInstr::Operation op;
@@ -156,11 +163,17 @@ antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOp
 
 antlrcpp::Any IRGenerator::visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx) {
     int address = current_cfg->get_current_address();
-    current_cfg->reset_next_temp(0);
     string var1 = visit(ctx->expr(0));
-    current_cfg->reset_next_temp(4);
     string var2 = visit(ctx->expr(1));
-    current_cfg->reset_next_temp(0);
+    cout << "---------HEREEEEE-------" << endl;
+    if (var1.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+
+    if (var2.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    
     string var3 = current_cfg->create_new_tempvar(Int);
     vector<string> params = {var3, var1, var2};
     IRInstr::Operation op;
@@ -185,7 +198,7 @@ antlrcpp::Any IRGenerator::visitDeclWithoutAssignment(PLDCompParser::DeclWithout
     if (!validDeclaration) {
         cout << "ERROR: invalid declaration " << endl;
     }
-    current_cfg->reset_next_temp(0);
+    current_cfg->reset_next_temp();
     return NULL;
 }
 
@@ -202,10 +215,10 @@ antlrcpp::Any IRGenerator::visitDeclWithAssignment(PLDCompParser::DeclWithAssign
         cout << "ERROR: invalid declaration " << endl;
         return NULL;
     }
-    current_cfg->reset_next_temp(0);
     string temp = visit(ctx->expr());
     vector<string> params = {name, temp};
     current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
+    current_cfg->reset_next_temp();
     return NULL;
 }
 
@@ -219,6 +232,7 @@ antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprCont
     } else {
         cout << "ERROR: variable has not been declared yet" << endl;
     }
+    current_cfg->reset_next_temp();
     return NULL;
 }
 // Type

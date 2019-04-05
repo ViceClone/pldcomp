@@ -122,7 +122,8 @@ class CFG {
 	string create_new_tempvar(Type t);
 	int get_var_index(string name);
 	Type get_var_type(string name);
-	void reset_next_temp(int offset);
+	void reset_next_temp();
+	void move_next_temp(int offset);
 	int get_current_address();
 	int set_n_params(int n);
 

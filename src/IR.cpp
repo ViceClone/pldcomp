@@ -157,6 +157,7 @@ bool CFG::add_to_symbol_table(string name, Type t) {
     }
     if (t==Int) {
         nextFreeSymbolIndex += 4;
+        nextTempAddress = nextFreeSymbolIndex;
         SymbolIndex[name] = nextFreeSymbolIndex;
         SymbolType[name] = t;
         cout << "---------VAR DECLARATION: \"" << name << "\"  at address @" << nextFreeSymbolIndex << endl;
@@ -187,8 +188,13 @@ void CFG::add_param(string name, Type t) {
     params_type.push_back(t);
 }
 
-void CFG::reset_next_temp(int offset) {
-    nextTempAddress = nextFreeSymbolIndex+offset;
+void CFG::reset_next_temp() {
+    nextTempAddress = nextFreeSymbolIndex;
+}
+
+void CFG::move_next_temp(int offset) {
+    nextTempAddress+=offset;
+    cout << "MOVE ADDRESS: " <<nextTempAddress << endl;
 }
 
 int CFG::get_current_address() {
