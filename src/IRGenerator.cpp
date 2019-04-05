@@ -124,6 +124,13 @@ antlrcpp::Any IRGenerator::visitPar(PLDCompParser::ParContext *ctx) {
 }
 
 antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
+    string name = ctx->ID()->getText();
+    if (current_cfg->find_symbol(name)) {
+        return (string)name;
+    } else {
+        // TODO: throw exception here
+        cout << "Variable \'" << name << "\' has not been declared yet " << endl;
+    }
     return (string)(ctx->ID()->getText());
 }
 
