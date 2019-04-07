@@ -113,37 +113,6 @@ antlrcpp::Any IRGenerator::visitStatement(PLDCompParser::StatementContext *ctx) 
         current_cfg->current_bb->add_IRInstr(op,Int,params);
         current_cfg->move_next_temp(-4*n_temps);
         current_cfg->reset_next_temp();
-        BasicBlock * testBB = current_cfg->current_bb;
-
-        string afterIfLabel = current_cfg->new_BB_name();
-        BasicBlock * afterIfBB = new BasicBlock(current_cfg,afterIfLabel);
-        afterIfBB->exit_false = testBB->exit_false;
-        afterIfBB->exit_true = testBB->exit_true;
-
-        string thenLabel = current_cfg->new_BB_name();
-        BasicBlock * thenBB = new BasicBlock(current_cfg,thenLabel);
-        current_cfg->current_bb = thenBB;
-        thenBB->ret_token = testBB->ret_token;
-        visit(ctx->statementseq(0));
-        testBB->exit_true = thenBB;
-        thenBB->exit_true = afterIfBB;
-        thenBB->exit_false= nullptr;
-        
-
-        if (ctx->statementseq(1)) {
-            string elseLable = current_cfg->new_BB_name();
-            BasicBlock * elseBB = new BasicBlock(current_cfg,elseLable);
-            current_cfg->current_bb = elseBB;
-            elseBB->ret_token = testBB->ret_token;
-            visit(ctx->statementseq(1));
-            testBB->exit_false = elseBB;
-            elseBB->exit_true = afterIfBB;
-            elseBB->exit_false = nullptr;
-            afterIfBB->ret_token = ((thenBB->ret_token+elseBB->ret_token) > 0);
-        } else {
-            testBB->exit_false = afterIfBB;
-        }
-        current_cfg->current_bb = afterIfBB;
     }
     // LT, LTE, GT, GTE
     else if (PLDCompParser::Rel1ExprContext* context =
@@ -199,77 +168,44 @@ antlrcpp::Any IRGenerator::visitStatement(PLDCompParser::StatementContext *ctx) 
         current_cfg->current_bb->add_IRInstr(op,Int,params);
         current_cfg->move_next_temp(-4*n_temps);
         current_cfg->reset_next_temp();
-        BasicBlock * testBB = current_cfg->current_bb;
-
-        string afterIfLabel = current_cfg->new_BB_name();
-        BasicBlock * afterIfBB = new BasicBlock(current_cfg,afterIfLabel);
-        afterIfBB->exit_false = testBB->exit_false;
-        afterIfBB->exit_true = testBB->exit_true;
-
-        string thenLabel = current_cfg->new_BB_name();
-        BasicBlock * thenBB = new BasicBlock(current_cfg,thenLabel);
-        current_cfg->current_bb = thenBB;
-        thenBB->ret_token = testBB->ret_token;
-        visit(ctx->statementseq(0));
-        testBB->exit_true = thenBB;
-        thenBB->exit_true = afterIfBB;
-        thenBB->exit_false= nullptr;
-        
-
-        if (ctx->statementseq(1)) {
-            string elseLable = current_cfg->new_BB_name();
-            BasicBlock * elseBB = new BasicBlock(current_cfg,elseLable);
-            current_cfg->current_bb = elseBB;
-            elseBB->ret_token = testBB->ret_token;
-            visit(ctx->statementseq(1));
-            testBB->exit_false = elseBB;
-            elseBB->exit_true = afterIfBB;
-            elseBB->exit_false = nullptr;
-            afterIfBB->ret_token = ((thenBB->ret_token+elseBB->ret_token) > 0);
-        } else {
-            testBB->exit_false = afterIfBB;
-        }
-        current_cfg->current_bb = afterIfBB;
-    }
-    else {
+    } else {
         string var = visit(ctx->expr());
         params.push_back(var);
         IRInstr::Operation op = IRInstr::cmp;
         current_cfg->current_bb->add_IRInstr(op,Int,params);
         current_cfg->reset_next_temp();
-        BasicBlock * testBB = current_cfg->current_bb;
-
-        string afterIfLabel = current_cfg->new_BB_name();
-        BasicBlock * afterIfBB = new BasicBlock(current_cfg,afterIfLabel);
-        afterIfBB->exit_false = testBB->exit_false;
-        afterIfBB->exit_true = testBB->exit_true;
-
-        string thenLabel = current_cfg->new_BB_name();
-        BasicBlock * thenBB = new BasicBlock(current_cfg,thenLabel);
-        current_cfg->current_bb = thenBB;
-        thenBB->ret_token = testBB->ret_token;
-        visit(ctx->statementseq(0));
-        testBB->exit_true = thenBB;
-        thenBB->exit_true = afterIfBB;
-        thenBB->exit_false= nullptr;
-        
-
-        if (ctx->statementseq(1)) {
-            string elseLable = current_cfg->new_BB_name();
-            BasicBlock * elseBB = new BasicBlock(current_cfg,elseLable);
-            current_cfg->current_bb = elseBB;
-            elseBB->ret_token = testBB->ret_token;
-            visit(ctx->statementseq(1));
-            testBB->exit_false = elseBB;
-            elseBB->exit_true = afterIfBB;
-            elseBB->exit_false = nullptr;
-            afterIfBB->ret_token = ((thenBB->ret_token+elseBB->ret_token) > 0);
-        } else {
-            testBB->exit_false = afterIfBB;
-        }
-        current_cfg->current_bb = afterIfBB;
-
     }
+    BasicBlock * testBB = current_cfg->current_bb;
+
+    string afterIfLabel = current_cfg->new_BB_name();
+    BasicBlock * afterIfBB = new BasicBlock(current_cfg,afterIfLabel);
+    afterIfBB->exit_false = testBB->exit_false;
+    afterIfBB->exit_true = testBB->exit_true;
+
+    string thenLabel = current_cfg->new_BB_name();
+    BasicBlock * thenBB = new BasicBlock(current_cfg,thenLabel);
+    current_cfg->current_bb = thenBB;
+    thenBB->ret_token = testBB->ret_token;
+    visit(ctx->statementseq(0));
+    testBB->exit_true = thenBB;
+    thenBB->exit_true = afterIfBB;
+    thenBB->exit_false= nullptr;
+    
+
+    if (ctx->statementseq(1)) {
+        string elseLable = current_cfg->new_BB_name();
+        BasicBlock * elseBB = new BasicBlock(current_cfg,elseLable);
+        current_cfg->current_bb = elseBB;
+        elseBB->ret_token = testBB->ret_token;
+        visit(ctx->statementseq(1));
+        testBB->exit_false = elseBB;
+        elseBB->exit_true = afterIfBB;
+        elseBB->exit_false = nullptr;
+        afterIfBB->ret_token = ((thenBB->ret_token+elseBB->ret_token) > 0);
+    } else {
+        testBB->exit_false = afterIfBB;
+    }
+    current_cfg->current_bb = afterIfBB;
     return NULL;
  }
 

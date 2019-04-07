@@ -4,7 +4,7 @@ int func(int a, int b){
 int main() {
     int a = 3;
     //return a;
-    if (func(1,-1)) {
+    if (func(1,-3)==-20) {
         a = a+3;
     } else {
         //return 3;
