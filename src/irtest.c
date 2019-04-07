@@ -3,13 +3,14 @@ int func(int a, int b){
 }
 int main() {
     int a = 3;
-    return a;
-    if (4==func(1,3)) {
-        return 1;
+    //return a;
+    if (func(1,-1)) {
+        a = a+3;
     } else {
-        return 3;
+        //return 3;
         a=   5;
     }
     a = a+5;
     return a;
+    //a = 4;
 }

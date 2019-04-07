@@ -90,6 +90,48 @@ void IRInstr::gen_asm(ostream& o){
             o << "    jne " << bb->exit_false->label << endl;
         }
         break;
+        case cmp_ne: {
+            cout << "cmp_ne " << params[0] << " " << params[1] << endl;
+            if (params[1].compare("!return_reg") != 0) {
+                o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax" << endl;
+            }
+            o << "    cmpl " << "%" << "eax, -"
+                << bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)" << endl;
+            o << "    je " << bb->exit_false->label << endl;
+        }
+        break;
+        case cmp_lt: {
+            cout << "cmp_lt " << params[0] << " " << params[1] << endl;
+            if (params[1].compare("!return_reg") != 0) {
+                o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax" << endl;
+            }
+            o << "    cmpl " << "%" << "eax, -"
+                << bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)" << endl;
+            o << "    jge " << bb->exit_false->label << endl;
+        }
+        break;
+        case cmp_le: {
+            cout << "cmp_le " << params[0] << " " << params[1] << endl;
+            if (params[1].compare("!return_reg") != 0) {
+                o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax" << endl;
+            }
+            o << "    cmpl " << "%" << "eax, -"
+                << bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)" << endl;
+            o << "    jg " << bb->exit_false->label << endl;
+        }
+        break;
+        case cmp: {
+            cout << "cmp " << params[0] << endl;
+            o << "    # cmp " << params[0] << endl;
+            o << "    cmpl $0, ";
+            if (params[0].compare("!return_reg") == 0) {
+                o << "%" << "eax" << endl;
+            } else {
+                o << "-" << bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)" << endl;
+            }
+            o << "    je " << bb->exit_false->label << endl;
+        }
+        break;
         default: 
         break;
     }

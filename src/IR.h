@@ -37,6 +37,7 @@ public:
 		rmem,
 		wmem,
 		call, 
+		cmp, //compare with $1
 		cmp_eq,
 		cmp_ne,
 		cmp_lt,
