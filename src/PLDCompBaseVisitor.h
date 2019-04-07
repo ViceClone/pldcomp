@@ -31,6 +31,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitIfstatement(PLDCompParser::IfstatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitCallstatement(PLDCompParser::CallstatementContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -71,19 +75,47 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitNegExpr(PLDCompParser::NegExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCallExpr(PLDCompParser::CallExprContext *ctx) override {
+  virtual antlrcpp::Any visitNegConst(PLDCompParser::NegConstContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitNegConst(PLDCompParser::NegConstContext *ctx) override {
+  virtual antlrcpp::Any visitRel2Expr(PLDCompParser::Rel2ExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLogicalOr(PLDCompParser::LogicalOrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitBitwiseXor(PLDCompParser::BitwiseXorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitBitwiseOr(PLDCompParser::BitwiseOrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLogicalAnd(PLDCompParser::LogicalAndContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitBitwiseAnd(PLDCompParser::BitwiseAndContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitRel1Expr(PLDCompParser::Rel1ExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCallExpr(PLDCompParser::CallExprContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -27,6 +27,8 @@ public:
 
     virtual antlrcpp::Any visitStatement(PLDCompParser::StatementContext *context) = 0;
 
+    virtual antlrcpp::Any visitIfstatement(PLDCompParser::IfstatementContext *context) = 0;
+
     virtual antlrcpp::Any visitCallstatement(PLDCompParser::CallstatementContext *context) = 0;
 
     virtual antlrcpp::Any visitCall(PLDCompParser::CallContext *context) = 0;
@@ -47,13 +49,27 @@ public:
 
     virtual antlrcpp::Any visitConst(PLDCompParser::ConstContext *context) = 0;
 
-    virtual antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *context) = 0;
-
     virtual antlrcpp::Any visitNegExpr(PLDCompParser::NegExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitCallExpr(PLDCompParser::CallExprContext *context) = 0;
-
     virtual antlrcpp::Any visitNegConst(PLDCompParser::NegConstContext *context) = 0;
+
+    virtual antlrcpp::Any visitRel2Expr(PLDCompParser::Rel2ExprContext *context) = 0;
+
+    virtual antlrcpp::Any visitLogicalOr(PLDCompParser::LogicalOrContext *context) = 0;
+
+    virtual antlrcpp::Any visitBitwiseXor(PLDCompParser::BitwiseXorContext *context) = 0;
+
+    virtual antlrcpp::Any visitBitwiseOr(PLDCompParser::BitwiseOrContext *context) = 0;
+
+    virtual antlrcpp::Any visitLogicalAnd(PLDCompParser::LogicalAndContext *context) = 0;
+
+    virtual antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *context) = 0;
+
+    virtual antlrcpp::Any visitBitwiseAnd(PLDCompParser::BitwiseAndContext *context) = 0;
+
+    virtual antlrcpp::Any visitRel1Expr(PLDCompParser::Rel1ExprContext *context) = 0;
+
+    virtual antlrcpp::Any visitCallExpr(PLDCompParser::CallExprContext *context) = 0;
 
     virtual antlrcpp::Any visitType(PLDCompParser::TypeContext *context) = 0;
 

@@ -1,5 +1,6 @@
 #include "antlr4-runtime.h"
 #include "IRGenerator.h"
+#include "PLDCompParser.h"
 
 #include <iostream>
 #include <vector>
@@ -19,7 +20,7 @@ int main(int argc, char** argv) {
     cout << list_token.size() << endl;
     int n_lex_errors = 0;
     for (auto it=list_token.begin(); it!=list_token.end();++it) {
-        if ((*it)->getType()==21) {
+        if ((*it)->getType()==PLDCompParser::ERROR) {
             cout << "line " << (*it)->getLine() << ":" << (*it)->getCharPositionInLine() 
                 << " unrecognized token \'" << (*it)->getText() << "\'" <<endl;
             n_lex_errors++;

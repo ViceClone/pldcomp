@@ -1,16 +1,15 @@
-int sum(int a, int b, int c) {
-    return a+b*c;
+int func(int a, int b){
+    return a+b;
 }
-
-int sub(int a,int b) {
-    int c1 = a-b;
-    return c1;
-}
-
 int main() {
-    int a = 1;
-    int b = 2; 
-    int c =3;
-    int d = sum(a,sum(e*4,1,1),b);
-    return d;
+    int a = 3;
+    return a;
+    if (4==func(1,3)) {
+        return 1;
+    } else {
+        return 3;
+        a=   5;
+    }
+    a = a+5;
+    return a;
 }

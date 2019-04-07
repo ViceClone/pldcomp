@@ -31,10 +31,14 @@ public:
 		add,
 		sub,
 		mul,
+		andb,
+		orb,
+		xorb,
 		rmem,
 		wmem,
 		call, 
 		cmp_eq,
+		cmp_ne,
 		cmp_lt,
 		cmp_le,
 		ret
@@ -46,7 +50,7 @@ public:
 	
 	/** Actual code generation */
 	void gen_asm(ostream &o); /**< x86 assembly code generation for this IR instruction */
-	
+	Operation getOp();
 private:
 	BasicBlock* bb; /**< The BB this instruction belongs to, which provides a pointer to the CFG this instruction belong to */
 	Operation op;
@@ -83,6 +87,10 @@ class BasicBlock {
 	string label; /**< label of the BB, also will be the label in the generated code */
 	CFG* cfg; /** < the CFG where this block belongs */
 	vector<IRInstr*> instrs; /** < the instructions themselves. */
+	int ret_token=1;
+	bool isGenerated = false;
+	bool isLastBlock = false;
+	
  protected:
 
  
@@ -132,7 +140,7 @@ class CFG {
 	// basic block management
 	string new_BB_name();
 	BasicBlock* current_bb;
-
+	BasicBlock* lastBlock;
  protected:
 	map <string, Type> SymbolType; /**< part of the symbol table  */
 	map <string, int> SymbolIndex; /**< part of the symbol table  */
@@ -143,4 +151,6 @@ class CFG {
 	int n_params;
 	vector<string> params_name;
 	vector<Type> params_type;
+
+	
 };

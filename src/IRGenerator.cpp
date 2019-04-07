@@ -2,6 +2,7 @@
 #include "antlr4-runtime.h"
 #include "PLDCompBaseVisitor.h"
 #include "PLDCompParser.h"
+#include "misc/Interval.h"
 #include "IR.h"
 using namespace std;
 using namespace antlr4;
@@ -21,6 +22,7 @@ antlrcpp::Any IRGenerator::visitProg(PLDCompParser::ProgContext *ctx) {
 
 antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::FunctiondefinitionContext *ctx) {
     string name = ctx->ID(0)->getText();
+    string func_type = ctx->type(0)->getText();
     CFG* cfg = new CFG();
     cfg->label = name;
     cfg_list[name] = cfg;
@@ -30,7 +32,15 @@ antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::Functiondefini
     cfg->add_bb(bb);
     cfg->current_bb = bb;
     current_cfg = cfg;
-
+    BasicBlock * lastBlock = new BasicBlock(cfg,".LLast"+name);
+    cfg->lastBlock = lastBlock;
+    lastBlock->isLastBlock = true;
+    lastBlock->exit_false = nullptr;
+    lastBlock->exit_true = nullptr;
+    bb->exit_true = lastBlock;
+    if (func_type.compare("int") == 0) {
+        current_cfg->add_to_symbol_table("!returnval", Int);
+    }
     // Can merge with visitFuncNoParams -> TODO
     int n_params = (ctx->ID()).size()-1;
     current_cfg->set_n_params(n_params);
@@ -57,24 +67,114 @@ antlrcpp::Any IRGenerator::visitStatementseq(PLDCompParser::StatementseqContext 
 }
 
 antlrcpp::Any IRGenerator::visitStatement(PLDCompParser::StatementContext *ctx)  {
-    return visitChildren(ctx);
+    if (current_cfg->current_bb->ret_token <= 0) {
+        size_t first = ctx->start->getStartIndex();
+        size_t last = ctx->stop->getStopIndex();
+        misc::Interval interval(first,last);
+        string ctxLine = ctx->start->getInputStream()->getText(interval);
+        cout << "line:" << ctx->getStart()->getLine()
+            << ":" << ctx->getStart()->getCharPositionInLine()
+            << ": \033[1;31mwarning\033[0m unreachable statement\n \033[0;32m" << ctxLine << "\033[0m" << endl;
+    }
+    antlrcpp::Any ret = visitChildren(ctx);
+    current_cfg->reset_next_temp();
+    return ret;
 }
 
  antlrcpp::Any IRGenerator::visitCallstatement(PLDCompParser::CallstatementContext *ctx) {
     return visitChildren(ctx);
  }
 
-antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) {
-    string var = visit(ctx->expr());
-    if (!current_cfg->find_symbol(var)) {
-        // TODO: Exception
-        cout << "ERROR: " << var << " has not been declared yet " << endl;
-        return NULL;
+ antlrcpp::Any IRGenerator::visitIfstatement(PLDCompParser::IfstatementContext *ctx) {
+    vector<string> params;
+    if (PLDCompParser::Rel2ExprContext* context =
+            dynamic_cast<PLDCompParser::Rel2ExprContext*> (ctx->expr())) {
+        string varL = visit(context->expr(0));
+        // save number of temporary variables to move back
+        int n_temps = 0;
+        if (varL.compare("!return_reg") == 0) {
+            varL = current_cfg->create_new_tempvar(Int);
+            vector<string> cpy_params = {varL,"!return_reg"};
+            current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+            n_temps++;
+        }
+        string varR = visit(context->expr(1));
+        params.push_back(varL);
+        params.push_back(varR);
+        IRInstr::Operation op;
+        string relop = context->relop->getText();
+        if (relop.compare("==") == 0) {
+            op = IRInstr::cmp_eq;
+        } else if (relop.compare("!=") == 0) {
+            op = IRInstr::cmp_ne;
+        }
+        current_cfg->current_bb->add_IRInstr(op,Int,params);
+        current_cfg->move_next_temp(-4*n_temps);
+        current_cfg->reset_next_temp();
+        BasicBlock * testBB = current_cfg->current_bb;
+
+        string afterIfLabel = current_cfg->new_BB_name();
+        BasicBlock * afterIfBB = new BasicBlock(current_cfg,afterIfLabel);
+        afterIfBB->exit_false = testBB->exit_false;
+        afterIfBB->exit_true = testBB->exit_true;
+
+        string thenLabel = current_cfg->new_BB_name();
+        BasicBlock * thenBB = new BasicBlock(current_cfg,thenLabel);
+        current_cfg->current_bb = thenBB;
+        thenBB->ret_token = testBB->ret_token;
+        visit(ctx->statementseq(0));
+        testBB->exit_true = thenBB;
+        thenBB->exit_true = afterIfBB;
+        thenBB->exit_false= nullptr;
+        
+
+        if (ctx->statementseq(1)) {
+            string elseLable = current_cfg->new_BB_name();
+            BasicBlock * elseBB = new BasicBlock(current_cfg,elseLable);
+            current_cfg->current_bb = elseBB;
+            elseBB->ret_token = testBB->ret_token;
+            visit(ctx->statementseq(1));
+            testBB->exit_false = elseBB;
+            elseBB->exit_true = afterIfBB;
+            elseBB->exit_false = nullptr;
+            afterIfBB->ret_token = ((thenBB->ret_token+elseBB->ret_token) > 0);
+        } else {
+            testBB->exit_false = afterIfBB;
+        }
+        current_cfg->current_bb = afterIfBB;
+    } else {
+        cout << "Expr is NOT a eq or ne---------------------" << endl;
     }
-    vector<string> params = {var};
-    current_cfg->current_bb->add_IRInstr(IRInstr::ret,Int,params);
-    current_cfg->reset_next_temp();
-    return var;
+    return NULL;
+ }
+
+antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) {
+    if (current_cfg->current_bb->ret_token <= 0) {
+        return NULL;
+    } else {
+        string var = visit(ctx->expr());
+        /*
+        if (var.compare("!return_reg") == 0) {
+            return var;
+        }
+        */
+        if (!current_cfg->find_symbol(var)) {
+            // TODO: Exception
+            cout << "ERROR: " << var << " has not been declared yet " << endl;
+            return NULL;
+        }
+        current_cfg->current_bb->ret_token -= 1;
+        vector<string> params = {"!returnval",var};
+        vector<string> ret_params = {"!returnval"};
+        current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
+        //cout << "ret" << endl;
+        // current_cfg->current_bb->isReturn = true;
+        current_cfg->current_bb->add_IRInstr(IRInstr::ret,Int,params);
+        current_cfg->reset_next_temp();
+        return var;
+    }
+
+    
 }
 
 antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
@@ -82,10 +182,16 @@ antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
     vector<string> params;
     params.push_back(ctx->ID()->getText());
     int n_params = list_expr.size();
+    //cout << "Current address1: " << current_cfg->get_current_address() << endl;
+    int n_temps = 0;
     for (int i=0; i<n_params; i++) {
         string var = visit(ctx->expr(i));
+        if (var.substr(0,4).compare("!tmp") == 0) {
+            n_temps++;
+        }
         if (var.compare("!return_reg") == 0) {
             //current_cfg->move_next_temp(4);
+            n_temps++;
             var = current_cfg->create_new_tempvar(Int);
             vector<string> cpy_params = {var,"!return_reg"};
             current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
@@ -93,8 +199,8 @@ antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
         params.push_back(var);
     }
     current_cfg->current_bb->add_IRInstr(IRInstr::call,Int,params);
-    current_cfg->move_next_temp(-4*n_params);
-    //current_cfg->reset_next_temp();
+    current_cfg->move_next_temp(-4*n_temps);
+    //cout << "Current address2: " << current_cfg->get_current_address() << endl;
     return NULL;
 }
 
@@ -172,7 +278,6 @@ antlrcpp::Any IRGenerator::visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx
     int address = current_cfg->get_current_address();
     string var1 = visit(ctx->expr(0));
     string var2 = visit(ctx->expr(1));
-    cout << "---------HEREEEEE-------" << endl;
     if (var1.substr(0,4).compare("!tmp") == 0) {
         current_cfg->move_next_temp(-4);
     }
@@ -193,6 +298,34 @@ antlrcpp::Any IRGenerator::visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx
     return var3;
 }
 
+//TODO
+antlrcpp::Any IRGenerator::visitRel1Expr(PLDCompParser::Rel1ExprContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitRel2Expr(PLDCompParser::Rel2ExprContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitBitwiseAnd(PLDCompParser::BitwiseAndContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitBitwiseXor(PLDCompParser::BitwiseXorContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitBitwiseOr(PLDCompParser::BitwiseOrContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitLogicalAnd(PLDCompParser::LogicalAndContext *ctx) {
+    return NULL;
+}
+
+antlrcpp::Any IRGenerator::visitLogicalOr(PLDCompParser::LogicalOrContext *ctx) {
+    return NULL;
+}
 // Variable declaration
 antlrcpp::Any IRGenerator::visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx) {
     string name = ctx->ID()->getText();

@@ -14,6 +14,10 @@ IRInstr::IRInstr(BasicBlock* bb_, Operation op, Type t, vector<string> params) {
     this->bb = bb_;
 }
 
+IRInstr::Operation IRInstr::getOp() {
+    return op;
+}
+
 void IRInstr::gen_asm(ostream& o){
     switch (op){
         case ldconst:
@@ -70,12 +74,22 @@ void IRInstr::gen_asm(ostream& o){
         }
         break;
         case ret: {
-            cout << "ret " << params[0] << endl;
-            if (params[0].compare("!return_reg") != 0) {
-                o<< "    movl -"<< bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp), " << "%"<<"eax";
-            }
-            o<< " # " << "ret " << params[0] << endl;
+            o<< " # " << "ret " << endl;
+            o<< "    jmp .LLast" << bb->cfg->label << endl;
+            o<< endl;
+            cout << "ret" << endl;
         }
+        break;
+        case cmp_eq: {
+            cout << "cmp_eq " << params[0] << " " << params[1] << endl;
+            if (params[1].compare("!return_reg") != 0) {
+                o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax" << endl;
+            }
+            o << "    cmpl " << "%" << "eax, -"
+                << bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)" << endl;
+            o << "    jne " << bb->exit_false->label << endl;
+        }
+        break;
         default: 
         break;
     }
@@ -89,11 +103,48 @@ BasicBlock::BasicBlock(CFG* cfg, string entry_label) {
 }
 
 void BasicBlock::gen_asm(ostream& o){
-    for (auto it=instrs.begin();it!=instrs.end();++it){
-        (*it)->gen_asm(o);
+    if (isGenerated) return;
+    isGenerated = true;
+    if (isLastBlock) {
+        o << label << ":" << endl;
     }
+    auto it = instrs.begin();
+    bool stop = false;
+    while (!stop && it!=instrs.end()) {
+        (*it)->gen_asm(o);
+        if ((*it)->getOp()==IRInstr::ret) {
+            stop = true;
+            cfg->lastBlock->gen_asm(o);
+        }
+        ++it;
+    }
+    
+    // for (auto it=instrs.begin();it!=instrs.end();++it){
+    //     (*it)->gen_asm(o);
+    // }
+    
+    if (stop) return;
     if (exit_true==nullptr) {
         cfg->gen_asm_epilogue(o);
+    } else {
+        IRInstr * lastInstr = *(instrs.end()-1);
+        if (lastInstr->getOp() != IRInstr::cmp_eq || lastInstr->getOp() != IRInstr::cmp_ne
+            || lastInstr->getOp() != IRInstr::cmp_lt || lastInstr->getOp() != IRInstr::cmp_le) {
+            o << "    jmp " << exit_true->label << endl;
+            o << endl;
+            if (!exit_true->isGenerated) {
+                o << exit_true->label << ":" << endl;
+            }
+        }
+        exit_true->gen_asm(o);
+    }
+
+    if (exit_false) {
+        cout << "-------------gen_asm for " << exit_false->label << "-------------" << endl;
+        if (!exit_false->isGenerated) {
+            o << exit_false->label << ": " << endl;
+        }
+        exit_false->gen_asm(o);
     }
     o << endl;
 }
@@ -114,12 +165,15 @@ void CFG::add_bb(BasicBlock* bb){
 }
 
 void CFG::gen_asm(ostream& o) {
+    cout << "-------------gen_asm for " << bbs[0]->label << "-------------" << endl;
     gen_asm_prologue(o);
     bbs[0]->gen_asm(o);
+    /*
     for (auto it=bbs.begin()+1; it!=bbs.end(); ++it) {
         o << (*it)->label << ":" << endl;
         (*it)->gen_asm(o);
     }
+    */
 }
 
 void CFG::gen_asm_prologue(ostream& o) {
@@ -140,6 +194,8 @@ void CFG::gen_asm_prologue(ostream& o) {
 }
 
 void CFG::gen_asm_epilogue(ostream& o) {
+    o << "# epilogue" << endl;
+    o << "    movl -" << this->get_var_index("!returnval") <<"("<<"%"<<"rbp)," << "%"<<"eax"<<endl;
     int local_mem = 16*((nextFreeSymbolIndex/16)+((nextFreeSymbolIndex%16)!=0));
     o << "    addq $" << local_mem << ", " << "%" << "rsp" << endl; 
     o << "    popq "<<"%"<<"rbp" << endl;
@@ -167,6 +223,9 @@ bool CFG::add_to_symbol_table(string name, Type t) {
 }
 
 bool CFG::find_symbol(string name) {
+    if (name.compare("!return_reg") == 0) {
+        return true;
+    }
     map<string,int>::iterator it = SymbolIndex.find(name);
     if (it==SymbolIndex.end()) {
         return false;
@@ -177,7 +236,7 @@ bool CFG::find_symbol(string name) {
 string CFG::create_new_tempvar(Type t) {
     nextTempAddress+=4;
     string var_name = "!tmp" + to_string(nextTempAddress);
-    cout << "TEMP: " << var_name << "  " << nextTempAddress << endl;
+    //cout << "TEMP: " << var_name << "  " << nextTempAddress << endl;
     SymbolIndex[var_name] = nextTempAddress;
     SymbolType[var_name] = Int;
     return var_name;
@@ -194,7 +253,7 @@ void CFG::reset_next_temp() {
 
 void CFG::move_next_temp(int offset) {
     nextTempAddress+=offset;
-    cout << "MOVE ADDRESS: " <<nextTempAddress << endl;
+    //cout << "MOVE ADDRESS: " <<nextTempAddress << endl;
 }
 
 int CFG::get_current_address() {

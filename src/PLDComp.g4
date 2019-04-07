@@ -5,13 +5,17 @@ prog: functiondefinition+ EOF;
 functiondefinition : type ID '('(type ID (',' type ID)*)? ')' '{' statementseq '}'
     ;
 
-statementseq : statement+;
+statementseq : statement*;
 
 statement : vardeclaration 
+    | ifstatement
     | callstatement
     | returnstatement
     | assignmentstat
     ;
+
+ifstatement: 'if' '(' expr ')' '{' statementseq '}' 
+            ('else' '{' statementseq '}')?;
 
 callstatement : call ';'
     ;
@@ -32,6 +36,13 @@ expr : '(' expr ')' # Par
     | call # CallExpr
     | expr op=('*' | '/' | '%' ) expr # MultiplicativeOp
     | expr op=('+' | '-') expr # AdditiveOp
+    | expr relop=('>' | '<' | '>=' | '<=') expr # Rel1Expr
+    | expr relop=('==' | '!=') expr # Rel2Expr
+    | expr '&' expr # BitwiseAnd
+    | expr '^' expr # BitwiseXor
+    | expr '|' expr # BitwiseOr
+    | expr '&&' expr # LogicalAnd
+    | expr '||' expr # LogicalOr
     | INT # Const
     | '-' INT # NegConst
     | ID # Var
@@ -41,10 +52,29 @@ type : 'int';
 
 RETURN: 'return';
 INT_TYPE: 'int';
+IF: 'if';
+ELSE: 'else';
 ID : [a-zA-Z_] [a-zA-Z0-9_]*;
 INT : [0-9]+ ;
+
+LESS : '<';
+LESSEQUAL : '<=';
+GREATER : '>';
+GREATEREQUAL : '>=';
+
+EQUAL : '==';
+NOTEQUAL : '!=';
+
+AND : '&';
+OR : '|' ;
+ANDAND : '&&';
+OROR : '||';
+CARET : '^';
+TILDE : '~';
+
 ASSIGN: '=';
 SEMICOLON: ';';
+COMMA : ',';
 RIGHT_BRACE: '}';
 LEFT_BRACE : '{';
 LEFT_PARENTHESE : '(';
