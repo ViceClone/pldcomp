@@ -11,13 +11,12 @@ using namespace std;
 int main(int argc, char** argv) {
     ifstream file(argv[1]);
     string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
-    cout << "------LEXER-----" << endl;
+    //cout << "------LEXER-----" << endl;
     ANTLRInputStream input (content);
     PLDCompLexer lexer (&input);
     CommonTokenStream token (&lexer);
     vector<unique_ptr<Token>> list_token = lexer.getAllTokens();
     lexer.reset();
-    cout << list_token.size() << endl;
     int n_lex_errors = 0;
     for (auto it=list_token.begin(); it!=list_token.end();++it) {
         if ((*it)->getType()==PLDCompParser::ERROR) {
@@ -33,7 +32,7 @@ int main(int argc, char** argv) {
     
     
     token.reset();
-    cout << "------PARSER-----" << endl;
+    //cout << "------PARSER-----" << endl;
     PLDCompParser parser (&token);
     tree::ParseTree * tree = parser.prog();
     int n_syntax_errors = parser.getNumberOfSyntaxErrors();
@@ -44,8 +43,8 @@ int main(int argc, char** argv) {
     if (n_lex_errors+n_syntax_errors>0) {
         return 0;
     }
-    cout << "------CODE GENERATOR-----" << endl;
     
+    cout << "------CODE GENERATOR-----" << endl;
     IRGenerator visitor;
     visitor.visit(tree);
     ofstream o("out.asm",ofstream::out);
