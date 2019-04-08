@@ -1,16 +1,24 @@
 int func(int a, int b){
     return a+b;
 }
+int output(char c) {
+    putchar(c);
+    putchar('\n');
+}
 int main() {
-    int a = 3;
-    //return a;
-    if (func(1,-3)==-20) {
-        a = a+3;
-    } else {
-        //return 3;
-        a=   5;
+    int a = 0;
+    while( a< 4) {
+        output('a');
+        int b = 0;
+        if (1) {
+            while (b!=3) {
+                output('b');
+                b=b+1;
+            }
+        } else {
+            return 5;
+        }
+        a = a+1;
     }
-    a = a+5;
-    return a;
-    //a = 4;
+    return 3;
 }

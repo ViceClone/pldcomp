@@ -75,8 +75,8 @@ void IRInstr::gen_asm(ostream& o){
         break;
         case ret: {
             o<< " # " << "ret " << endl;
-            o<< "    jmp .LLast" << bb->cfg->label << endl;
-            o<< endl;
+            //o<< "    jmp .LLast" << bb->cfg->label << endl;
+            //o<< endl;
             cout << "ret" << endl;
         }
         break;
@@ -142,51 +142,34 @@ void IRInstr::gen_asm(ostream& o){
 BasicBlock::BasicBlock(CFG* cfg, string entry_label) {
     this->cfg = cfg;
     this->label = entry_label;
+    cfg->add_bb(this);
 }
 
 void BasicBlock::gen_asm(ostream& o){
     if (isGenerated) return;
     isGenerated = true;
-    if (isLastBlock) {
-        o << label << ":" << endl;
-    }
+    
     auto it = instrs.begin();
     bool stop = false;
     while (!stop && it!=instrs.end()) {
         (*it)->gen_asm(o);
         if ((*it)->getOp()==IRInstr::ret) {
             stop = true;
-            cfg->lastBlock->gen_asm(o);
+            //cfg->lastBlock->gen_asm(o);
         }
         ++it;
     }
     
-    // for (auto it=instrs.begin();it!=instrs.end();++it){
-    //     (*it)->gen_asm(o);
-    // }
-    
-    if (stop) return;
+
     if (exit_true==nullptr) {
-        cfg->gen_asm_epilogue(o);
+        //cfg->gen_asm_epilogue(o);
     } else {
         IRInstr * lastInstr = *(instrs.end()-1);
         if (lastInstr->getOp() != IRInstr::cmp_eq || lastInstr->getOp() != IRInstr::cmp_ne
             || lastInstr->getOp() != IRInstr::cmp_lt || lastInstr->getOp() != IRInstr::cmp_le) {
             o << "    jmp " << exit_true->label << endl;
             o << endl;
-            if (!exit_true->isGenerated) {
-                o << exit_true->label << ":" << endl;
-            }
         }
-        exit_true->gen_asm(o);
-    }
-
-    if (exit_false) {
-        cout << "-------------gen_asm for " << exit_false->label << "-------------" << endl;
-        if (!exit_false->isGenerated) {
-            o << exit_false->label << ": " << endl;
-        }
-        exit_false->gen_asm(o);
     }
     o << endl;
 }
@@ -207,15 +190,20 @@ void CFG::add_bb(BasicBlock* bb){
 }
 
 void CFG::gen_asm(ostream& o) {
+    cout << "nb blocks: " << bbs.size() << endl;
     cout << "-------------gen_asm for " << bbs[0]->label << "-------------" << endl;
     gen_asm_prologue(o);
     bbs[0]->gen_asm(o);
-    /*
     for (auto it=bbs.begin()+1; it!=bbs.end(); ++it) {
-        o << (*it)->label << ":" << endl;
-        (*it)->gen_asm(o);
+        if (!(*it)->isGenerated && !(*it)->isLastBlock) {
+            o << (*it)->label << ":" << endl;
+            (*it)->gen_asm(o);
+        }
+        
     }
-    */
+    o << "  .LLast" << label << ":" << endl;
+    gen_asm_epilogue(o);
+    
 }
 
 void CFG::gen_asm_prologue(ostream& o) {
@@ -242,6 +230,7 @@ void CFG::gen_asm_epilogue(ostream& o) {
     o << "    addq $" << local_mem << ", " << "%" << "rsp" << endl; 
     o << "    popq "<<"%"<<"rbp" << endl;
     o << "    retq " << endl;
+    o << endl;
 }
 
 int CFG::set_n_params(int n) {
@@ -255,13 +244,15 @@ bool CFG::add_to_symbol_table(string name, Type t) {
     }
     if (t==Int) {
         nextFreeSymbolIndex += 4;
-        nextTempAddress = nextFreeSymbolIndex;
-        SymbolIndex[name] = nextFreeSymbolIndex;
-        SymbolType[name] = t;
-        cout << "---------VAR DECLARATION: \"" << name << "\"  at address @" << nextFreeSymbolIndex << endl;
-        return true;
+        
+    } else if (t==Char) {
+        nextFreeSymbolIndex += 4;
     }
-    return false;
+    nextTempAddress = nextFreeSymbolIndex;
+    SymbolIndex[name] = nextFreeSymbolIndex;
+    SymbolType[name] = t;
+    cout << "---------VAR DECLARATION: \"" << name << "\"  at address @" << nextFreeSymbolIndex << endl;
+    return true;
 }
 
 bool CFG::find_symbol(string name) {
@@ -280,7 +271,7 @@ string CFG::create_new_tempvar(Type t) {
     string var_name = "!tmp" + to_string(nextTempAddress);
     //cout << "TEMP: " << var_name << "  " << nextTempAddress << endl;
     SymbolIndex[var_name] = nextTempAddress;
-    SymbolType[var_name] = Int;
+    SymbolType[var_name] = t;
     return var_name;
 }
 

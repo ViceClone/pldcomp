@@ -30,7 +30,8 @@ public:
     
 
     antlrcpp::Any visitIfstatement(PLDCompParser::IfstatementContext *ctx);
-
+    antlrcpp::Any visitWhilestatement(PLDCompParser::WhilestatementContext *ctx);
+    
     antlrcpp::Any visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) ;
     
     antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) ;
@@ -39,6 +40,7 @@ public:
     antlrcpp::Any visitVar(PLDCompParser::VarContext *ctx);  
     antlrcpp::Any visitMultiplicativeOp(PLDCompParser::MultiplicativeOpContext *ctx);
     antlrcpp::Any visitConst(PLDCompParser::ConstContext *ctx);
+    antlrcpp::Any visitCharConst(PLDCompParser::CharConstContext *ctx);
     antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx);
     antlrcpp::Any visitNegExpr(PLDCompParser::NegExprContext *ctx);
     antlrcpp::Any visitNegConst(PLDCompParser::NegConstContext *ctx);

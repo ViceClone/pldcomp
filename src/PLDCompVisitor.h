@@ -29,6 +29,8 @@ public:
 
     virtual antlrcpp::Any visitIfstatement(PLDCompParser::IfstatementContext *context) = 0;
 
+    virtual antlrcpp::Any visitWhilestatement(PLDCompParser::WhilestatementContext *context) = 0;
+
     virtual antlrcpp::Any visitCallstatement(PLDCompParser::CallstatementContext *context) = 0;
 
     virtual antlrcpp::Any visitCall(PLDCompParser::CallContext *context) = 0;
@@ -42,6 +44,8 @@ public:
     virtual antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *context) = 0;
 
     virtual antlrcpp::Any visitPar(PLDCompParser::ParContext *context) = 0;
+
+    virtual antlrcpp::Any visitCharConst(PLDCompParser::CharConstContext *context) = 0;
 
     virtual antlrcpp::Any visitVar(PLDCompParser::VarContext *context) = 0;
 

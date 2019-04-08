@@ -35,6 +35,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitWhilestatement(PLDCompParser::WhilestatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitCallstatement(PLDCompParser::CallstatementContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -60,6 +64,10 @@ public:
   }
 
   virtual antlrcpp::Any visitPar(PLDCompParser::ParContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCharConst(PLDCompParser::CharConstContext *ctx) override {
     return visitChildren(ctx);
   }
 

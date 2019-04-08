@@ -12,19 +12,21 @@
 class  PLDCompParser : public antlr4::Parser {
 public:
   enum {
-    RETURN = 1, INT_TYPE = 2, IF = 3, ELSE = 4, ID = 5, INT = 6, LESS = 7, 
-    LESSEQUAL = 8, GREATER = 9, GREATEREQUAL = 10, EQUAL = 11, NOTEQUAL = 12, 
-    AND = 13, OR = 14, ANDAND = 15, OROR = 16, CARET = 17, TILDE = 18, ASSIGN = 19, 
-    SEMICOLON = 20, COMMA = 21, RIGHT_BRACE = 22, LEFT_BRACE = 23, LEFT_PARENTHESE = 24, 
-    RIGHT_PARENTHESE = 25, PLUS = 26, MINUS = 27, STAR = 28, DIV = 29, MOD = 30, 
-    WHITESPACE = 31, NEWLINE = 32, BLOCKCOMMENT = 33, LINECOMMENT = 34, 
-    ERROR = 35
+    T__0 = 1, RETURN = 2, INT_TYPE = 3, IF = 4, ELSE = 5, WHILE = 6, CHAR = 7, 
+    ID = 8, INT = 9, LESS = 10, LESSEQUAL = 11, GREATER = 12, GREATEREQUAL = 13, 
+    EQUAL = 14, NOTEQUAL = 15, AND = 16, OR = 17, ANDAND = 18, OROR = 19, 
+    CARET = 20, TILDE = 21, PRIME = 22, BACKSLASH = 23, ASSIGN = 24, SEMICOLON = 25, 
+    COMMA = 26, RIGHT_BRACE = 27, LEFT_BRACE = 28, LEFT_PARENTHESE = 29, 
+    RIGHT_PARENTHESE = 30, PLUS = 31, MINUS = 32, STAR = 33, DIV = 34, MOD = 35, 
+    WHITESPACE = 36, NEWLINE = 37, BLOCKCOMMENT = 38, LINECOMMENT = 39, 
+    ERROR = 40
   };
 
   enum {
     RuleProg = 0, RuleFunctiondefinition = 1, RuleStatementseq = 2, RuleStatement = 3, 
-    RuleIfstatement = 4, RuleCallstatement = 5, RuleCall = 6, RuleVardeclaration = 7, 
-    RuleAssignmentstat = 8, RuleReturnstatement = 9, RuleExpr = 10, RuleType = 11
+    RuleIfstatement = 4, RuleWhilestatement = 5, RuleCallstatement = 6, 
+    RuleCall = 7, RuleVardeclaration = 8, RuleAssignmentstat = 9, RuleReturnstatement = 10, 
+    RuleExpr = 11, RuleType = 12
   };
 
   PLDCompParser(antlr4::TokenStream *input);
@@ -42,6 +44,7 @@ public:
   class StatementseqContext;
   class StatementContext;
   class IfstatementContext;
+  class WhilestatementContext;
   class CallstatementContext;
   class CallContext;
   class VardeclarationContext;
@@ -108,6 +111,7 @@ public:
     virtual size_t getRuleIndex() const override;
     VardeclarationContext *vardeclaration();
     IfstatementContext *ifstatement();
+    WhilestatementContext *whilestatement();
     CallstatementContext *callstatement();
     ReturnstatementContext *returnstatement();
     AssignmentstatContext *assignmentstat();
@@ -141,6 +145,25 @@ public:
   };
 
   IfstatementContext* ifstatement();
+
+  class  WhilestatementContext : public antlr4::ParserRuleContext {
+  public:
+    WhilestatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *WHILE();
+    antlr4::tree::TerminalNode *LEFT_PARENTHESE();
+    ExprContext *expr();
+    antlr4::tree::TerminalNode *RIGHT_PARENTHESE();
+    antlr4::tree::TerminalNode *LEFT_BRACE();
+    StatementseqContext *statementseq();
+    antlr4::tree::TerminalNode *RIGHT_BRACE();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  WhilestatementContext* whilestatement();
 
   class  CallstatementContext : public antlr4::ParserRuleContext {
   public:
@@ -276,6 +299,15 @@ public:
     antlr4::tree::TerminalNode *LEFT_PARENTHESE();
     ExprContext *expr();
     antlr4::tree::TerminalNode *RIGHT_PARENTHESE();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  CharConstContext : public ExprContext {
+  public:
+    CharConstContext(ExprContext *ctx);
+
+    antlr4::tree::TerminalNode *CHAR();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

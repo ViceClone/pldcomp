@@ -9,6 +9,7 @@ statementseq : statement*;
 
 statement : vardeclaration 
     | ifstatement
+    | whilestatement
     | callstatement
     | returnstatement
     | assignmentstat
@@ -16,6 +17,8 @@ statement : vardeclaration
 
 ifstatement: 'if' '(' expr ')' '{' statementseq '}' 
             ('else' '{' statementseq '}')?;
+
+whilestatement: 'while' '(' expr ')' '{' statementseq '}';
 
 callstatement : call ';'
     ;
@@ -45,16 +48,19 @@ expr : '(' expr ')' # Par
     | expr '||' expr # LogicalOr
     | INT # Const
     | '-' INT # NegConst
+    | CHAR # CharConst
     | ID # Var
     ;
 
-type : 'int';
+type : 'int' | 'char';
 
 RETURN: 'return';
 INT_TYPE: 'int';
 IF: 'if';
 ELSE: 'else';
-ID : [a-zA-Z_] [a-zA-Z0-9_]*;
+WHILE: 'while';
+CHAR : '\'' (~['\\\r\n] | '\\' ['"?abfnrtv\\]) '\'';
+ID : [a-zA-Z_][a-zA-Z_0-9]*;
 INT : [0-9]+ ;
 
 LESS : '<';
@@ -72,6 +78,8 @@ OROR : '||';
 CARET : '^';
 TILDE : '~';
 
+PRIME: '\'';
+BACKSLASH: '\\';
 ASSIGN: '=';
 SEMICOLON: ';';
 COMMA : ',';

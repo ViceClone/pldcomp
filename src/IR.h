@@ -17,6 +17,7 @@ class CFG;
 
 typedef enum {
     Int,
+		Char,
 } Type;
 
 const string reg_name[] = {"%edi", "%esi", "%edx", "%ecx", "%r8d", "%r9d"};
