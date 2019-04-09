@@ -13,15 +13,17 @@ statement : vardeclaration
     | callstatement
     | returnstatement
     | assignmentstat
+    | forstatement 
     ;
 
 ifstatement: 'if' '(' expr ')' '{' statementseq '}' 
             ('else' '{' statementseq '}')?;
 
-whilestatement: 'while' '(' expr ')' '{' statementseq '}';
+whilestatement: 'while' '(' expr ')' '{' statementseq  '}';
 
-callstatement : call ';'
-    ;
+forstatement: 'for' '(' assignmentstat ';' expr ';' assignmentstat ')' '{ ' '}';
+
+callstatement : call ';' ;
 
 call : ID '(' (expr (',' expr)*)? ')';
 

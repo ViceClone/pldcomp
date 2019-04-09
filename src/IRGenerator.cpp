@@ -210,6 +210,127 @@ antlrcpp::Any IRGenerator::visitIfstatement(PLDCompParser::IfstatementContext *c
     return NULL;
 }
 
+antlrcpp::Any IRGenerator::visitForstatement(PLDCompParser::ForstatementContext *ctx){
+    cout << "Generate FOR" << endl;
+    BasicBlock * beforeWhile = current_cfg->current_bb;
+    BasicBlock * testBB = new BasicBlock(current_cfg,current_cfg->new_BB_name());
+    cout << "New block: " << testBB->label << endl;
+    current_cfg->current_bb = testBB;
+    
+    string temp = visit(ctx->assignmentstat(0));
+
+    vector<string> params;
+    // Equal or NotEqual
+    if (PLDCompParser::Rel2ExprContext* context =
+            dynamic_cast<PLDCompParser::Rel2ExprContext*> (ctx->expr())) {
+        string varL = visit(context->expr(0));
+        // save number of temporary variables to move back
+        int n_temps = 0;
+        if (varL.compare("!return_reg") == 0) {
+            varL = current_cfg->create_new_tempvar(Int);
+            vector<string> cpy_params = {varL,"!return_reg"};
+            current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+            n_temps++;
+        }
+        string varR = visit(context->expr(1));
+        params.push_back(varL);
+        params.push_back(varR);
+        IRInstr::Operation op;
+        string relop = context->relop->getText();
+        if (relop.compare("==") == 0) {
+            op = IRInstr::cmp_eq;
+        } else if (relop.compare("!=") == 0) {
+            op = IRInstr::cmp_ne;
+        }
+        current_cfg->current_bb->add_IRInstr(op,Int,params);
+        current_cfg->move_next_temp(-4*n_temps);
+        current_cfg->reset_next_temp();
+    }
+    // LT, LTE, GT, GTE
+    else if (PLDCompParser::Rel1ExprContext* context =
+            dynamic_cast<PLDCompParser::Rel1ExprContext*> (ctx->expr())) {
+        // save number of temporary variables to move back
+        cout << "HERE" << endl;
+        int n_temps = 0;
+        string varL = visit(context->expr(0));
+        string varR = visit(context->expr(1));
+        IRInstr::Operation op;
+        string relop = context->relop->getText();
+        if (relop.compare("<") == 0 ) {
+            op = IRInstr::cmp_lt;
+            cout << "here2" << endl;
+            if (varL.compare("!return_reg") == 0) {
+                varL = current_cfg->create_new_tempvar(Int);
+                vector<string> cpy_params = {varL,"!return_reg"};
+                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                n_temps++;
+            }
+            params.push_back(varL);
+            params.push_back(varR);
+        } else if (relop.compare(">") == 0) {
+            op = IRInstr::cmp_lt;
+            if (varR.compare("!return_reg") == 0) {
+                varR = current_cfg->create_new_tempvar(Int);
+                vector<string> cpy_params = {varR,"!return_reg"};
+                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                n_temps++;
+            }
+            params.push_back(varR);
+            params.push_back(varL);
+        } else if (relop.compare("<=") == 0) {
+            op = IRInstr::cmp_le;
+            if (varL.compare("!return_reg") == 0) {
+                varL = current_cfg->create_new_tempvar(Int);
+                vector<string> cpy_params = {varL,"!return_reg"};
+                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                n_temps++;
+            }
+            params.push_back(varL);
+            params.push_back(varR);
+        }
+        else if (relop.compare(">=") == 0) {
+            op = IRInstr::cmp_le;
+            if (varR.compare("!return_reg") == 0) {
+                varR = current_cfg->create_new_tempvar(Int);
+                vector<string> cpy_params = {varR,"!return_reg"};
+                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                n_temps++;
+            }
+            params.push_back(varR);
+            params.push_back(varL);
+        }
+        current_cfg->current_bb->add_IRInstr(op,Int,params);
+        current_cfg->move_next_temp(-4*n_temps);
+        current_cfg->reset_next_temp();
+    } else {
+        string var = visit(ctx->expr());
+        params.push_back(var);
+        IRInstr::Operation op = IRInstr::cmp;
+        current_cfg->current_bb->add_IRInstr(op,Int,params);
+        current_cfg->reset_next_temp();
+    }
+
+    BasicBlock * bodyBB = new BasicBlock(current_cfg,current_cfg->new_BB_name());
+    
+    BasicBlock * afterWhile = new BasicBlock(current_cfg,current_cfg->new_BB_name());
+    testBB->exit_true = bodyBB;
+    testBB->exit_false = afterWhile;
+
+    afterWhile->exit_true = beforeWhile->exit_true;
+    afterWhile->exit_false = beforeWhile->exit_false;
+    
+    bodyBB->exit_true = testBB;
+    bodyBB->exit_false = nullptr;
+
+    beforeWhile->exit_true = testBB;
+
+    current_cfg->current_bb = bodyBB;
+    visit(ctx->statementseq());
+    visit(ctx->assignmentstat(1));
+    current_cfg->current_bb = afterWhile;
+    return NULL;
+}
+
 antlrcpp::Any IRGenerator::visitWhilestatement(PLDCompParser::WhilestatementContext *ctx) {
     cout << "Generate WHILE" << endl;
     BasicBlock * beforeWhile = current_cfg->current_bb;
