@@ -21,7 +21,7 @@ ifstatement: 'if' '(' expr ')' '{' statementseq '}'
 
 whilestatement: 'while' '(' expr ')' '{' statementseq  '}';
 
-forstatement: 'for' '(' assignmentstat ';' expr ';' assignmentstat ')' '{ ' '}';
+forstatement: 'for' '(' assignmentstat ';' expr ';' assignmentstat ')' '{ ' statementseq '}';
 
 callstatement : call ';' ;
 
