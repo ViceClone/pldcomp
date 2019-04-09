@@ -166,7 +166,7 @@ antlrcpp::Any IRGenerator::visitIfstatement(PLDCompParser::IfstatementContext *c
             params.push_back(varL);
         }
         current_cfg->current_bb->add_IRInstr(op,Int,params);
-        current_cfg->move_next_temp(-4*n_temps);
+        //current_cfg->move_next_temp(-4*n_temps);
         current_cfg->reset_next_temp();
     } else {
         string var = visit(ctx->expr());
@@ -214,7 +214,6 @@ antlrcpp::Any IRGenerator::visitWhilestatement(PLDCompParser::WhilestatementCont
     cout << "Generate WHILE" << endl;
     BasicBlock * beforeWhile = current_cfg->current_bb;
     BasicBlock * testBB = new BasicBlock(current_cfg,current_cfg->new_BB_name());
-    cout << "New block: " << testBB->label << endl;
     current_cfg->current_bb = testBB;
     
     vector<string> params;

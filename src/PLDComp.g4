@@ -27,14 +27,22 @@ call : ID '(' (expr (',' expr)*)? ')';
 
 vardeclaration : type ID '=' expr ';' # DeclWithAssignment
     | type ID ';' #DeclWithoutAssignment
+    | type ID '[' expr ']' ';' # DeclArray
     ;
 
-assignmentstat : ID '=' expr ';' #AssignmentExpr
+assignmentstat : lvalue '=' expr ';' #AssignmentExpr
     ;
+
+lvalue : ID 
+    | array
+    ;
+
+array: ID '[' expr ']';
 
 returnstatement : 'return' expr ';' ;
 
 expr : '(' expr ')' # Par
+    | array # ArrayExpr
     | '-' '(' expr ')' # NegExpr
     | call # CallExpr
     | expr op=('*' | '/' | '%' ) expr # MultiplicativeOp

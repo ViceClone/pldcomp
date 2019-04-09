@@ -6,19 +6,17 @@ int output(char c) {
     putchar('\n');
 }
 int main() {
-    int a = 0;
-    while( a< 4) {
-        output('a');
+    int a = 1;
+    if (a) {
         int b = 0;
-        if (1) {
-            while (b!=3) {
-                output('b');
-                b=b+1;
-            }
+        output('1');
+        if (b) {
+            output('1');
         } else {
-            return 5;
+            output('0');
         }
-        a = a+1;
+    } else {
+        output('0');
     }
     return 3;
 }

@@ -39,7 +39,13 @@ public:
 
     virtual antlrcpp::Any visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *context) = 0;
 
+    virtual antlrcpp::Any visitDeclArray(PLDCompParser::DeclArrayContext *context) = 0;
+
     virtual antlrcpp::Any visitAssignmentExpr(PLDCompParser::AssignmentExprContext *context) = 0;
+
+    virtual antlrcpp::Any visitLvalue(PLDCompParser::LvalueContext *context) = 0;
+
+    virtual antlrcpp::Any visitArray(PLDCompParser::ArrayContext *context) = 0;
 
     virtual antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *context) = 0;
 
@@ -60,6 +66,8 @@ public:
     virtual antlrcpp::Any visitRel2Expr(PLDCompParser::Rel2ExprContext *context) = 0;
 
     virtual antlrcpp::Any visitLogicalOr(PLDCompParser::LogicalOrContext *context) = 0;
+
+    virtual antlrcpp::Any visitArrayExpr(PLDCompParser::ArrayExprContext *context) = 0;
 
     virtual antlrcpp::Any visitBitwiseXor(PLDCompParser::BitwiseXorContext *context) = 0;
 

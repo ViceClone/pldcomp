@@ -12,21 +12,21 @@
 class  PLDCompParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, RETURN = 2, INT_TYPE = 3, IF = 4, ELSE = 5, WHILE = 6, CHAR = 7, 
-    ID = 8, INT = 9, LESS = 10, LESSEQUAL = 11, GREATER = 12, GREATEREQUAL = 13, 
-    EQUAL = 14, NOTEQUAL = 15, AND = 16, OR = 17, ANDAND = 18, OROR = 19, 
-    CARET = 20, TILDE = 21, PRIME = 22, BACKSLASH = 23, ASSIGN = 24, SEMICOLON = 25, 
-    COMMA = 26, RIGHT_BRACE = 27, LEFT_BRACE = 28, LEFT_PARENTHESE = 29, 
-    RIGHT_PARENTHESE = 30, PLUS = 31, MINUS = 32, STAR = 33, DIV = 34, MOD = 35, 
-    WHITESPACE = 36, NEWLINE = 37, BLOCKCOMMENT = 38, LINECOMMENT = 39, 
-    ERROR = 40
+    T__0 = 1, T__1 = 2, T__2 = 3, RETURN = 4, INT_TYPE = 5, IF = 6, ELSE = 7, 
+    WHILE = 8, CHAR = 9, ID = 10, INT = 11, LESS = 12, LESSEQUAL = 13, GREATER = 14, 
+    GREATEREQUAL = 15, EQUAL = 16, NOTEQUAL = 17, AND = 18, OR = 19, ANDAND = 20, 
+    OROR = 21, CARET = 22, TILDE = 23, PRIME = 24, BACKSLASH = 25, ASSIGN = 26, 
+    SEMICOLON = 27, COMMA = 28, RIGHT_BRACE = 29, LEFT_BRACE = 30, LEFT_PARENTHESE = 31, 
+    RIGHT_PARENTHESE = 32, PLUS = 33, MINUS = 34, STAR = 35, DIV = 36, MOD = 37, 
+    WHITESPACE = 38, NEWLINE = 39, BLOCKCOMMENT = 40, LINECOMMENT = 41, 
+    ERROR = 42
   };
 
   enum {
     RuleProg = 0, RuleFunctiondefinition = 1, RuleStatementseq = 2, RuleStatement = 3, 
     RuleIfstatement = 4, RuleWhilestatement = 5, RuleCallstatement = 6, 
-    RuleCall = 7, RuleVardeclaration = 8, RuleAssignmentstat = 9, RuleReturnstatement = 10, 
-    RuleExpr = 11, RuleType = 12
+    RuleCall = 7, RuleVardeclaration = 8, RuleAssignmentstat = 9, RuleLvalue = 10, 
+    RuleArray = 11, RuleReturnstatement = 12, RuleExpr = 13, RuleType = 14
   };
 
   PLDCompParser(antlr4::TokenStream *input);
@@ -49,6 +49,8 @@ public:
   class CallContext;
   class VardeclarationContext;
   class AssignmentstatContext;
+  class LvalueContext;
+  class ArrayContext;
   class ReturnstatementContext;
   class ExprContext;
   class TypeContext; 
@@ -235,6 +237,18 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  DeclArrayContext : public VardeclarationContext {
+  public:
+    DeclArrayContext(VardeclarationContext *ctx);
+
+    TypeContext *type();
+    antlr4::tree::TerminalNode *ID();
+    ExprContext *expr();
+    antlr4::tree::TerminalNode *SEMICOLON();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   VardeclarationContext* vardeclaration();
 
   class  AssignmentstatContext : public antlr4::ParserRuleContext {
@@ -254,7 +268,7 @@ public:
   public:
     AssignmentExprContext(AssignmentstatContext *ctx);
 
-    antlr4::tree::TerminalNode *ID();
+    LvalueContext *lvalue();
     antlr4::tree::TerminalNode *ASSIGN();
     ExprContext *expr();
     antlr4::tree::TerminalNode *SEMICOLON();
@@ -263,6 +277,34 @@ public:
   };
 
   AssignmentstatContext* assignmentstat();
+
+  class  LvalueContext : public antlr4::ParserRuleContext {
+  public:
+    LvalueContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ID();
+    ArrayContext *array();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  LvalueContext* lvalue();
+
+  class  ArrayContext : public antlr4::ParserRuleContext {
+  public:
+    ArrayContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ID();
+    ExprContext *expr();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ArrayContext* array();
 
   class  ReturnstatementContext : public antlr4::ParserRuleContext {
   public:
@@ -386,6 +428,15 @@ public:
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
     antlr4::tree::TerminalNode *OROR();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  ArrayExprContext : public ExprContext {
+  public:
+    ArrayExprContext(ExprContext *ctx);
+
+    ArrayContext *array();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

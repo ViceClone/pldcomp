@@ -55,7 +55,19 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitDeclArray(PLDCompParser::DeclArrayContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLvalue(PLDCompParser::LvalueContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitArray(PLDCompParser::ArrayContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -96,6 +108,10 @@ public:
   }
 
   virtual antlrcpp::Any visitLogicalOr(PLDCompParser::LogicalOrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitArrayExpr(PLDCompParser::ArrayExprContext *ctx) override {
     return visitChildren(ctx);
   }
 

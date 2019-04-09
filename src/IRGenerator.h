@@ -33,6 +33,8 @@ public:
     antlrcpp::Any visitWhilestatement(PLDCompParser::WhilestatementContext *ctx);
     
     antlrcpp::Any visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) ;
+    antlrcpp::Any visitArray(PLDCompParser::ArrayContext *ctx);
+    antlrcpp::Any visitLvalue(PLDCompParser::LvalueContext *ctx);
     
     antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) ;
     
