@@ -517,15 +517,46 @@ antlrcpp::Any IRGenerator::visitRel2Expr(PLDCompParser::Rel2ExprContext *ctx) {
 }
 
 antlrcpp::Any IRGenerator::visitBitwiseAnd(PLDCompParser::BitwiseAndContext *ctx) {
-    return NULL;
+    string var1= visit(ctx->expr(0));
+    string var2= visit(ctx->expr(1));
+     if (var1.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+
+    if (var2.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    string var3 = current_cfg->create_new_tempvar(Int);
+    current_cfg->current_bb->add_IRInstr(IRInstr::andb,Int,{var3,var1,var2});
+    return var3;
 }
 
 antlrcpp::Any IRGenerator::visitBitwiseXor(PLDCompParser::BitwiseXorContext *ctx) {
-    return NULL;
+    string var1= visit(ctx->expr(0));
+    string var2= visit(ctx->expr(1));
+    if (var1.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    if (var2.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    string var3 = current_cfg->create_new_tempvar(Int);
+    current_cfg->current_bb->add_IRInstr(IRInstr::xorb,Int,{var3,var1,var2});
+    return var3;
 }
 
 antlrcpp::Any IRGenerator::visitBitwiseOr(PLDCompParser::BitwiseOrContext *ctx) {
-    return NULL;
+    string var1= visit(ctx->expr(0));
+    string var2= visit(ctx->expr(1));
+     if (var1.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    if (var2.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    string var3 = current_cfg->create_new_tempvar(Int);
+    current_cfg->current_bb->add_IRInstr(IRInstr::orb,Int,{var3,var1,var2});
+    return var3;
 }
 
 antlrcpp::Any IRGenerator::visitLogicalAnd(PLDCompParser::LogicalAndContext *ctx) {
