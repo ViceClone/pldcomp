@@ -428,6 +428,9 @@ antlrcpp::Any IRGenerator::visitCharConst(PLDCompParser::CharConstContext *ctx) 
             case 'r':
                 c = '\r';
                 break;
+            case '0':
+                c = '\0';
+                break;
             default:
                 break;
         }

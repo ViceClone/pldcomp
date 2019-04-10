@@ -9,6 +9,7 @@ using namespace antlr4;
 using namespace std;
 
 int main(int argc, char** argv) {
+    string filename = argv[1];
     ifstream file(argv[1]);
     string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
     //cout << "------LEXER-----" << endl;
@@ -47,6 +48,7 @@ int main(int argc, char** argv) {
     cout << "------CODE GENERATOR-----" << endl;
     IRGenerator visitor;
     visitor.visit(tree);
-    ofstream o("out.asm",ofstream::out);
+    string outfile = filename.substr(0,filename.length()-2)+".asm";
+    ofstream o(outfile,ofstream::out);
     visitor.output_asm(o);
 }
