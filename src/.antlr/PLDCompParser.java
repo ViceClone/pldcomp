@@ -848,14 +848,25 @@ public class PLDCompParser extends Parser {
 	}
 
 	public static class LvalueContext extends ParserRuleContext {
-		public TerminalNode ID() { return getToken(PLDCompParser.ID, 0); }
-		public ArrayContext array() {
-			return getRuleContext(ArrayContext.class,0);
-		}
 		public LvalueContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_lvalue; }
+	 
+		public LvalueContext() { }
+		public void copyFrom(LvalueContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class IdLContext extends LvalueContext {
+		public TerminalNode ID() { return getToken(PLDCompParser.ID, 0); }
+		public IdLContext(LvalueContext ctx) { copyFrom(ctx); }
+	}
+	public static class ArrayLContext extends LvalueContext {
+		public ArrayContext array() {
+			return getRuleContext(ArrayContext.class,0);
+		}
+		public ArrayLContext(LvalueContext ctx) { copyFrom(ctx); }
 	}
 
 	public final LvalueContext lvalue() throws RecognitionException {
@@ -866,6 +877,7 @@ public class PLDCompParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 			case 1:
+				_localctx = new IdLContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(165);
@@ -873,6 +885,7 @@ public class PLDCompParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new ArrayLContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(166);

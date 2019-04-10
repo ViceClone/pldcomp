@@ -311,13 +311,32 @@ public:
   class  LvalueContext : public antlr4::ParserRuleContext {
   public:
     LvalueContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *ID();
-    ArrayContext *array();
+   
+    LvalueContext() = default;
+    void copyFrom(LvalueContext *context);
+    using antlr4::ParserRuleContext::copyFrom;
 
+    virtual size_t getRuleIndex() const override;
+
+   
+  };
+
+  class  IdLContext : public LvalueContext {
+  public:
+    IdLContext(LvalueContext *ctx);
+
+    antlr4::tree::TerminalNode *ID();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
+  };
+
+  class  ArrayLContext : public LvalueContext {
+  public:
+    ArrayLContext(LvalueContext *ctx);
+
+    ArrayContext *array();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
   LvalueContext* lvalue();

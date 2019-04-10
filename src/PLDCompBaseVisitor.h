@@ -67,7 +67,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLvalue(PLDCompParser::LvalueContext *ctx) override {
+  virtual antlrcpp::Any visitIdL(PLDCompParser::IdLContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitArrayL(PLDCompParser::ArrayLContext *ctx) override {
     return visitChildren(ctx);
   }
 

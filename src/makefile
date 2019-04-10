@@ -1,5 +1,5 @@
 CPP=g++
-CFLAGS= -std=c++11 -I antlr4-runtime/ -O1
+CFLAGS= -std=c++11 -I antlr4-runtime/ -DDEBUG
 DEPS = PLDCompVisitor.h PLDCompParser.h PLDCompLexer.h PLDCompBaseVisitor.h IRGenerator.h IR.h
 OBJ = $(DEPS:.h=.o) lib/libantlr.so CompilerMain.cpp
 EXE = comp

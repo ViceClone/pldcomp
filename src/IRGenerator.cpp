@@ -8,12 +8,16 @@ using namespace std;
 using namespace antlr4;
 
 void IRGenerator::output_asm(ostream& o) {
+    #ifdef DEBUG
     cout << "--------------------OUTPUT TO OUT.ASM--------" << endl;
+    #endif
     o << ".text" << endl << endl;
     for (auto it=cfg_list.begin();it!=cfg_list.end();++it) {
         it->second->gen_asm(o);
     }
+    #ifdef DEBUG
     cout << "--------------------END OUTPUT TO OUT.ASM--------" << endl;
+    #endif
 }
 
 antlrcpp::Any IRGenerator::visitProg(PLDCompParser::ProgContext *ctx) {
@@ -211,7 +215,6 @@ antlrcpp::Any IRGenerator::visitIfstatement(PLDCompParser::IfstatementContext *c
 }
 
 antlrcpp::Any IRGenerator::visitWhilestatement(PLDCompParser::WhilestatementContext *ctx) {
-    cout << "Generate WHILE" << endl;
     BasicBlock * beforeWhile = current_cfg->current_bb;
     BasicBlock * testBB = new BasicBlock(current_cfg,current_cfg->new_BB_name());
     current_cfg->current_bb = testBB;
@@ -247,7 +250,6 @@ antlrcpp::Any IRGenerator::visitWhilestatement(PLDCompParser::WhilestatementCont
     else if (PLDCompParser::Rel1ExprContext* context =
             dynamic_cast<PLDCompParser::Rel1ExprContext*> (ctx->expr())) {
         // save number of temporary variables to move back
-        cout << "HERE" << endl;
         int n_temps = 0;
         string varL = visit(context->expr(0));
         string varR = visit(context->expr(1));
@@ -255,7 +257,6 @@ antlrcpp::Any IRGenerator::visitWhilestatement(PLDCompParser::WhilestatementCont
         string relop = context->relop->getText();
         if (relop.compare("<") == 0 ) {
             op = IRInstr::cmp_lt;
-            cout << "here2" << endl;
             if (varL.compare("!return_reg") == 0) {
                 varL = current_cfg->create_new_tempvar(Int);
                 vector<string> cpy_params = {varL,"!return_reg"};
@@ -346,8 +347,6 @@ antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementCo
         vector<string> params = {"!returnval",var};
         vector<string> ret_params = {"!returnval"};
         current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
-        //cout << "ret" << endl;
-        // current_cfg->current_bb->isReturn = true;
         current_cfg->current_bb->add_IRInstr(IRInstr::ret,Int,params);
         current_cfg->reset_next_temp();
         return var;
@@ -361,7 +360,6 @@ antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
     vector<string> params;
     params.push_back(ctx->ID()->getText());
     int n_params = list_expr.size();
-    //cout << "Current address1: " << current_cfg->get_current_address() << endl;
     int n_temps = 0;
     for (int i=0; i<n_params; i++) {
         string var = visit(ctx->expr(i));
@@ -379,11 +377,18 @@ antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
     }
     current_cfg->current_bb->add_IRInstr(IRInstr::call,Int,params);
     current_cfg->move_next_temp(-4*n_temps);
-    //cout << "Current address2: " << current_cfg->get_current_address() << endl;
     return NULL;
 }
 
 // Expression
+
+antlrcpp::Any IRGenerator::visitArrayExpr(PLDCompParser::ArrayExprContext *ctx) {
+    string var = current_cfg->create_new_tempvar(Int);
+    string expr = visit(ctx->array());
+    vector<string> params = {var,expr};
+    current_cfg->current_bb->add_IRInstr(IRInstr::rmem,Int,params);
+    return var;
+}
 
 antlrcpp::Any IRGenerator::visitCallExpr(PLDCompParser::CallExprContext *ctx) {
     visit(ctx->call());
@@ -443,7 +448,7 @@ antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
         return (string)name;
     } else {
         // TODO: throw exception here
-        cout << "Variable \'" << name << "\' has not been declared yet " << endl;
+        cout << "ERROR: Variable \'" << name << "\' has not been declared yet " << endl;
     }
     return (string)(ctx->ID()->getText());
 }
@@ -593,11 +598,21 @@ antlrcpp::Any IRGenerator::visitDeclArray(PLDCompParser::DeclArrayContext *ctx) 
     vector<PLDCompParser::ExprContext *> list_expr = ctx->expr();
     int n_expr = list_expr.size();
     string mem = current_cfg->create_new_tempvar(Int);
-    vector<string> params_mem = {mem, to_string(-index)};
+    vector<string> params_mem = {mem,to_string(-index)};
     current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_mem);
+    string offset = current_cfg->create_new_tempvar(Int);
+    vector<string> params_offset = {offset,to_string(4)};
+    current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_offset);
+    vector<string> params_increase = {mem,offset,mem};
     for (int i=0; i<n_expr; i++) {
-        string expr = visit(ctx->expr(i));
+        string expr = visit(list_expr[i]);
+        vector<string> params_wmem = {mem,expr};
+        current_cfg->current_bb->add_IRInstr(IRInstr::wmem,Int,params_wmem); 
+        if (i<n_expr-1) {
+            current_cfg->current_bb->add_IRInstr(IRInstr::add,Int,params_increase);       
+        }
     }
+    return NULL;
 }
 // Assignment
 antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) {
@@ -621,18 +636,18 @@ antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprCont
     return NULL;
 }
 
-antlrcpp::Any IRGenerator::visitLvalue(PLDCompParser::LvalueContext *ctx) {
-    if (ctx->ID()!=nullptr) {
-        string name = ctx->ID()->getText();
-        if (!current_cfg->find_symbol(name)){
-            cout << "ERROR: variable has not been declared yet" << endl;
-            return "";
-        }
-        return (string)ctx->ID()->getText();
-    } else {
-        string var = visitChildren(ctx);
-        return var;
+antlrcpp::Any IRGenerator::visitIdL(PLDCompParser::IdLContext *ctx) {
+    string name = ctx->ID()->getText();
+    if (!current_cfg->find_symbol(name)){
+        cout << "ERROR: variable has not been declared yet" << endl;
+        return "";
     }
+    return name;
+}
+
+antlrcpp::Any IRGenerator::visitArrayL(PLDCompParser::ArrayLContext *ctx) {
+    string var = visit(ctx->array());
+    return var;
 }
 
 antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
@@ -640,21 +655,28 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
     if (current_cfg->find_symbol(name)) {
         if (current_cfg->get_var_type(name)!=CharArray 
             && current_cfg->get_var_type(name)!=IntArray){
-            cout << name << " is not an array" << endl;
+            cout << "ERROR: " << name << " is not an array" << endl;
             return "";
         }
-        int offset = current_cfg->get_var_index(name);
+        int mem = current_cfg->get_var_index(name);
         string expr = visit(ctx->expr());
+        
         string var = current_cfg->create_new_tempvar(Int);
-        vector<string> params1 = {var,to_string(-offset)};
+        vector<string> params1 = {var,to_string(-mem)};
         current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params1);
-        vector<string> params2 = {var, expr, var};
+        string temp4 = current_cfg->create_new_tempvar(Int);
+        vector<string> params_load4 = {temp4,to_string(4)};
+        current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_load4);
+        
+        string offset = current_cfg->create_new_tempvar(Int);
+        vector<string> params_mul = {offset,expr,temp4};
+        current_cfg->current_bb->add_IRInstr(IRInstr::mul,Int,params_mul);
+        vector<string> params2 = {var, offset, var};
         current_cfg->current_bb->add_IRInstr(IRInstr::add,Int,params2);
-        vector<string> params3 = {var,"!bp",var};
         return var;
     } else {
         //TODO throw an exception here
-        cout << "Variable \"" << name << "\" has not been declared yet " << endl;
+        cout << "ERROR: Variable \"" << name << "\" has not been declared yet " << endl;
         return "";
     }
 }

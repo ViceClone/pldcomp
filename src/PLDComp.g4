@@ -36,8 +36,8 @@ vardeclaration : type ID '=' expr ';' # DeclWithAssignment
 assignmentstat : lvalue '=' expr ';' #AssignmentExpr
     ;
 
-lvalue : ID 
-    | array
+lvalue : ID # idL
+    | array # arrayL
     ;
 
 array: ID '[' expr ']';

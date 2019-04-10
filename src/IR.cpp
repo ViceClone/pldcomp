@@ -30,37 +30,47 @@ void IRInstr::gen_asm(ostream& o){
     int n_params = params.size();
     switch (op){
         case ldconst:
+            #ifdef DEBUG
             cout << "ldconst " << params[0] << " " << params[1] << endl;
-            o<< "    movl $"<< params[1]<<", "<< get_reg_name(params[0]);
             o<< " # " << "ldconst " << params[0] << " " << params[1] << endl;
+            #endif
+            o<< "    movl $"<< params[1]<<", "<< get_reg_name(params[0]) << endl;
         break;
         case add:{
+            #ifdef DEBUG
             cout << "add " << params[0] << " " << params[1] << " " << params[2] << endl;
-            o<< "    movl " << get_reg_name(params[1]) <<", " << "%"<<"eax";
             o<< " # " << "add " << params[0] << " " << params[1] << " " << params[2] << endl;
+            #endif
+            o<< "    movl " << get_reg_name(params[1]) <<", " << "%"<<"eax" << endl;
             o<< "    addl "<< get_reg_name(params[2])<<", " <<"%"<<"eax"<< endl;
             o<< "    movl " << "%" <<"eax, " << get_reg_name(params[0]) <<endl;
         }
         break;
         case sub: {
+            #ifdef DEBUG
             cout << "sub " << params[0] << " " << params[1] << " " << params[2] << endl;
-            o<< "    movl "<< get_reg_name(params[1])<<", " << "%"<<"eax";
             o<< " # " << "sub " << params[0] << " " << params[1] << " " << params[2] << endl;
+            #endif
+            o<< "    movl "<< get_reg_name(params[1])<<", " << "%"<<"eax" << endl;
             o<< "    subl "<< get_reg_name(params[2]) << " ," << "%" << "eax" << endl;
             o<< "    movl " << "%" <<"eax, " << get_reg_name(params[0]) <<endl;
         } 
         break;
         case mul:{
+            #ifdef DEBUG
             cout << "mul " << params[0] << " " << params[1] << " " << params[2] << endl;
-            o<< "    movl "<< get_reg_name(params[1])<<", " << "%"<<"eax";
             o<< " # " << "mul " << params[0] << " " << params[1] << " " << params[2] << endl;
+            #endif
+            o<< "    movl "<< get_reg_name(params[1])<<", " << "%"<<"eax" << endl;
             o<< "    imull "<< get_reg_name(params[2])<<", "<< "%"<<"eax" <<endl;
             o<< "    movl " << "%" <<"eax, " << get_reg_name(params[0]) <<endl;
         }
         break;
         case cpy: {
+            #ifdef DEBUG
             cout << "cpy " << params[0] << " " << params[1] << endl;
             o << " # " << "cpy " << params[0] << " " << params[1] << endl;
+            #endif
             if (params[1].compare("!return_reg") != 0) {
                 o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
             }
@@ -70,26 +80,34 @@ void IRInstr::gen_asm(ostream& o){
         }
         break;
         case call: {
+            #ifdef DEBUG
             cout << "call " << params[0] << " ";
             o << "# function call" << params[0] << endl;
+            #endif
             int n_params = params.size();
             for (int i=1; i<n_params; i++) {
+                #ifdef DEBUG
                 cout << (params[i]) << " ";
+                #endif
                 o << "    movl " << get_reg_name(params[i]) << ", " << reg_name[i-1] << endl;
             }
+            #ifdef DEBUG
             cout << endl;
+            #endif
             o << "    call " << params[0] << endl;
         }
         break;
         case ret: {
+            #ifdef DEBUG
             o<< " # " << "ret " << endl;
-            //o<< "    jmp .LLast" << bb->cfg->label << endl;
-            //o<< endl;
             cout << "ret" << endl;
+            #endif
         }
         break;
         case cmp_eq: {
+            #ifdef DEBUG
             cout << "cmp_eq " << params[0] << " " << params[1] << endl;
+            #endif
             if (params[1].compare("!return_reg") != 0) {
                 o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
             }
@@ -99,7 +117,9 @@ void IRInstr::gen_asm(ostream& o){
         }
         break;
         case cmp_ne: {
+            #ifdef DEBUG
             cout << "cmp_ne " << params[0] << " " << params[1] << endl;
+            #endif
             if (params[1].compare("!return_reg") != 0) {
                 o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
             }
@@ -109,7 +129,9 @@ void IRInstr::gen_asm(ostream& o){
         }
         break;
         case cmp_lt: {
+            #ifdef DEBUG
             cout << "cmp_lt " << params[0] << " " << params[1] << endl;
+            #endif
             if (params[1].compare("!return_reg") != 0) {
                 o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
             }
@@ -119,7 +141,9 @@ void IRInstr::gen_asm(ostream& o){
         }
         break;
         case cmp_le: {
+            #ifdef DEBUG
             cout << "cmp_le " << params[0] << " " << params[1] << endl;
+            #endif
             if (params[1].compare("!return_reg") != 0) {
                 o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
             }
@@ -129,8 +153,10 @@ void IRInstr::gen_asm(ostream& o){
         }
         break;
         case cmp: {
+            #ifdef DEBUG
             cout << "cmp " << params[0] << endl;
             o << "    # cmp " << params[0] << endl;
+            #endif
             o << "    cmpl $0, ";
             if (params[0].compare("!return_reg") == 0) {
                 o << "%" << "eax" << endl;
@@ -138,6 +164,28 @@ void IRInstr::gen_asm(ostream& o){
                 o << get_reg_name(params[0]) << endl;
             }
             o << "    je " << bb->exit_false->label << endl;
+        }
+        break;
+        case wmem: {
+            #ifdef DEBUG
+            cout << "wmem " << params[0] << " " << params[1] << endl;
+            o << "# wmem " << params[0] << " " << params[1] << endl;
+            #endif
+            o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "edx" << endl;
+            o << "    movl " << get_reg_name(params[0]) << ", " << "%" << "eax" << endl;
+            o << "    cltq" << endl;
+            o << "    movl " << "%" << "edx, (" << "%" << "rbp,"<< "%" << "rax,1)" << endl; 
+        }
+        break;
+        case rmem: {
+            #ifdef DEBUG
+            cout << "rmem " << params[0] << " " << params[1] << endl;
+            o << "# rmem " << params[0] << " " << params[1] << endl;
+            #endif
+            o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
+            o << "    cltq" << endl;
+            o << "    movl (" << "%" << "rbp,"<< "%" << "rax,1), " << "%" << "eax" << endl;
+            o << "    movl " << "%" << "eax, " << get_reg_name(params[0]) << endl;
         }
         break;
         default: 
@@ -198,8 +246,10 @@ void CFG::add_bb(BasicBlock* bb){
 }
 
 void CFG::gen_asm(ostream& o) {
+    #ifdef DEBUG
     cout << "nb blocks: " << bbs.size() << endl;
     cout << "-------------gen_asm for " << bbs[0]->label << "-------------" << endl;
+    #endif
     gen_asm_prologue(o);
     bbs[0]->gen_asm(o);
     for (auto it=bbs.begin()+1; it!=bbs.end(); ++it) {
@@ -221,7 +271,9 @@ void CFG::gen_asm_prologue(ostream& o) {
     o << label << ":" << endl;
     o << "    pushq "<<"%"<<"rbp" << endl;
     o << "    movq "<<"%"<<"rsp, "<<"%"<<"rbp" << endl;
+    #ifdef DEBUG
     cout << "----------LOCAL MEM: " << nextFreeSymbolIndex << endl;
+    #endif
     int local_mem = 16*((nextFreeSymbolIndex/16)+((nextFreeSymbolIndex%16)!=0));
     o << "    subq $" << local_mem << ", " << "%" << "rsp" << endl; 
     for (int i=0; i<n_params; i++) {
@@ -250,16 +302,13 @@ bool CFG::add_to_symbol_table(string name, Type t, int size) {
     if (!(it==SymbolIndex.end())) {
         return false;
     }
-    if (t==Int) {
-        nextFreeSymbolIndex += size;
-        
-    } else if (t==Char) {
-        nextFreeSymbolIndex += size;
-    }
+    nextFreeSymbolIndex += size;
     nextTempAddress = nextFreeSymbolIndex;
     SymbolIndex[name] = nextFreeSymbolIndex;
     SymbolType[name] = t;
+    #ifdef DEBUG
     cout << "---------VAR DECLARATION: \"" << name << "\"  at address @" << nextFreeSymbolIndex << endl;
+    #endif
     return true;
 }
 

@@ -45,7 +45,9 @@ public:
 
     virtual antlrcpp::Any visitAssignmentExpr(PLDCompParser::AssignmentExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitLvalue(PLDCompParser::LvalueContext *context) = 0;
+    virtual antlrcpp::Any visitIdL(PLDCompParser::IdLContext *context) = 0;
+
+    virtual antlrcpp::Any visitArrayL(PLDCompParser::ArrayLContext *context) = 0;
 
     virtual antlrcpp::Any visitArray(PLDCompParser::ArrayContext *context) = 0;
 

@@ -1153,27 +1153,45 @@ PLDCompParser::LvalueContext::LvalueContext(ParserRuleContext *parent, size_t in
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* PLDCompParser::LvalueContext::ID() {
-  return getToken(PLDCompParser::ID, 0);
-}
-
-PLDCompParser::ArrayContext* PLDCompParser::LvalueContext::array() {
-  return getRuleContext<PLDCompParser::ArrayContext>(0);
-}
-
 
 size_t PLDCompParser::LvalueContext::getRuleIndex() const {
   return PLDCompParser::RuleLvalue;
 }
 
+void PLDCompParser::LvalueContext::copyFrom(LvalueContext *ctx) {
+  ParserRuleContext::copyFrom(ctx);
+}
 
-antlrcpp::Any PLDCompParser::LvalueContext::accept(tree::ParseTreeVisitor *visitor) {
+//----------------- IdLContext ------------------------------------------------------------------
+
+tree::TerminalNode* PLDCompParser::IdLContext::ID() {
+  return getToken(PLDCompParser::ID, 0);
+}
+
+PLDCompParser::IdLContext::IdLContext(LvalueContext *ctx) { copyFrom(ctx); }
+
+
+antlrcpp::Any PLDCompParser::IdLContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
-    return parserVisitor->visitLvalue(this);
+    return parserVisitor->visitIdL(this);
   else
     return visitor->visitChildren(this);
 }
+//----------------- ArrayLContext ------------------------------------------------------------------
 
+PLDCompParser::ArrayContext* PLDCompParser::ArrayLContext::array() {
+  return getRuleContext<PLDCompParser::ArrayContext>(0);
+}
+
+PLDCompParser::ArrayLContext::ArrayLContext(LvalueContext *ctx) { copyFrom(ctx); }
+
+
+antlrcpp::Any PLDCompParser::ArrayLContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<PLDCompVisitor*>(visitor))
+    return parserVisitor->visitArrayL(this);
+  else
+    return visitor->visitChildren(this);
+}
 PLDCompParser::LvalueContext* PLDCompParser::lvalue() {
   LvalueContext *_localctx = _tracker.createInstance<LvalueContext>(_ctx, getState());
   enterRule(_localctx, 22, PLDCompParser::RuleLvalue);
@@ -1186,6 +1204,7 @@ PLDCompParser::LvalueContext* PLDCompParser::lvalue() {
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 12, _ctx)) {
     case 1: {
+      _localctx = dynamic_cast<LvalueContext *>(_tracker.createInstance<PLDCompParser::IdLContext>(_localctx));
       enterOuterAlt(_localctx, 1);
       setState(165);
       match(PLDCompParser::ID);
@@ -1193,6 +1212,7 @@ PLDCompParser::LvalueContext* PLDCompParser::lvalue() {
     }
 
     case 2: {
+      _localctx = dynamic_cast<LvalueContext *>(_tracker.createInstance<PLDCompParser::ArrayLContext>(_localctx));
       enterOuterAlt(_localctx, 2);
       setState(166);
       array();
