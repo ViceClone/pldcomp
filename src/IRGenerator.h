@@ -27,7 +27,7 @@ public:
 
     antlrcpp::Any visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *ctx);
     antlrcpp::Any visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx);
-    
+    antlrcpp::Any visitDeclArray(PLDCompParser::DeclArrayContext *ctx);
 
     antlrcpp::Any visitIfstatement(PLDCompParser::IfstatementContext *ctx);
     antlrcpp::Any visitWhilestatement(PLDCompParser::WhilestatementContext *ctx);

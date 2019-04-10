@@ -10,6 +10,7 @@ statementseq : statement*;
 statement : vardeclaration 
     | ifstatement
     | whilestatement
+    | forstatement
     | callstatement
     | returnstatement
     | assignmentstat
@@ -20,6 +21,8 @@ ifstatement: 'if' '(' expr ')' '{' statementseq '}'
 
 whilestatement: 'while' '(' expr ')' '{' statementseq '}';
 
+forstatement: 'for' '(' assignmentstat ';' expr ';' assignmentstat ')' '{ ' statementseq '}';
+
 callstatement : call ';'
     ;
 
@@ -27,7 +30,7 @@ call : ID '(' (expr (',' expr)*)? ')';
 
 vardeclaration : type ID '=' expr ';' # DeclWithAssignment
     | type ID ';' #DeclWithoutAssignment
-    | type ID '[' expr ']' ';' # DeclArray
+    | type ID '[' INT ']' ('=' '{' (expr (',' expr)*)? '}')?';' # DeclArray
     ;
 
 assignmentstat : lvalue '=' expr ';' #AssignmentExpr

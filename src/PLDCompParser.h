@@ -12,21 +12,21 @@
 class  PLDCompParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, T__1 = 2, T__2 = 3, RETURN = 4, INT_TYPE = 5, IF = 6, ELSE = 7, 
-    WHILE = 8, CHAR = 9, ID = 10, INT = 11, LESS = 12, LESSEQUAL = 13, GREATER = 14, 
-    GREATEREQUAL = 15, EQUAL = 16, NOTEQUAL = 17, AND = 18, OR = 19, ANDAND = 20, 
-    OROR = 21, CARET = 22, TILDE = 23, PRIME = 24, BACKSLASH = 25, ASSIGN = 26, 
-    SEMICOLON = 27, COMMA = 28, RIGHT_BRACE = 29, LEFT_BRACE = 30, LEFT_PARENTHESE = 31, 
-    RIGHT_PARENTHESE = 32, PLUS = 33, MINUS = 34, STAR = 35, DIV = 36, MOD = 37, 
-    WHITESPACE = 38, NEWLINE = 39, BLOCKCOMMENT = 40, LINECOMMENT = 41, 
-    ERROR = 42
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, RETURN = 6, INT_TYPE = 7, 
+    IF = 8, ELSE = 9, WHILE = 10, CHAR = 11, ID = 12, INT = 13, LESS = 14, 
+    LESSEQUAL = 15, GREATER = 16, GREATEREQUAL = 17, EQUAL = 18, NOTEQUAL = 19, 
+    AND = 20, OR = 21, ANDAND = 22, OROR = 23, CARET = 24, TILDE = 25, PRIME = 26, 
+    BACKSLASH = 27, ASSIGN = 28, SEMICOLON = 29, COMMA = 30, RIGHT_BRACE = 31, 
+    LEFT_BRACE = 32, LEFT_PARENTHESE = 33, RIGHT_PARENTHESE = 34, PLUS = 35, 
+    MINUS = 36, STAR = 37, DIV = 38, MOD = 39, WHITESPACE = 40, NEWLINE = 41, 
+    BLOCKCOMMENT = 42, LINECOMMENT = 43, ERROR = 44
   };
 
   enum {
     RuleProg = 0, RuleFunctiondefinition = 1, RuleStatementseq = 2, RuleStatement = 3, 
-    RuleIfstatement = 4, RuleWhilestatement = 5, RuleCallstatement = 6, 
-    RuleCall = 7, RuleVardeclaration = 8, RuleAssignmentstat = 9, RuleLvalue = 10, 
-    RuleArray = 11, RuleReturnstatement = 12, RuleExpr = 13, RuleType = 14
+    RuleIfstatement = 4, RuleWhilestatement = 5, RuleForstatement = 6, RuleCallstatement = 7, 
+    RuleCall = 8, RuleVardeclaration = 9, RuleAssignmentstat = 10, RuleLvalue = 11, 
+    RuleArray = 12, RuleReturnstatement = 13, RuleExpr = 14, RuleType = 15
   };
 
   PLDCompParser(antlr4::TokenStream *input);
@@ -45,6 +45,7 @@ public:
   class StatementContext;
   class IfstatementContext;
   class WhilestatementContext;
+  class ForstatementContext;
   class CallstatementContext;
   class CallContext;
   class VardeclarationContext;
@@ -114,6 +115,7 @@ public:
     VardeclarationContext *vardeclaration();
     IfstatementContext *ifstatement();
     WhilestatementContext *whilestatement();
+    ForstatementContext *forstatement();
     CallstatementContext *callstatement();
     ReturnstatementContext *returnstatement();
     AssignmentstatContext *assignmentstat();
@@ -166,6 +168,27 @@ public:
   };
 
   WhilestatementContext* whilestatement();
+
+  class  ForstatementContext : public antlr4::ParserRuleContext {
+  public:
+    ForstatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *LEFT_PARENTHESE();
+    std::vector<AssignmentstatContext *> assignmentstat();
+    AssignmentstatContext* assignmentstat(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> SEMICOLON();
+    antlr4::tree::TerminalNode* SEMICOLON(size_t i);
+    ExprContext *expr();
+    antlr4::tree::TerminalNode *RIGHT_PARENTHESE();
+    StatementseqContext *statementseq();
+    antlr4::tree::TerminalNode *RIGHT_BRACE();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ForstatementContext* forstatement();
 
   class  CallstatementContext : public antlr4::ParserRuleContext {
   public:
@@ -243,8 +266,15 @@ public:
 
     TypeContext *type();
     antlr4::tree::TerminalNode *ID();
-    ExprContext *expr();
+    antlr4::tree::TerminalNode *INT();
     antlr4::tree::TerminalNode *SEMICOLON();
+    antlr4::tree::TerminalNode *ASSIGN();
+    antlr4::tree::TerminalNode *LEFT_BRACE();
+    antlr4::tree::TerminalNode *RIGHT_BRACE();
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> COMMA();
+    antlr4::tree::TerminalNode* COMMA(size_t i);
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

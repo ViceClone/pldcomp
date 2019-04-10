@@ -54,6 +54,7 @@ public:
 	
 	/** Actual code generation */
 	void gen_asm(ostream &o); /**< x86 assembly code generation for this IR instruction */
+	string get_reg_name(string name);
 	Operation getOp();
 private:
 	BasicBlock* bb; /**< The BB this instruction belongs to, which provides a pointer to the CFG this instruction belong to */
@@ -129,7 +130,7 @@ class CFG {
 	void gen_asm_epilogue(ostream& o);
 
 	// symbol table methods
-	bool add_to_symbol_table(string name, Type t);
+	bool add_to_symbol_table(string name, Type t, int size);
 	bool find_symbol(string name);
 	string create_new_tempvar(Type t);
 	int get_var_index(string name);

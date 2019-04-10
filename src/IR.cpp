@@ -18,45 +18,54 @@ IRInstr::Operation IRInstr::getOp() {
     return op;
 }
 
+string IRInstr::get_reg_name(string name) {
+    if (name.compare("!bp")==0) {
+        return "%rbp";
+    }
+    string reg = "-" + to_string(bb->cfg->get_var_index(name)) + "(%rbp)";
+    return reg;
+}
+
 void IRInstr::gen_asm(ostream& o){
+    int n_params = params.size();
     switch (op){
         case ldconst:
             cout << "ldconst " << params[0] << " " << params[1] << endl;
-            o<< "    movl $"<< params[1]<<", -"<< bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp)";
+            o<< "    movl $"<< params[1]<<", "<< get_reg_name(params[0]);
             o<< " # " << "ldconst " << params[0] << " " << params[1] << endl;
         break;
         case add:{
             cout << "add " << params[0] << " " << params[1] << " " << params[2] << endl;
-            o<< "    movl -"<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax";
+            o<< "    movl " << get_reg_name(params[1]) <<", " << "%"<<"eax";
             o<< " # " << "add " << params[0] << " " << params[1] << " " << params[2] << endl;
-            o<< "    addl -"<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), " <<"%"<<"eax"<< endl;
-            o<< "    movl " << "%" <<"eax, -" << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            o<< "    addl "<< get_reg_name(params[2])<<", " <<"%"<<"eax"<< endl;
+            o<< "    movl " << "%" <<"eax, " << get_reg_name(params[0]) <<endl;
         }
         break;
         case sub: {
             cout << "sub " << params[0] << " " << params[1] << " " << params[2] << endl;
-            o<< "    movl -"<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp)," << "%"<<"eax";
+            o<< "    movl "<< get_reg_name(params[1])<<", " << "%"<<"eax";
             o<< " # " << "sub " << params[0] << " " << params[1] << " " << params[2] << endl;
-            o<< "    subl -"<< bb->cfg->get_var_index(params[2]) << "("<<"%"<<"rbp) ," << "%" << "eax" << endl;
-            o<< "    movl " << "%" <<"eax, -" << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            o<< "    subl "<< get_reg_name(params[2]) << " ," << "%" << "eax" << endl;
+            o<< "    movl " << "%" <<"eax, " << get_reg_name(params[0]) <<endl;
         } 
         break;
         case mul:{
             cout << "mul " << params[0] << " " << params[1] << " " << params[2] << endl;
-            o<< "    movl -"<< bb->cfg->get_var_index(params[1])<<"("<<"%"<<"rbp), " << "%"<<"eax";
+            o<< "    movl "<< get_reg_name(params[1])<<", " << "%"<<"eax";
             o<< " # " << "mul " << params[0] << " " << params[1] << " " << params[2] << endl;
-            o<< "    imull -"<< bb->cfg->get_var_index(params[2])<<"("<<"%"<<"rbp), "<< "%"<<"eax" <<endl;
-            o<< "    movl " << "%" <<"eax, -" << bb->cfg->get_var_index(params[0])<<"("<<"%"<<"rbp) " <<endl;
+            o<< "    imull "<< get_reg_name(params[2])<<", "<< "%"<<"eax" <<endl;
+            o<< "    movl " << "%" <<"eax, " << get_reg_name(params[0]) <<endl;
         }
         break;
         case cpy: {
             cout << "cpy " << params[0] << " " << params[1] << endl;
             o << " # " << "cpy " << params[0] << " " << params[1] << endl;
             if (params[1].compare("!return_reg") != 0) {
-                o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax" << endl;
+                o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
             }
             if (params[0].compare("!return_reg") != 0) {
-                o << "    movl " << "%" << "eax, -" <<  bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)"  << endl;
+                o << "    movl " << "%" << "eax, " <<  get_reg_name(params[0]) << endl;
             }
         }
         break;
@@ -66,8 +75,7 @@ void IRInstr::gen_asm(ostream& o){
             int n_params = params.size();
             for (int i=1; i<n_params; i++) {
                 cout << (params[i]) << " ";
-                o << "    movl -" << bb->cfg->get_var_index(params[i]) << "(" << "%"
-                    << "rbp), " << reg_name[i-1] << endl;
+                o << "    movl " << get_reg_name(params[i]) << ", " << reg_name[i-1] << endl;
             }
             cout << endl;
             o << "    call " << params[0] << endl;
@@ -83,40 +91,40 @@ void IRInstr::gen_asm(ostream& o){
         case cmp_eq: {
             cout << "cmp_eq " << params[0] << " " << params[1] << endl;
             if (params[1].compare("!return_reg") != 0) {
-                o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax" << endl;
+                o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
             }
-            o << "    cmpl " << "%" << "eax, -"
-                << bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)" << endl;
+            o << "    cmpl " << "%" << "eax, "
+                << get_reg_name(params[0]) << endl;
             o << "    jne " << bb->exit_false->label << endl;
         }
         break;
         case cmp_ne: {
             cout << "cmp_ne " << params[0] << " " << params[1] << endl;
             if (params[1].compare("!return_reg") != 0) {
-                o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax" << endl;
+                o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
             }
-            o << "    cmpl " << "%" << "eax, -"
-                << bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)" << endl;
+            o << "    cmpl " << "%" << "eax, "
+                << get_reg_name(params[0]) << endl;
             o << "    je " << bb->exit_false->label << endl;
         }
         break;
         case cmp_lt: {
             cout << "cmp_lt " << params[0] << " " << params[1] << endl;
             if (params[1].compare("!return_reg") != 0) {
-                o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax" << endl;
+                o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
             }
-            o << "    cmpl " << "%" << "eax, -"
-                << bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)" << endl;
+            o << "    cmpl " << "%" << "eax, "
+                << get_reg_name(params[0]) << endl;
             o << "    jge " << bb->exit_false->label << endl;
         }
         break;
         case cmp_le: {
             cout << "cmp_le " << params[0] << " " << params[1] << endl;
             if (params[1].compare("!return_reg") != 0) {
-                o << "    movl -" << bb->cfg->get_var_index(params[1]) << "(" << "%" << "rbp), " << "%" << "eax" << endl;
+                o << "    movl " << get_reg_name(params[1]) << ", " << "%" << "eax" << endl;
             }
-            o << "    cmpl " << "%" << "eax, -"
-                << bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)" << endl;
+            o << "    cmpl " << "%" << "eax, "
+                << get_reg_name(params[0]) << endl;
             o << "    jg " << bb->exit_false->label << endl;
         }
         break;
@@ -127,7 +135,7 @@ void IRInstr::gen_asm(ostream& o){
             if (params[0].compare("!return_reg") == 0) {
                 o << "%" << "eax" << endl;
             } else {
-                o << "-" << bb->cfg->get_var_index(params[0]) << "(" << "%" << "rbp)" << endl;
+                o << get_reg_name(params[0]) << endl;
             }
             o << "    je " << bb->exit_false->label << endl;
         }
@@ -201,7 +209,7 @@ void CFG::gen_asm(ostream& o) {
         }
         
     }
-    o << "  .LLast" << label << ":" << endl;
+    o << ".LLast" << label << ":" << endl;
     gen_asm_epilogue(o);
     
 }
@@ -237,16 +245,16 @@ int CFG::set_n_params(int n) {
     n_params = n;
 }
 
-bool CFG::add_to_symbol_table(string name, Type t) {
+bool CFG::add_to_symbol_table(string name, Type t, int size) {
     map<string,int>::iterator it = SymbolIndex.find(name);
     if (!(it==SymbolIndex.end())) {
         return false;
     }
     if (t==Int) {
-        nextFreeSymbolIndex += 4;
+        nextFreeSymbolIndex += size;
         
     } else if (t==Char) {
-        nextFreeSymbolIndex += 4;
+        nextFreeSymbolIndex += size;
     }
     nextTempAddress = nextFreeSymbolIndex;
     SymbolIndex[name] = nextFreeSymbolIndex;

@@ -7,16 +7,6 @@ int output(char c) {
 }
 int main() {
     int a = 1;
-    if (a) {
-        int b = 0;
-        output('1');
-        if (b) {
-            output('1');
-        } else {
-            output('0');
-        }
-    } else {
-        output('0');
-    }
-    return 3;
+    output('4');
+    return a;
 }

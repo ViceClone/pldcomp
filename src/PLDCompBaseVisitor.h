@@ -39,6 +39,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitForstatement(PLDCompParser::ForstatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitCallstatement(PLDCompParser::CallstatementContext *ctx) override {
     return visitChildren(ctx);
   }

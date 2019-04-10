@@ -39,7 +39,7 @@ antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::Functiondefini
     lastBlock->exit_true = nullptr;
     bb->exit_true = lastBlock;
     if (func_type.compare("int") == 0) {
-        current_cfg->add_to_symbol_table("!returnval", Int);
+        current_cfg->add_to_symbol_table("!returnval", Int, 4);
     }
     // Can merge with visitFuncNoParams -> TODO
     int n_params = (ctx->ID()).size()-1;
@@ -51,7 +51,7 @@ antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::Functiondefini
         string name_var = list_id[i]->getText();
         // We dont care about type this time
         // string t = type[i]->getText();
-        bool valid = current_cfg->add_to_symbol_table(name_var,Int);
+        bool valid = current_cfg->add_to_symbol_table(name_var,Int, 4);
         if (!valid) {
             cout << "ERROR: Variable name " << name_var <<  " is redundant";
             return NULL;
@@ -541,8 +541,10 @@ antlrcpp::Any IRGenerator::visitDeclWithoutAssignment(PLDCompParser::DeclWithout
     Type t;
     if (type.compare("int") == 0) {
         t = Int;
+    } else if (type.compare("char") == 0) {
+        t = Char;
     }
-    bool validDeclaration = current_cfg->add_to_symbol_table(name,t);
+    bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
     if (!validDeclaration) {
         cout << "ERROR: invalid declaration " << endl;
     }
@@ -557,32 +559,106 @@ antlrcpp::Any IRGenerator::visitDeclWithAssignment(PLDCompParser::DeclWithAssign
     Type t;
     if (type.compare("int") == 0) {
         t = Int;
+    } else if (type.compare("char") == 0) {
+        t = Char;
     }
-    bool validDeclaration = current_cfg->add_to_symbol_table(name,t);
+    bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
     if (!validDeclaration) {
         cout << "ERROR: invalid declaration " << endl;
         return NULL;
     }
     string temp = visit(ctx->expr());
     vector<string> params = {name, temp};
-    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
+    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,t,params);
     current_cfg->reset_next_temp();
     return NULL;
 }
 
+antlrcpp::Any IRGenerator::visitDeclArray(PLDCompParser::DeclArrayContext *ctx) {
+    string name = ctx->ID()->getText();
+    string type = ctx->type()->getText();
+    Type t;
+    if (type.compare("int") == 0) {
+        t = IntArray;
+    } else if (type.compare("char") == 0) {
+        t = CharArray;
+    }
+    int size = stoi(ctx->INT()->getText());
+    bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4*size);
+    if (!validDeclaration) {
+        cout << "ERROR: invalid declaration " << endl;
+        return NULL;
+    }
+    int index = current_cfg->get_var_index(name);
+    vector<PLDCompParser::ExprContext *> list_expr = ctx->expr();
+    int n_expr = list_expr.size();
+    string mem = current_cfg->create_new_tempvar(Int);
+    vector<string> params_mem = {mem, to_string(-index)};
+    current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_mem);
+    for (int i=0; i<n_expr; i++) {
+        string expr = visit(ctx->expr(i));
+    }
+}
 // Assignment
 antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) {
-    string name = ctx->ID()->getText();
-    if (current_cfg->find_symbol(name)) {
-        string temp = visit(ctx->expr());
-        vector<string> params = {name, temp};
+    string var = visit(ctx->lvalue());
+    if (var.compare("")==0) {
+        cout << "ERROR: cannot find " << ctx->lvalue()->getText() << endl;
+        return NULL;
+    }
+
+    string temp = visit(ctx->expr());
+    // if var is an actual variable
+    if (var.at(0) != '!') {
+        vector<string> params = {var, temp};
         current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
     } else {
-        cout << "ERROR: variable has not been declared yet" << endl;
+        vector<string> params = {var, temp};
+        current_cfg->current_bb->add_IRInstr(IRInstr::wmem,Int,params);
     }
+    
     current_cfg->reset_next_temp();
     return NULL;
 }
+
+antlrcpp::Any IRGenerator::visitLvalue(PLDCompParser::LvalueContext *ctx) {
+    if (ctx->ID()!=nullptr) {
+        string name = ctx->ID()->getText();
+        if (!current_cfg->find_symbol(name)){
+            cout << "ERROR: variable has not been declared yet" << endl;
+            return "";
+        }
+        return (string)ctx->ID()->getText();
+    } else {
+        string var = visitChildren(ctx);
+        return var;
+    }
+}
+
+antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
+    string name = ctx->ID()->getText();
+    if (current_cfg->find_symbol(name)) {
+        if (current_cfg->get_var_type(name)!=CharArray 
+            && current_cfg->get_var_type(name)!=IntArray){
+            cout << name << " is not an array" << endl;
+            return "";
+        }
+        int offset = current_cfg->get_var_index(name);
+        string expr = visit(ctx->expr());
+        string var = current_cfg->create_new_tempvar(Int);
+        vector<string> params1 = {var,to_string(-offset)};
+        current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params1);
+        vector<string> params2 = {var, expr, var};
+        current_cfg->current_bb->add_IRInstr(IRInstr::add,Int,params2);
+        vector<string> params3 = {var,"!bp",var};
+        return var;
+    } else {
+        //TODO throw an exception here
+        cout << "Variable \"" << name << "\" has not been declared yet " << endl;
+        return "";
+    }
+}
+
 // Type
 antlrcpp::Any IRGenerator::visitType(PLDCompParser::TypeContext *ctx) {
     return visitChildren(ctx);
