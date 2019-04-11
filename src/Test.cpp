@@ -204,7 +204,7 @@ void Test::runTest(std::ofstream& testLogStream, string testName, vector<string>
             int n_lex_errors = 0;
             string lex_errors = "";
             for (auto it=list_token.begin(); it!=list_token.end();++it) {
-                if ((*it)->getType()==21) {
+                if ((*it)->getType()==PLDCompParser::ERROR) {
                     lex_errors = lex_errors + "line " + to_string((*it)->getLine()) +  ":" + to_string((*it)->getCharPositionInLine()) 
                         +  " unrecognized token \'" +  (*it)->getText() +  "\'";
                     n_lex_errors++;
