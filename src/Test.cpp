@@ -8,14 +8,20 @@
 using namespace antlr4;
 using namespace std;
 
+/* Repositories */
+
 const string BASE_TEST_FRONTEND_URL = "../test/frontend/";
 const string BASE_TEST_BACKEND_URL = "../test/backend/";
 const string BASE_TEST_CUSTOM_URL = "../test/custom/";
+
+/* Lexer Error Files */
 
 vector<string> lexErrorFiles = {
     BASE_TEST_FRONTEND_URL + "LexError/01_LexError_InvalidCharInStream.c",
     BASE_TEST_FRONTEND_URL + "LexError/02_LexError_InvalidCharInStreamWithinProgram.c"
 };
+
+/* Semantic Error Files */
 
 vector<string> semanticErrorFiles = {
     BASE_TEST_FRONTEND_URL + "SemanticError/01_MissingVarDeclaration.c"
@@ -159,7 +165,7 @@ void Test::customTests(std::ofstream& testLogStream) {
 
 void Test::runTests() {
     ofstream testLogStream;
-    testLogStream.open("test.log"); 
+    testLogStream.open("../test/test.log"); 
     lexErrorTests(testLogStream);
     semanticErrorTests(testLogStream);
     syntaxErrorTests(testLogStream);
@@ -172,15 +178,15 @@ void Test::runTests() {
 /* The Testing Function */
 
 void Test::runTest(std::ofstream& testLogStream, string testName, vector<string> testFiles) {
+        std::cerr << endl << "*--------------------->" << testName << "<--------------------*" << endl;
+        testLogStream << endl << "*--------------------->" << testName << "<--------------------*" << endl;
     for (int i=0 ; i<testFiles.size() ; i++) {
 
         /* Test Error Output */
-        std::cerr << endl << "*--------------------->" << testName << "<--------------------*" << endl;
         std::cerr << endl << "\t-----------------------------------------\t" << endl;
         std::cerr << endl << "File " << i+1 << " : " << testFiles[i] << endl << endl;
 
         /* Test Error Log */
-        testLogStream << endl << "*--------------------->" << testName << "<--------------------*" << endl;
         testLogStream << endl << "\t-----------------------------------------\t" << endl;
         testLogStream << endl << "File " << i+1 << " : " << testFiles[i] << endl << endl;
 
@@ -233,6 +239,5 @@ void Test::runTest(std::ofstream& testLogStream, string testName, vector<string>
             testLogStream << "Exception caught " << e.what() << endl << "Compilation failed!" << endl;
         }
     }
-    
 }
 

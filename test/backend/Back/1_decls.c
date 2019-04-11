@@ -4,4 +4,3 @@ void toto() {
   int64_t y;
   int64_t z;
 }
-
