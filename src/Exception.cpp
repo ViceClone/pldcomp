@@ -6,29 +6,53 @@
 
 using namespace std;
 
+/* Variable Name Exception */
+
 void VariableNameException::setVarName(string varName) {
     varName = varName;
 }
 
 const char* VariableNameException::what() const throw() {
-    cerr << "ERROR: Variable name " << varName <<  " is redundant";
-    return "Variable Name Exception";
+    cerr << "ERROR: Variable name \'" << varName <<  "\' is redundant";
+    return "VariableNameException";
 }
 
+/* Declaration Exception */
+
+void DeclarationException::setVarName(string varName) {
+    varName = varName;
+}
 
 const char* DeclarationException::what() const throw() {
-    return "Declaration Exception";
+    cerr << "ERROR: \'" << varName << "\' has not been declared yet " << endl;
+    return "DeclarationException";
 }
 
+/* Invalid Declaration Exception */
 
 const char* InvalidDeclarationException::what() const throw() {
-    return "Invalid Declaration Exception";
+    cerr << "ERROR: invalid declaration " << endl;
+    return "InvalidDeclarationException";
+}
+
+/* Value Not Found Exception Exception */
+
+void ValueNotFoundException::setValue(string value) {
+    value = value;
 }
 
 const char* ValueNotFoundException::what() const throw() {
-    return "Value Not Found Exception";
+    cerr << "ERROR: cannot find \'" << value << "\'" << endl;
+    return "ValueNotFoundException";
+}
+
+/* Array Exception */
+
+void ArrayException::setArrayName(string arrayName) {
+    arrayName = arrayName;
 }
 
 const char* ArrayException::what() const throw() {
-    return "Array Exception";
+    cerr << "ERROR: \'" << arrayName << "\' is not an array" << endl;
+    return "ArrayException";
 }

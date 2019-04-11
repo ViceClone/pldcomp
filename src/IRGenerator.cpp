@@ -340,8 +340,8 @@ antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementCo
         }
         */
         if (!current_cfg->find_symbol(var)) {
+            declarationException.setVarName(var);
             throw declarationException;
-            cout << "ERROR: " << var << " has not been declared yet " << endl;
             return NULL;
         }
         current_cfg->current_bb->ret_token -= 1;
@@ -451,8 +451,8 @@ antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
     if (current_cfg->find_symbol(name)) {
         return (string)name;
     } else {
+        declarationException.setVarName(name);
         throw declarationException;
-        cout << "ERROR: Variable \'" << name << "\' has not been declared yet " << endl;
     }
     return (string)(ctx->ID()->getText());
 }
@@ -556,7 +556,6 @@ antlrcpp::Any IRGenerator::visitDeclWithoutAssignment(PLDCompParser::DeclWithout
     bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
     if (!validDeclaration) {
         throw invalidDeclarationException;
-        cout << "ERROR: invalid declaration " << endl;
     }
     current_cfg->reset_next_temp();
     return NULL;
@@ -575,7 +574,6 @@ antlrcpp::Any IRGenerator::visitDeclWithAssignment(PLDCompParser::DeclWithAssign
     bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
     if (!validDeclaration) {
         throw invalidDeclarationException;
-        cout << "ERROR: invalid declaration " << endl;
         return NULL;
     }
     string temp = visit(ctx->expr());
@@ -598,7 +596,6 @@ antlrcpp::Any IRGenerator::visitDeclArray(PLDCompParser::DeclArrayContext *ctx) 
     bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4*size);
     if (!validDeclaration) {
         throw invalidDeclarationException;
-        cout << "ERROR: invalid declaration " << endl;
         return NULL;
     }
     int index = current_cfg->get_var_index(name);
@@ -625,8 +622,8 @@ antlrcpp::Any IRGenerator::visitDeclArray(PLDCompParser::DeclArrayContext *ctx) 
 antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) {
     string var = visit(ctx->lvalue());
     if (var.compare("")==0) {
+        valueNotFoundException.setValue(ctx->lvalue()->getText());
         throw valueNotFoundException;
-        cout << "ERROR: cannot find " << ctx->lvalue()->getText() << endl;
         return NULL;
     }
 
@@ -648,7 +645,6 @@ antlrcpp::Any IRGenerator::visitIdL(PLDCompParser::IdLContext *ctx) {
     string name = ctx->ID()->getText();
     if (!current_cfg->find_symbol(name)){
         throw declarationException;
-        cout << "ERROR: variable has not been declared yet" << endl;
         return "";
     }
     return name;
@@ -664,8 +660,8 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
     if (current_cfg->find_symbol(name)) {
         if (current_cfg->get_var_type(name)!=CharArray 
             && current_cfg->get_var_type(name)!=IntArray){
+            arrayException.setArrayName(name);
             throw arrayException;
-            cout << "ERROR: " << name << " is not an array" << endl;
             return "";
         }
         int mem = current_cfg->get_var_index(name);
@@ -685,8 +681,8 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
         current_cfg->current_bb->add_IRInstr(IRInstr::add,Int,params2);
         return var;
     } else {
+        declarationException.setVarName(name);
         throw declarationException;
-        cout << "ERROR: Variable \"" << name << "\" has not been declared yet " << endl;
         return "";
     }
 }
