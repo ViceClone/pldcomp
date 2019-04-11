@@ -1,10 +1,11 @@
 CPP=g++
 CFLAGS= -std=c++11 -I antlr4-runtime/ -DDEBUG
-DEPS = PLDCompVisitor.h PLDCompParser.h PLDCompLexer.h PLDCompBaseVisitor.h IRGenerator.h IR.h Test.h 
+DEPS = PLDCompVisitor.h PLDCompParser.h PLDCompLexer.h PLDCompBaseVisitor.h IRGenerator.h IR.h 
+TESTS = Test.h 
 OBJ = $(DEPS:.h=.o) lib/libantlr.so CompilerMain.cpp
 EXE = comp
 TEST = test
-OBJ_TEST = $(DEPS:.h=.o) lib/libantlr.so main.cpp
+OBJ_TEST = $(DEPS:.h=.o) $^ $(TESTS:.h=.o) lib/libantlr.so main.cpp
 
 
 comp: $(OBJ)
@@ -14,7 +15,7 @@ comp: $(OBJ)
 	$(CPP) -c -o $@ $< $(CFLAGS)
 
 clean:
-	rm -rf *.o comp a.out out.asm
+	rm -rf *.o comp a.out out.asm test
 
 test: $(OBJ_TEST)
 	$(CPP) -o $(TEST) $^ $(CFLAGS)
