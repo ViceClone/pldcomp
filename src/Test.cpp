@@ -127,168 +127,70 @@ vector<string> customFiles = {
     BASE_TEST_CUSTOM_URL + "irtest.c", // PASSED
 };
 
-void read_file(string file_name){
-    ifstream myReadFile;
-    myReadFile.open(file_name);
-    string output;
-    if (myReadFile.is_open()) {
-        while (!myReadFile.eof()) {
-            getline(myReadFile, output);
-            cerr << output << endl;
-        }
-        cerr << endl;
-    }
-    myReadFile.close();
+/* Test Functions */
+
+void Test::lexErrorTests(std::ofstream& testLogStream) {
+    runTest(testLogStream, "LEXER ERROR TESTS", lexErrorFiles);
 }
 
 
-void Test::lexErrorTests() {
-    cerr << endl << endl << "*--------------------->LEXER ERROR TESTS<--------------------*" << endl << endl;
-    for (int i=0 ; i<lexErrorFiles.size() ; i++) {
-        cerr << endl << "Fichier : " << lexErrorFiles[i] << endl;
-        
-        ifstream file(lexErrorFiles[i]);
-        string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
-
-        ANTLRInputStream input (content);
-        PLDCompLexer lexer (&input);
-        CommonTokenStream token (&lexer);
-        PLDCompParser parser (&token);
-        tree::ParseTree * tree = parser.prog();
-
-        // Generator visitor("out.asm");
-        try {
-            // visitor.visit(tree);
-            cerr << "Compilation Success!" << endl << endl;
-        } catch (exception& e) {
-            remove("out.asm");
-            cerr << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
-        }
-    }
+void Test::semanticErrorTests(std::ofstream& testLogStream) {
+    runTest(testLogStream, "SEMANTIC ERROR TESTS", semanticErrorFiles);
 }
 
 
-void Test::semanticErrorTests() {
-    cerr << endl << endl << "*--------------------->SEMANTIC ERROR TESTS<--------------------*" << endl << endl;
-    for (int i=0 ; i<semanticErrorFiles.size() ; i++) {
-        cerr << "Fichier : " << semanticErrorFiles[i] << endl;
-
-        ifstream file(semanticErrorFiles[i]);
-        string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
-
-        ANTLRInputStream input (content);
-        PLDCompLexer lexer (&input);
-        CommonTokenStream token (&lexer);
-        PLDCompParser parser (&token);
-        tree::ParseTree * tree = parser.prog();
-
-        // Generator visitor("out.asm");
-
-        try {
-            // visitor.visit(tree);
-            cerr << "Compilation Success!" << endl << endl;
-        } catch (int i) {
-            remove("out.asm");
-            cerr << "Compilation failed!" << endl << endl;
-        } catch (exception& e) {
-            remove("out.asm");
-            cerr << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
-        }
-    }
+void Test::syntaxErrorTests(std::ofstream& testLogStream) {
+    runTest(testLogStream, "SYNTAX ERROR TESTS", syntaxErrorFiles);
 }
 
 
-void Test::syntaxErrorTests() {
-    cerr << endl << endl << "*--------------------->SYNTAX ERROR TESTS<--------------------*" << endl << endl;
-    for (int i=0 ; i<syntaxErrorFiles.size() ; i++) {
-        cerr << "Fichier : " << syntaxErrorFiles[i] << endl;
-
-        ifstream file(syntaxErrorFiles[i]);
-        string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
-
-        ANTLRInputStream input (content);
-        PLDCompLexer lexer (&input);
-        CommonTokenStream token (&lexer);
-        PLDCompParser parser (&token);
-        tree::ParseTree * tree = parser.prog();
-
-        // Generator visitor("out.asm");
-
-        try {
-            // visitor.visit(tree);
-            cerr << "Compilation Success!" << endl << endl;
-        } catch (exception& e) {
-            remove("out.asm");
-            cerr << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
-        }
-    }
+void Test::validProgramsTests(std::ofstream& testLogStream) {
+    runTest(testLogStream, "VALID PROGRAMS TESTS", validProgramsFiles);
 }
 
 
-void Test::validProgramsTests() {
-    cerr << endl << endl << "*--------------------->VALID PROGRAMS TESTS<--------------------*" << endl << endl;
-    for (int i=0 ; i<validProgramsFiles.size() ; i++) {
-        cerr << "Fichier : " << validProgramsFiles[i] << endl;
-
-        ifstream file(validProgramsFiles[i]);
-        string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
-
-        ANTLRInputStream input (content);
-        PLDCompLexer lexer (&input);
-        CommonTokenStream token (&lexer);
-        PLDCompParser parser (&token);
-        tree::ParseTree * tree = parser.prog();
-
-        // Generator visitor("out.asm");
-
-        try {
-            // visitor.visit(tree);
-            cerr << "Compilation Success!" << endl << endl;
-        } catch (exception& e) {
-            remove("out.asm");
-            cerr << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
-        }
-    }
+void Test::backendTests(std::ofstream& testLogStream) {
+    runTest(testLogStream, "BACKEND TESTS", backendFiles);
 }
 
-
-void Test::backendTests() {
-    cerr << endl << endl << "*--------------------->BACKEND TESTS<--------------------*" << endl << endl;
-    for (int i=0 ; i<backendFiles.size() ; i++) {
-        cerr << "Fichier : " << backendFiles[i] << endl;
-
-        ifstream file(backendFiles[i]);
-        string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
-
-        ANTLRInputStream input (content);
-        PLDCompLexer lexer (&input);
-        CommonTokenStream token (&lexer);
-        PLDCompParser parser (&token);
-        tree::ParseTree * tree = parser.prog();
-
-        // Generator visitor("out.asm");
-
-        try {
-            // visitor.visit(tree);
-            cerr << "Compilation Success!" << endl << endl;
-        } catch (exception& e) {
-            remove("out.asm");
-            cerr << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
-        }
-    }
+void Test::customTests(std::ofstream& testLogStream) {
+    runTest(testLogStream, "CUSTOM TESTS", customFiles);
 }
 
-void Test::customTests() {
-    cerr << endl << endl << "*--------------------->CUSTOM TESTS<--------------------*" << endl << endl;
-    for (int i=0 ; i<customFiles.size() ; i++) {
-        cerr << endl << "\t-----------------------------------------\t" << endl;
-        cerr << endl << "File " << i+1 << " : " << customFiles[i] << endl << endl;
-        ifstream file(customFiles[i]);
-        read_file(customFiles[i]);
+void Test::runTests() {
+    ofstream testLogStream;
+    testLogStream.open("test.log"); 
+    lexErrorTests(testLogStream);
+    semanticErrorTests(testLogStream);
+    syntaxErrorTests(testLogStream);
+    validProgramsTests(testLogStream);
+    backendTests(testLogStream);
+    customTests(testLogStream);
+    testLogStream.close();
+}
+
+/* The Testing Function */
+
+void Test::runTest(std::ofstream& testLogStream, string testName, vector<string> testFiles) {
+    for (int i=0 ; i<testFiles.size() ; i++) {
+
+        /* Test Error Output */
+        std::cerr << endl << "*--------------------->" << testName << "<--------------------*" << endl;
+        std::cerr << endl << "\t-----------------------------------------\t" << endl;
+        std::cerr << endl << "File " << i+1 << " : " << testFiles[i] << endl << endl;
+
+        /* Test Error Log */
+        testLogStream << endl << "*--------------------->" << testName << "<--------------------*" << endl;
+        testLogStream << endl << "\t-----------------------------------------\t" << endl;
+        testLogStream << endl << "File " << i+1 << " : " << testFiles[i] << endl << endl;
+
+        ifstream file(testFiles[i]);
+        Util::read_file(testFiles[i]);
+        Util::log_file(testLogStream, testFiles[i]);
         string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
         
         try {
-        /* Lexer */
+            /* Lexer */
             ANTLRInputStream input (content);
             PLDCompLexer lexer (&input);
             vector<unique_ptr<Token>> list_token = lexer.getAllTokens();
@@ -321,17 +223,16 @@ void Test::customTests() {
                 throw syntaxException;
             }
             
-            /* Code Generation */
-
             IRGenerator visitor;
             visitor.visit(tree);
-            // ofstream o("out.asm",ofstream::out);
-            // visitor.output_asm(o);
-            cerr << "Compilation Success!" << endl;
+
+            std::cerr << "Compilation Success!" << endl;
+            testLogStream << "Compilation Success!" << endl;
         } catch (exception& e) {
-            //remove("out.asm");
-            cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl;
-        } 
+            std::cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl;
+            testLogStream << "Exception caught " << e.what() << endl << "Compilation failed!" << endl;
+        }
     }
+    
 }
 
