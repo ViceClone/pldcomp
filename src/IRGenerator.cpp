@@ -21,7 +21,11 @@ void IRGenerator::output_asm(ostream& o) {
 }
 
 antlrcpp::Any IRGenerator::visitProg(PLDCompParser::ProgContext *ctx) {
-    return visitChildren(ctx);
+    try {
+        return visitChildren(ctx);
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
 }
 
 antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::FunctiondefinitionContext *ctx) {
@@ -72,265 +76,285 @@ antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::Functiondefini
 }
 
 antlrcpp::Any IRGenerator::visitStatementseq(PLDCompParser::StatementseqContext *ctx) {
-    return visitChildren(ctx);
+    try {
+        return visitChildren(ctx);
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
 }
 
 antlrcpp::Any IRGenerator::visitStatement(PLDCompParser::StatementContext *ctx)  {
-    if (current_cfg->current_bb->ret_token <= 0) {
-        size_t first = ctx->start->getStartIndex();
-        size_t last = ctx->stop->getStopIndex();
-        misc::Interval interval(first,last);
-        string ctxLine = ctx->start->getInputStream()->getText(interval);
-        cout << "line:" << ctx->getStart()->getLine()
-            << ":" << ctx->getStart()->getCharPositionInLine()
-            << ": \033[1;31mwarning\033[0m unreachable statement\n \033[0;32m" << ctxLine << "\033[0m" << endl;
-        return NULL;
+    try {
+        if (current_cfg->current_bb->ret_token <= 0) {
+            size_t first = ctx->start->getStartIndex();
+            size_t last = ctx->stop->getStopIndex();
+            misc::Interval interval(first,last);
+            string ctxLine = ctx->start->getInputStream()->getText(interval);
+            cout << "line:" << ctx->getStart()->getLine()
+                << ":" << ctx->getStart()->getCharPositionInLine()
+                << ": \033[1;31mwarning\033[0m unreachable statement\n \033[0;32m" << ctxLine << "\033[0m" << endl;
+            return NULL;
+        }
+        antlrcpp::Any ret = visitChildren(ctx);
+        current_cfg->reset_next_temp();
+        return ret;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    antlrcpp::Any ret = visitChildren(ctx);
-    current_cfg->reset_next_temp();
-    return ret;
 }
 
  antlrcpp::Any IRGenerator::visitCallstatement(PLDCompParser::CallstatementContext *ctx) {
-    return visitChildren(ctx);
+    try{
+        return visitChildren(ctx);
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
  }
 
 antlrcpp::Any IRGenerator::visitIfstatement(PLDCompParser::IfstatementContext *ctx) {
-    vector<string> params;
-    // Equal or NotEqual
-    if (PLDCompParser::Rel2ExprContext* context =
-            dynamic_cast<PLDCompParser::Rel2ExprContext*> (ctx->expr())) {
-        string varL = visit(context->expr(0));
-        // save number of temporary variables to move back
-        int n_temps = 0;
-        if (varL.compare("!return_reg") == 0) {
-            varL = current_cfg->create_new_tempvar(Int);
-            vector<string> cpy_params = {varL,"!return_reg"};
-            current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
-            n_temps++;
-        }
-        string varR = visit(context->expr(1));
-        params.push_back(varL);
-        params.push_back(varR);
-        IRInstr::Operation op;
-        string relop = context->relop->getText();
-        if (relop.compare("==") == 0) {
-            op = IRInstr::cmp_eq;
-        } else if (relop.compare("!=") == 0) {
-            op = IRInstr::cmp_ne;
-        }
-        current_cfg->current_bb->add_IRInstr(op,Int,params);
-        current_cfg->move_next_temp(-4*n_temps);
-        current_cfg->reset_next_temp();
-    }
-    // LT, LTE, GT, GTE
-    else if (PLDCompParser::Rel1ExprContext* context =
-            dynamic_cast<PLDCompParser::Rel1ExprContext*> (ctx->expr())) {
-        // save number of temporary variables to move back
-        int n_temps = 0;
-        string varL = visit(context->expr(0));
-        string varR = visit(context->expr(1));
-        IRInstr::Operation op;
-        string relop = context->relop->getText();
-        if (relop.compare("<") == 0 ) {
-            op = IRInstr::cmp_lt;
+    try{
+        vector<string> params;
+        // Equal or NotEqual
+        if (PLDCompParser::Rel2ExprContext* context =
+                dynamic_cast<PLDCompParser::Rel2ExprContext*> (ctx->expr())) {
+            string varL = visit(context->expr(0));
+            // save number of temporary variables to move back
+            int n_temps = 0;
             if (varL.compare("!return_reg") == 0) {
                 varL = current_cfg->create_new_tempvar(Int);
                 vector<string> cpy_params = {varL,"!return_reg"};
                 current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
                 n_temps++;
             }
+            string varR = visit(context->expr(1));
             params.push_back(varL);
             params.push_back(varR);
-        } else if (relop.compare(">") == 0) {
-            op = IRInstr::cmp_lt;
-            if (varR.compare("!return_reg") == 0) {
-                varR = current_cfg->create_new_tempvar(Int);
-                vector<string> cpy_params = {varR,"!return_reg"};
-                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
-                n_temps++;
+            IRInstr::Operation op;
+            string relop = context->relop->getText();
+            if (relop.compare("==") == 0) {
+                op = IRInstr::cmp_eq;
+            } else if (relop.compare("!=") == 0) {
+                op = IRInstr::cmp_ne;
             }
-            params.push_back(varR);
-            params.push_back(varL);
-        } else if (relop.compare("<=") == 0) {
-            op = IRInstr::cmp_le;
-            if (varL.compare("!return_reg") == 0) {
-                varL = current_cfg->create_new_tempvar(Int);
-                vector<string> cpy_params = {varL,"!return_reg"};
-                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
-                n_temps++;
-            }
-            params.push_back(varL);
-            params.push_back(varR);
+            current_cfg->current_bb->add_IRInstr(op,Int,params);
+            current_cfg->move_next_temp(-4*n_temps);
+            current_cfg->reset_next_temp();
         }
-        else if (relop.compare(">=") == 0) {
-            op = IRInstr::cmp_le;
-            if (varR.compare("!return_reg") == 0) {
-                varR = current_cfg->create_new_tempvar(Int);
-                vector<string> cpy_params = {varR,"!return_reg"};
-                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
-                n_temps++;
+        // LT, LTE, GT, GTE
+        else if (PLDCompParser::Rel1ExprContext* context =
+                dynamic_cast<PLDCompParser::Rel1ExprContext*> (ctx->expr())) {
+            // save number of temporary variables to move back
+            int n_temps = 0;
+            string varL = visit(context->expr(0));
+            string varR = visit(context->expr(1));
+            IRInstr::Operation op;
+            string relop = context->relop->getText();
+            if (relop.compare("<") == 0 ) {
+                op = IRInstr::cmp_lt;
+                if (varL.compare("!return_reg") == 0) {
+                    varL = current_cfg->create_new_tempvar(Int);
+                    vector<string> cpy_params = {varL,"!return_reg"};
+                    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                    n_temps++;
+                }
+                params.push_back(varL);
+                params.push_back(varR);
+            } else if (relop.compare(">") == 0) {
+                op = IRInstr::cmp_lt;
+                if (varR.compare("!return_reg") == 0) {
+                    varR = current_cfg->create_new_tempvar(Int);
+                    vector<string> cpy_params = {varR,"!return_reg"};
+                    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                    n_temps++;
+                }
+                params.push_back(varR);
+                params.push_back(varL);
+            } else if (relop.compare("<=") == 0) {
+                op = IRInstr::cmp_le;
+                if (varL.compare("!return_reg") == 0) {
+                    varL = current_cfg->create_new_tempvar(Int);
+                    vector<string> cpy_params = {varL,"!return_reg"};
+                    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                    n_temps++;
+                }
+                params.push_back(varL);
+                params.push_back(varR);
             }
-            params.push_back(varR);
-            params.push_back(varL);
+            else if (relop.compare(">=") == 0) {
+                op = IRInstr::cmp_le;
+                if (varR.compare("!return_reg") == 0) {
+                    varR = current_cfg->create_new_tempvar(Int);
+                    vector<string> cpy_params = {varR,"!return_reg"};
+                    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                    n_temps++;
+                }
+                params.push_back(varR);
+                params.push_back(varL);
+            }
+            current_cfg->current_bb->add_IRInstr(op,Int,params);
+            //current_cfg->move_next_temp(-4*n_temps);
+            current_cfg->reset_next_temp();
+        } else {
+            string var = visit(ctx->expr());
+            params.push_back(var);
+            IRInstr::Operation op = IRInstr::cmp;
+            current_cfg->current_bb->add_IRInstr(op,Int,params);
+            current_cfg->reset_next_temp();
         }
-        current_cfg->current_bb->add_IRInstr(op,Int,params);
-        //current_cfg->move_next_temp(-4*n_temps);
-        current_cfg->reset_next_temp();
-    } else {
-        string var = visit(ctx->expr());
-        params.push_back(var);
-        IRInstr::Operation op = IRInstr::cmp;
-        current_cfg->current_bb->add_IRInstr(op,Int,params);
-        current_cfg->reset_next_temp();
-    }
-    BasicBlock * testBB = current_cfg->current_bb;
+        BasicBlock * testBB = current_cfg->current_bb;
 
-    string afterIfLabel = current_cfg->new_BB_name();
-    BasicBlock * afterIfBB = new BasicBlock(current_cfg,afterIfLabel);
-    afterIfBB->exit_false = testBB->exit_false;
-    afterIfBB->exit_true = testBB->exit_true;
+        string afterIfLabel = current_cfg->new_BB_name();
+        BasicBlock * afterIfBB = new BasicBlock(current_cfg,afterIfLabel);
+        afterIfBB->exit_false = testBB->exit_false;
+        afterIfBB->exit_true = testBB->exit_true;
 
-    string thenLabel = current_cfg->new_BB_name();
-    BasicBlock * thenBB = new BasicBlock(current_cfg,thenLabel);
-    
-    thenBB->ret_token = testBB->ret_token;
-    testBB->exit_true = thenBB;
-    thenBB->exit_true = afterIfBB;
-    thenBB->exit_false= nullptr;
-    current_cfg->current_bb = thenBB;
-    visit(ctx->statementseq(0));
-    current_cfg->current_bb = afterIfBB;
-    
-    if (ctx->statementseq(1)) {
-        string elseLable = current_cfg->new_BB_name();
-        BasicBlock * elseBB = new BasicBlock(current_cfg,elseLable);
-        current_cfg->current_bb = elseBB;
-        elseBB->ret_token = testBB->ret_token;
-        testBB->exit_false = elseBB;
-        elseBB->exit_true = afterIfBB;
-        elseBB->exit_false = nullptr;
-        visit(ctx->statementseq(1));
-        afterIfBB->ret_token = ((thenBB->ret_token+elseBB->ret_token) > 0);
-    } else {
-        testBB->exit_false = afterIfBB;
+        string thenLabel = current_cfg->new_BB_name();
+        BasicBlock * thenBB = new BasicBlock(current_cfg,thenLabel);
+        
+        thenBB->ret_token = testBB->ret_token;
+        testBB->exit_true = thenBB;
+        thenBB->exit_true = afterIfBB;
+        thenBB->exit_false= nullptr;
+        current_cfg->current_bb = thenBB;
+        visit(ctx->statementseq(0));
+        current_cfg->current_bb = afterIfBB;
+        
+        if (ctx->statementseq(1)) {
+            string elseLable = current_cfg->new_BB_name();
+            BasicBlock * elseBB = new BasicBlock(current_cfg,elseLable);
+            current_cfg->current_bb = elseBB;
+            elseBB->ret_token = testBB->ret_token;
+            testBB->exit_false = elseBB;
+            elseBB->exit_true = afterIfBB;
+            elseBB->exit_false = nullptr;
+            visit(ctx->statementseq(1));
+            afterIfBB->ret_token = ((thenBB->ret_token+elseBB->ret_token) > 0);
+        } else {
+            testBB->exit_false = afterIfBB;
+        }
+        current_cfg->current_bb = afterIfBB;
+        return NULL;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    current_cfg->current_bb = afterIfBB;
-    return NULL;
 }
 
 antlrcpp::Any IRGenerator::visitWhilestatement(PLDCompParser::WhilestatementContext *ctx) {
-    BasicBlock * beforeWhile = current_cfg->current_bb;
-    BasicBlock * testBB = new BasicBlock(current_cfg,current_cfg->new_BB_name());
-    current_cfg->current_bb = testBB;
-    
-    vector<string> params;
-    // Equal or NotEqual
-    if (PLDCompParser::Rel2ExprContext* context =
-            dynamic_cast<PLDCompParser::Rel2ExprContext*> (ctx->expr())) {
-        string varL = visit(context->expr(0));
-        // save number of temporary variables to move back
-        int n_temps = 0;
-        if (varL.compare("!return_reg") == 0) {
-            varL = current_cfg->create_new_tempvar(Int);
-            vector<string> cpy_params = {varL,"!return_reg"};
-            current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
-            n_temps++;
-        }
-        string varR = visit(context->expr(1));
-        params.push_back(varL);
-        params.push_back(varR);
-        IRInstr::Operation op;
-        string relop = context->relop->getText();
-        if (relop.compare("==") == 0) {
-            op = IRInstr::cmp_eq;
-        } else if (relop.compare("!=") == 0) {
-            op = IRInstr::cmp_ne;
-        }
-        current_cfg->current_bb->add_IRInstr(op,Int,params);
-        current_cfg->move_next_temp(-4*n_temps);
-        current_cfg->reset_next_temp();
-    }
-    // LT, LTE, GT, GTE
-    else if (PLDCompParser::Rel1ExprContext* context =
-            dynamic_cast<PLDCompParser::Rel1ExprContext*> (ctx->expr())) {
-        // save number of temporary variables to move back
-        int n_temps = 0;
-        string varL = visit(context->expr(0));
-        string varR = visit(context->expr(1));
-        IRInstr::Operation op;
-        string relop = context->relop->getText();
-        if (relop.compare("<") == 0 ) {
-            op = IRInstr::cmp_lt;
+    try {
+        BasicBlock * beforeWhile = current_cfg->current_bb;
+        BasicBlock * testBB = new BasicBlock(current_cfg,current_cfg->new_BB_name());
+        current_cfg->current_bb = testBB;
+        
+        vector<string> params;
+        // Equal or NotEqual
+        if (PLDCompParser::Rel2ExprContext* context =
+                dynamic_cast<PLDCompParser::Rel2ExprContext*> (ctx->expr())) {
+            string varL = visit(context->expr(0));
+            // save number of temporary variables to move back
+            int n_temps = 0;
             if (varL.compare("!return_reg") == 0) {
                 varL = current_cfg->create_new_tempvar(Int);
                 vector<string> cpy_params = {varL,"!return_reg"};
                 current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
                 n_temps++;
             }
+            string varR = visit(context->expr(1));
             params.push_back(varL);
             params.push_back(varR);
-        } else if (relop.compare(">") == 0) {
-            op = IRInstr::cmp_lt;
-            if (varR.compare("!return_reg") == 0) {
-                varR = current_cfg->create_new_tempvar(Int);
-                vector<string> cpy_params = {varR,"!return_reg"};
-                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
-                n_temps++;
+            IRInstr::Operation op;
+            string relop = context->relop->getText();
+            if (relop.compare("==") == 0) {
+                op = IRInstr::cmp_eq;
+            } else if (relop.compare("!=") == 0) {
+                op = IRInstr::cmp_ne;
             }
-            params.push_back(varR);
-            params.push_back(varL);
-        } else if (relop.compare("<=") == 0) {
-            op = IRInstr::cmp_le;
-            if (varL.compare("!return_reg") == 0) {
-                varL = current_cfg->create_new_tempvar(Int);
-                vector<string> cpy_params = {varL,"!return_reg"};
-                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
-                n_temps++;
-            }
-            params.push_back(varL);
-            params.push_back(varR);
+            current_cfg->current_bb->add_IRInstr(op,Int,params);
+            current_cfg->move_next_temp(-4*n_temps);
+            current_cfg->reset_next_temp();
         }
-        else if (relop.compare(">=") == 0) {
-            op = IRInstr::cmp_le;
-            if (varR.compare("!return_reg") == 0) {
-                varR = current_cfg->create_new_tempvar(Int);
-                vector<string> cpy_params = {varR,"!return_reg"};
-                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
-                n_temps++;
+        // LT, LTE, GT, GTE
+        else if (PLDCompParser::Rel1ExprContext* context =
+                dynamic_cast<PLDCompParser::Rel1ExprContext*> (ctx->expr())) {
+            // save number of temporary variables to move back
+            int n_temps = 0;
+            string varL = visit(context->expr(0));
+            string varR = visit(context->expr(1));
+            IRInstr::Operation op;
+            string relop = context->relop->getText();
+            if (relop.compare("<") == 0 ) {
+                op = IRInstr::cmp_lt;
+                if (varL.compare("!return_reg") == 0) {
+                    varL = current_cfg->create_new_tempvar(Int);
+                    vector<string> cpy_params = {varL,"!return_reg"};
+                    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                    n_temps++;
+                }
+                params.push_back(varL);
+                params.push_back(varR);
+            } else if (relop.compare(">") == 0) {
+                op = IRInstr::cmp_lt;
+                if (varR.compare("!return_reg") == 0) {
+                    varR = current_cfg->create_new_tempvar(Int);
+                    vector<string> cpy_params = {varR,"!return_reg"};
+                    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                    n_temps++;
+                }
+                params.push_back(varR);
+                params.push_back(varL);
+            } else if (relop.compare("<=") == 0) {
+                op = IRInstr::cmp_le;
+                if (varL.compare("!return_reg") == 0) {
+                    varL = current_cfg->create_new_tempvar(Int);
+                    vector<string> cpy_params = {varL,"!return_reg"};
+                    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                    n_temps++;
+                }
+                params.push_back(varL);
+                params.push_back(varR);
             }
-            params.push_back(varR);
-            params.push_back(varL);
+            else if (relop.compare(">=") == 0) {
+                op = IRInstr::cmp_le;
+                if (varR.compare("!return_reg") == 0) {
+                    varR = current_cfg->create_new_tempvar(Int);
+                    vector<string> cpy_params = {varR,"!return_reg"};
+                    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+                    n_temps++;
+                }
+                params.push_back(varR);
+                params.push_back(varL);
+            }
+            current_cfg->current_bb->add_IRInstr(op,Int,params);
+            current_cfg->move_next_temp(-4*n_temps);
+            current_cfg->reset_next_temp();
+        } else {
+            string var = visit(ctx->expr());
+            params.push_back(var);
+            IRInstr::Operation op = IRInstr::cmp;
+            current_cfg->current_bb->add_IRInstr(op,Int,params);
+            current_cfg->reset_next_temp();
         }
-        current_cfg->current_bb->add_IRInstr(op,Int,params);
-        current_cfg->move_next_temp(-4*n_temps);
-        current_cfg->reset_next_temp();
-    } else {
-        string var = visit(ctx->expr());
-        params.push_back(var);
-        IRInstr::Operation op = IRInstr::cmp;
-        current_cfg->current_bb->add_IRInstr(op,Int,params);
-        current_cfg->reset_next_temp();
+
+        BasicBlock * bodyBB = new BasicBlock(current_cfg,current_cfg->new_BB_name());
+        
+        BasicBlock * afterWhile = new BasicBlock(current_cfg,current_cfg->new_BB_name());
+        testBB->exit_true = bodyBB;
+        testBB->exit_false = afterWhile;
+
+        afterWhile->exit_true = beforeWhile->exit_true;
+        afterWhile->exit_false = beforeWhile->exit_false;
+        
+        bodyBB->exit_true = testBB;
+        bodyBB->exit_false = nullptr;
+
+        beforeWhile->exit_true = testBB;
+
+        current_cfg->current_bb = bodyBB;
+        visit(ctx->statementseq());
+        current_cfg->current_bb = afterWhile;
+        return NULL;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-
-    BasicBlock * bodyBB = new BasicBlock(current_cfg,current_cfg->new_BB_name());
-    
-    BasicBlock * afterWhile = new BasicBlock(current_cfg,current_cfg->new_BB_name());
-    testBB->exit_true = bodyBB;
-    testBB->exit_false = afterWhile;
-
-    afterWhile->exit_true = beforeWhile->exit_true;
-    afterWhile->exit_false = beforeWhile->exit_false;
-    
-    bodyBB->exit_true = testBB;
-    bodyBB->exit_false = nullptr;
-
-    beforeWhile->exit_true = testBB;
-
-    current_cfg->current_bb = bodyBB;
-    visit(ctx->statementseq());
-    current_cfg->current_bb = afterWhile;
-    return NULL;
 }
 
 antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) {
@@ -363,93 +387,121 @@ antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementCo
 }
 
 antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
-    vector<PLDCompParser::ExprContext *> list_expr = ctx->expr();
-    vector<string> params;
-    params.push_back(ctx->ID()->getText());
-    int n_params = list_expr.size();
-    int n_temps = 0;
-    for (int i=0; i<n_params; i++) {
-        string var = visit(ctx->expr(i));
-        if (var.substr(0,4).compare("!tmp") == 0) {
-            n_temps++;
+    try{
+        vector<PLDCompParser::ExprContext *> list_expr = ctx->expr();
+        vector<string> params;
+        params.push_back(ctx->ID()->getText());
+        int n_params = list_expr.size();
+        int n_temps = 0;
+        for (int i=0; i<n_params; i++) {
+            string var = visit(ctx->expr(i));
+            if (var.substr(0,4).compare("!tmp") == 0) {
+                n_temps++;
+            }
+            if (var.compare("!return_reg") == 0) {
+                //current_cfg->move_next_temp(4);
+                n_temps++;
+                var = current_cfg->create_new_tempvar(Int);
+                vector<string> cpy_params = {var,"!return_reg"};
+                current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
+            }
+            params.push_back(var);
         }
-        if (var.compare("!return_reg") == 0) {
-            //current_cfg->move_next_temp(4);
-            n_temps++;
-            var = current_cfg->create_new_tempvar(Int);
-            vector<string> cpy_params = {var,"!return_reg"};
-            current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,cpy_params);
-        }
-        params.push_back(var);
+        current_cfg->current_bb->add_IRInstr(IRInstr::call,Int,params);
+        current_cfg->move_next_temp(-4*n_temps);
+        return NULL;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    current_cfg->current_bb->add_IRInstr(IRInstr::call,Int,params);
-    current_cfg->move_next_temp(-4*n_temps);
-    return NULL;
 }
 
 // Expression
 
 antlrcpp::Any IRGenerator::visitArrayExpr(PLDCompParser::ArrayExprContext *ctx) {
-    string var = current_cfg->create_new_tempvar(Int);
-    string expr = visit(ctx->array());
-    vector<string> params = {var,expr};
-    current_cfg->current_bb->add_IRInstr(IRInstr::rmem,Int,params);
-    return var;
+    try{
+        string var = current_cfg->create_new_tempvar(Int);
+        string expr = visit(ctx->array());
+        vector<string> params = {var,expr};
+        current_cfg->current_bb->add_IRInstr(IRInstr::rmem,Int,params);
+        return var;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
 }
 
 antlrcpp::Any IRGenerator::visitCallExpr(PLDCompParser::CallExprContext *ctx) {
-    visit(ctx->call());
-    return (string)("!return_reg");
+    try{
+        visit(ctx->call());
+        return (string)("!return_reg");
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
 }
 antlrcpp::Any IRGenerator::visitConst(PLDCompParser::ConstContext *ctx) {
-    string var = current_cfg->create_new_tempvar(Int);
-    vector<string> params = {var,ctx->INT()->getText()};
-    current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params);
-    return var;
+    try {
+        string var = current_cfg->create_new_tempvar(Int);
+        vector<string> params = {var,ctx->INT()->getText()};
+        current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params);
+        return var;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
 }
 
 antlrcpp::Any IRGenerator::visitNegConst(PLDCompParser::NegConstContext *ctx) {
-    string var = current_cfg->create_new_tempvar(Int);
-    vector<string> params = {var,("-"+ctx->INT()->getText())};
-    current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params);
-    return var;
+    try{
+        string var = current_cfg->create_new_tempvar(Int);
+        vector<string> params = {var,("-"+ctx->INT()->getText())};
+        current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params);
+        return var;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
 }
 
 antlrcpp::Any IRGenerator::visitCharConst(PLDCompParser::CharConstContext *ctx) {
-    string var = current_cfg->create_new_tempvar(Char);
-    vector<string> params;
-    params.push_back(var);
-    string charstring = ctx->getText();
-    char c;
-    if (charstring.at(1) != '\\') {
-        c = charstring.at(1); 
-    } else {
-        switch (charstring.at(2))
-        {
-            case 'n':
-                c = '\n';
-                break;
-            case '\\':
-                c = '\\';
-                break;
-            case 'r':
-                c = '\r';
-                break;
-            case '0':
-                c = '\0';
-                break;
-            default:
-                break;
+    try{
+        string var = current_cfg->create_new_tempvar(Char);
+        vector<string> params;
+        params.push_back(var);
+        string charstring = ctx->getText();
+        char c;
+        if (charstring.at(1) != '\\') {
+            c = charstring.at(1); 
+        } else {
+            switch (charstring.at(2))
+            {
+                case 'n':
+                    c = '\n';
+                    break;
+                case '\\':
+                    c = '\\';
+                    break;
+                case 'r':
+                    c = '\r';
+                    break;
+                case '0':
+                    c = '\0';
+                    break;
+                default:
+                    break;
+            }
         }
+        params.push_back(to_string((int)c));
+        current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Char,params);
+        return var;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    params.push_back(to_string((int)c));
-    current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Char,params);
-    return var;
 }
 
 antlrcpp::Any IRGenerator::visitPar(PLDCompParser::ParContext *ctx) {
-    string var = visit(ctx->expr());
-    return var;
+    try {
+        string var = visit(ctx->expr());
+        return var;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
 }
 
 antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
@@ -468,61 +520,73 @@ antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
 }
 
 antlrcpp::Any IRGenerator::visitNegExpr(PLDCompParser::NegExprContext *ctx) {
-    string var = visit(ctx->expr());
-    //current_cfg->move_next_temp(4);
-    string temp = current_cfg->create_new_tempvar(Int);
-    vector<string> params = {temp,"0"};
-    current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params);
-    params = {var,temp,var};
-    current_cfg->current_bb->add_IRInstr(IRInstr::sub,Int,params);
-    current_cfg->move_next_temp(-4);
-    return var;
+    try {
+        string var = visit(ctx->expr());
+        //current_cfg->move_next_temp(4);
+        string temp = current_cfg->create_new_tempvar(Int);
+        vector<string> params = {temp,"0"};
+        current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params);
+        params = {var,temp,var};
+        current_cfg->current_bb->add_IRInstr(IRInstr::sub,Int,params);
+        current_cfg->move_next_temp(-4);
+        return var;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
 }
 
 antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOpContext *ctx) {
-    int address = current_cfg->get_current_address();
-    string var1 = visit(ctx->expr(0));
-    string var2 = visit(ctx->expr(1));
-    if (var1.substr(0,4).compare("!tmp") == 0) {
-        current_cfg->move_next_temp(-4);
-    }
+    try{
+        int address = current_cfg->get_current_address();
+        string var1 = visit(ctx->expr(0));
+        string var2 = visit(ctx->expr(1));
+        if (var1.substr(0,4).compare("!tmp") == 0) {
+            current_cfg->move_next_temp(-4);
+        }
 
-    if (var2.substr(0,4).compare("!tmp") == 0) {
-        current_cfg->move_next_temp(-4);
+        if (var2.substr(0,4).compare("!tmp") == 0) {
+            current_cfg->move_next_temp(-4);
+        }
+        
+        string var3 = current_cfg->create_new_tempvar(Int);
+        vector<string> params = {var3, var1, var2};
+        IRInstr::Operation op;
+        if (ctx->op->getText().compare("*") == 0) {
+            op = IRInstr::mul;
+        }
+        current_cfg->current_bb->add_IRInstr(op,Int,params);
+        return var3;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    
-    string var3 = current_cfg->create_new_tempvar(Int);
-    vector<string> params = {var3, var1, var2};
-    IRInstr::Operation op;
-    if (ctx->op->getText().compare("*") == 0) {
-        op = IRInstr::mul;
-    }
-    current_cfg->current_bb->add_IRInstr(op,Int,params);
-    return var3;
 }
 
 antlrcpp::Any IRGenerator::visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx) {
-    int address = current_cfg->get_current_address();
-    string var1 = visit(ctx->expr(0));
-    string var2 = visit(ctx->expr(1));
-    if (var1.substr(0,4).compare("!tmp") == 0) {
-        current_cfg->move_next_temp(-4);
-    }
+    try{
+        int address = current_cfg->get_current_address();
+        string var1 = visit(ctx->expr(0));
+        string var2 = visit(ctx->expr(1));
+        if (var1.substr(0,4).compare("!tmp") == 0) {
+            current_cfg->move_next_temp(-4);
+        }
 
-    if (var2.substr(0,4).compare("!tmp") == 0) {
-        current_cfg->move_next_temp(-4);
+        if (var2.substr(0,4).compare("!tmp") == 0) {
+            current_cfg->move_next_temp(-4);
+        }
+        
+        string var3 = current_cfg->create_new_tempvar(Int);
+        vector<string> params = {var3, var1, var2};
+        IRInstr::Operation op;
+        if (ctx->op->getText().compare("+") == 0) {
+            op = IRInstr::add;
+        } else if (ctx->op->getText().compare("-") == 0) {
+            op = IRInstr::sub;
+        }
+        current_cfg->current_bb->add_IRInstr(op,Int,params);
+        return var3;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    
-    string var3 = current_cfg->create_new_tempvar(Int);
-    vector<string> params = {var3, var1, var2};
-    IRInstr::Operation op;
-    if (ctx->op->getText().compare("+") == 0) {
-        op = IRInstr::add;
-    } else if (ctx->op->getText().compare("-") == 0) {
-        op = IRInstr::sub;
-    }
-    current_cfg->current_bb->add_IRInstr(op,Int,params);
-    return var3;
 }
 
 //TODO
@@ -682,8 +746,12 @@ antlrcpp::Any IRGenerator::visitIdL(PLDCompParser::IdLContext *ctx) {
 }
 
 antlrcpp::Any IRGenerator::visitArrayL(PLDCompParser::ArrayLContext *ctx) {
-    string var = visit(ctx->array());
-    return var;
+    try {
+        string var = visit(ctx->array());
+        return var;
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
 }
 
 antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
@@ -726,6 +794,10 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
 
 // Type
 antlrcpp::Any IRGenerator::visitType(PLDCompParser::TypeContext *ctx) {
-    return visitChildren(ctx);
+    try{
+        return visitChildren(ctx);
+    } catch (exception& e) {
+        cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    }
 }
 
