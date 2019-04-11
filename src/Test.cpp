@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <stdio.h> 
+#include <stdlib.h>
 
 #include "Test.h"
 
@@ -98,30 +100,47 @@ vector<string> backendFiles = {
 };
 
 vector<string> customFiles = {
-    BASE_TEST_CUSTOM_URL + "emptyMainFunction.c", // Good
-    BASE_TEST_CUSTOM_URL + "emptyFile.c", // Not Working - TODO - Segmentation fault due to empty file - mismatched input '<EOF>' expecting 'int'
-    BASE_TEST_CUSTOM_URL + "declarationWithoutAssignment.c", // Good
-    BASE_TEST_CUSTOM_URL + "doubleDeclaration.c",
-    BASE_TEST_CUSTOM_URL + "declarationWithAssignment.c",
-    BASE_TEST_CUSTOM_URL + "assignementWithoutDeclaration.c",
-    BASE_TEST_CUSTOM_URL + "declarationAssignmentEmptyRight.c",
-    BASE_TEST_CUSTOM_URL + "doubleDeclarationWithAssignement.c",
-    BASE_TEST_CUSTOM_URL + "returnValue.c",
-    BASE_TEST_CUSTOM_URL + "returnVariable.c",
-    BASE_TEST_CUSTOM_URL + "expressionWithParentheses.c", 
-    BASE_TEST_CUSTOM_URL + "additionOperation.c",
-    BASE_TEST_CUSTOM_URL + "substractionOperation.c",
-    BASE_TEST_CUSTOM_URL + "multiplicativeOperation.c",
-    BASE_TEST_CUSTOM_URL + "divisiveOperation.c",
-    BASE_TEST_CUSTOM_URL + "moduloOperation.c",
-    BASE_TEST_CUSTOM_URL + "negativeExpressionWithParentheses.c", // Not working - TODO - Error in the asm: number of operands mismatch for `neg'
-    BASE_TEST_CUSTOM_URL + "negativeExpressionWithoutParentheses.c", // Not working - TODO - Error: no viable alternative at input '-a' Exception caught 'std::bad_cast'
-    // BASE_TEST_CUSTOM_URL + "miParcoursTest.c", // Not Working - TODO - Compilation failed due to one ligne assignement
-    BASE_TEST_CUSTOM_URL + "multipleAssignmentLine.c", // Not Working - TODO - Compilation failed due to one ligne assignement
-    BASE_TEST_CUSTOM_URL + "multipleOperationsLine.c", // Not Working - TODO - Compilation failed due to one ligne assignement
-    BASE_TEST_CUSTOM_URL + "customTest.c",
-    BASE_TEST_CUSTOM_URL + "irtest.c",
+    BASE_TEST_CUSTOM_URL + "emptyMainFunction.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "emptyFile.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "declarationWithoutAssignment.c", // PASSED
+    // BASE_TEST_CUSTOM_URL + "doubleDeclaration.c", //PASSED - Segmentation fault
+    BASE_TEST_CUSTOM_URL + "declarationWithAssignment.c", //PASSED
+    // BASE_TEST_CUSTOM_URL + "assignementWithoutDeclaration.c", // PASSED - Segmentation fault
+    BASE_TEST_CUSTOM_URL + "declarationAssignmentEmptyRight.c", // PASSED
+    // BASE_TEST_CUSTOM_URL + "doubleDeclarationWithAssignement.c", // //PASSED - Segmentation fault
+    BASE_TEST_CUSTOM_URL + "returnValue.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "returnVariable.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "expressionWithParentheses.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "additionOperation.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "substractionOperation.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "multiplicativeOperation.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "divisiveOperation.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "moduloOperation.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "negativeExpressionWithParentheses.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "negativeExpressionWithoutParentheses.c", // NOT PASSED - 'line 3:13 no viable alternative at input '-a' 
+                                                                    //Exception caught ERROR: -1 syntax errors found SyntaxException Compilation failed!'
+    BASE_TEST_CUSTOM_URL + "miParcoursTest.c", // NOT PASSED - line 3:9 no viable alternative at input 'inta,' Exception caught ERROR: -1 syntax errors found
+                                                                    // SyntaxException Compilation failed!
+    BASE_TEST_CUSTOM_URL + "multipleDeclarationLine.c", // NOT PASSED - line 2:9 no viable alternative at input 'inta,' 
+    BASE_TEST_CUSTOM_URL + "multipleOperationsLine.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "customTest.c", // PASSED
+    BASE_TEST_CUSTOM_URL + "irtest.c", // PASSED
 };
+
+void read_file(string file_name){
+    ifstream myReadFile;
+    myReadFile.open(file_name);
+    string output;
+    if (myReadFile.is_open()) {
+        while (!myReadFile.eof()) {
+            getline(myReadFile, output);
+            cerr << output << endl;
+        }
+        cerr << endl;
+    }
+    myReadFile.close();
+}
+
 
 void Test::lexErrorTests() {
     cerr << endl << endl << "*--------------------->LEXER ERROR TESTS<--------------------*" << endl << endl;
@@ -262,8 +281,10 @@ void Test::backendTests() {
 void Test::customTests() {
     cerr << endl << endl << "*--------------------->CUSTOM TESTS<--------------------*" << endl << endl;
     for (int i=0 ; i<customFiles.size() ; i++) {
+        cerr << endl << "\t-----------------------------------------\t" << endl;
         cerr << endl << "File " << i+1 << " : " << customFiles[i] << endl << endl;
         ifstream file(customFiles[i]);
+        read_file(customFiles[i]);
         string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
         
         try {
@@ -313,3 +334,4 @@ void Test::customTests() {
         } 
     }
 }
+

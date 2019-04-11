@@ -52,8 +52,11 @@ int main(int argc, char** argv) {
         string outfile = filename.substr(0,filename.length()-2)+".asm";
         ofstream o(outfile,ofstream::out);
         visitor.output_asm(o);
-    } catch (exception& e) {
+    } catch (LexerException le) {
         //remove("out.asm");
-        cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl;
-    } 
+        cerr << "Exception caught " << le.what() << endl << "Compilation failed!" << endl;
+    } catch (SyntaxException se) {
+        //remove("out.asm");
+        cerr << "Exception caught " << se.what() << endl << "Compilation failed!" << endl;
+    }
 }

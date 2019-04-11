@@ -307,7 +307,7 @@ bool CFG::add_to_symbol_table(string name, Type t, int size) {
     SymbolIndex[name] = nextFreeSymbolIndex;
     SymbolType[name] = t;
     #ifdef DEBUG
-    cout << "---------VAR DECLARATION: \"" << name << "\"  at address @" << nextFreeSymbolIndex << endl;
+    // cout << "---------VAR DECLARATION: \"" << name << "\"  at address @" << nextFreeSymbolIndex << endl;
     #endif
     return true;
 }
