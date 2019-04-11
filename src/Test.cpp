@@ -126,7 +126,7 @@ vector<string> customFiles = {
     BASE_TEST_CUSTOM_URL + "multipleAssignmentLine.c", // Not Working - TODO - Compilation failed due to one ligne assignement
     BASE_TEST_CUSTOM_URL + "multipleOperationsLine.c", // Not Working - TODO - Compilation failed due to one ligne assignement
     BASE_TEST_CUSTOM_URL + "customTest.c",
-
+    BASE_TEST_CUSTOM_URL + "irtest.c",
 };
 
 
@@ -294,39 +294,56 @@ void Test::customTests() {
 }
 
 void Test::customTests2() {
-    ifstream file("irtest.c");
-    string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
-    cout << "------LEXER-----" << endl;
-    ANTLRInputStream input (content);
-    PLDCompLexer lexer (&input);
-    vector<unique_ptr<Token>> list_token = lexer.getAllTokens();
-    int n_lex_errors = 0;
-    for (auto it=list_token.begin(); it!=list_token.end();++it) {
-        if ((*it)->getType()==21) {
-            cout << "line " << (*it)->getLine() << ":" << (*it)->getCharPositionInLine() 
-                << " unrecognized token \'" << (*it)->getText() << "\'" <<endl;
-            n_lex_errors++;
+    cout << endl << endl << "*--------------------->CUSTOM TESTS<--------------------*" << endl << endl;
+    for (int i=0 ; i<customFiles.size() ; i++) {
+        cout << "Fichier : " << customFiles[i] << endl;
+        ifstream file(customFiles[i]);
+        string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
+        
+        /* Lexer */
+        
+        cout << "------LEXER-----" << endl;
+        ANTLRInputStream input (content);
+        PLDCompLexer lexer (&input);
+        vector<unique_ptr<Token>> list_token = lexer.getAllTokens();
+        int n_lex_errors = 0;
+        for (auto it=list_token.begin(); it!=list_token.end();++it) {
+            if ((*it)->getType()==21) {
+                cout << "line " << (*it)->getLine() << ":" << (*it)->getCharPositionInLine() 
+                    << " unrecognized token \'" << (*it)->getText() << "\'" <<endl;
+                n_lex_errors++;
+            }
+        }
+
+        if (n_lex_errors>0) {
+            cout << n_lex_errors << " lex errors" << endl;
+            return;
+        }    
+        CommonTokenStream token (&lexer);
+
+        /* Parser */
+
+        cout << "------PARSER-----" << endl;
+        PLDCompParser parser (&token);
+        tree::ParseTree * tree = parser.prog();
+        int n_syntax_errors = parser.getNumberOfSyntaxErrors();
+        if (n_syntax_errors>0) {
+            cout << n_syntax_errors << " syntax errors" << endl;
+            return;
+        }
+        
+        /* Code Generation */
+
+        cout << "------CODE GENERATOR-----" << endl;
+
+        try {
+            IRGenerator visitor;
+            visitor.visit(tree);
+            // ofstream o("out.asm",ofstream::out);
+            // visitor.output_asm(o);
+        } catch (exception& e) {
+            //remove("out.asm");
+            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
-
-    if (n_lex_errors>0) {
-        cout << n_lex_errors << " lex errors" << endl;
-        return;
-    }
-    
-    CommonTokenStream token (&lexer);
-    cout << "------PARSER-----" << endl;
-    PLDCompParser parser (&token);
-    tree::ParseTree * tree = parser.prog();
-    int n_syntax_errors = parser.getNumberOfSyntaxErrors();
-    if (n_syntax_errors>0) {
-        cout << n_syntax_errors << " syntax errors" << endl;
-        return;
-    }
-
-    cout << "------CODE GENERATOR-----" << endl;
-    // IRGenerator visitor;
-    // visitor.visit(tree);
-    ofstream o("out.asm",ofstream::out);
-    // visitor.output_asm(o);
 }
