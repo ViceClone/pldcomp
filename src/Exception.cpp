@@ -6,17 +6,29 @@
 
 using namespace std;
 
-const char* doubleDeclarationException::what() const throw() {
-    return "Double Declaration Exception";
+void VariableNameException::setVarName(string varName) {
+    varName = varName;
+}
+
+const char* VariableNameException::what() const throw() {
+    cerr << "ERROR: Variable name " << varName <<  " is redundant";
+    return "Variable Name Exception";
 }
 
 
-const char* assignmentWithoutDeclarationException::what() const throw() {
-    return "Assignment without Declaration Exception";
+const char* DeclarationException::what() const throw() {
+    return "Declaration Exception";
 }
 
 
-const char* doubleDeclarationAssignmentException::what() const throw() {
-    return "Double Declaration with Assignment Exception";
+const char* InvalidDeclarationException::what() const throw() {
+    return "Invalid Declaration Exception";
 }
 
+const char* ValueNotFoundException::what() const throw() {
+    return "Value Not Found Exception";
+}
+
+const char* ArrayException::what() const throw() {
+    return "Array Exception";
+}
