@@ -21,9 +21,14 @@ make test
 antlr4 -visitor -no-listener -Dlanguage=Cpp PLDComp.g4
 ```
 
+### Compiling A File
+File extension must be .c. Input: file.c --> Output: file.asm
+```
+./comp filename
+```
 ### Testing command
 
-```c
-./comp irtest.c && as -o out.o out.asm && gcc out.o && ./a.out
+```
+./comp irtest.c && as -o irtest.o irtest.asm && gcc irtest.o && ./a.out
 echo $?
 ```
