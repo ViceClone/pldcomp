@@ -130,8 +130,8 @@ public:
                 os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl;
             }
         } else {
-            doubleDeclarationAssignmentException ddae;
-            throw ddae;
+            // doubleDeclarationAssignmentException ddae;
+            // throw ddae;
         }
         return NULL;
     }
@@ -147,8 +147,8 @@ public:
                 init[id] = false;
             }
         } else {
-            doubleDeclarationException dde;
-            throw dde;
+            // doubleDeclarationException dde;
+            // throw dde;
         }
         return NULL;
     }
@@ -166,8 +166,8 @@ public:
             currentAddress = memTable[id];
             os << "    movl " << "%" << "eax, " << memTable[id] << "(" << "%" << "rbp)" << endl;
         } else {
-            assignmentWithoutDeclarationException awde;
-            throw awde;
+            // assignmentWithoutDeclarationException awde;
+            // throw awde;
         }
         return NULL;
     }

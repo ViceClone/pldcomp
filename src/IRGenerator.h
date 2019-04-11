@@ -4,6 +4,7 @@
 
 #include "antlr4-runtime.h"
 #include "PLDCompBaseVisitor.h"
+#include "Exception.h"
 #include "IR.h"
 
 using namespace std;
@@ -62,4 +63,9 @@ public:
 private:
     map<string,CFG*> cfg_list;
     CFG* current_cfg;
+    VariableNameException variableNameException;
+    DeclarationException declarationException;
+    InvalidDeclarationException invalidDeclarationException;
+    ValueNotFoundException valueNotFoundException;
+    ArrayException arrayException;
 };

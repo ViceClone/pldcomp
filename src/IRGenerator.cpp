@@ -25,45 +25,50 @@ antlrcpp::Any IRGenerator::visitProg(PLDCompParser::ProgContext *ctx) {
 }
 
 antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::FunctiondefinitionContext *ctx) {
-    string name = ctx->ID(0)->getText();
-    string func_type = ctx->type(0)->getText();
-    CFG* cfg = new CFG();
-    cfg->label = name;
-    cfg_list[name] = cfg;
-    BasicBlock* bb = new BasicBlock(cfg, name);
-    bb->exit_true = nullptr;
-    bb->exit_false = nullptr;
-    cfg->add_bb(bb);
-    cfg->current_bb = bb;
-    current_cfg = cfg;
-    BasicBlock * lastBlock = new BasicBlock(cfg,".LLast"+name);
-    cfg->lastBlock = lastBlock;
-    lastBlock->isLastBlock = true;
-    lastBlock->exit_false = nullptr;
-    lastBlock->exit_true = nullptr;
-    bb->exit_true = lastBlock;
-    if (func_type.compare("int") == 0) {
-        current_cfg->add_to_symbol_table("!returnval", Int, 4);
-    }
-    // Can merge with visitFuncNoParams -> TODO
-    int n_params = (ctx->ID()).size()-1;
-    current_cfg->set_n_params(n_params);
-    vector<PLDCompParser::TypeContext *> type = ctx->type();
-    vector<tree::TerminalNode*> list_id = ctx->ID();
-    // Parameters of the function are returned in list_id[1] to list[n_params]
-    for (int i=1; i<=n_params; i++) {
-        string name_var = list_id[i]->getText();
-        // We dont care about type this time
-        // string t = type[i]->getText();
-        bool valid = current_cfg->add_to_symbol_table(name_var,Int, 4);
-        if (!valid) {
-            cout << "ERROR: Variable name " << name_var <<  " is redundant";
-            return NULL;
+    try{
+        string name = ctx->ID(0)->getText();
+        string func_type = ctx->type(0)->getText();
+        CFG* cfg = new CFG();
+        cfg->label = name;
+        cfg_list[name] = cfg;
+        BasicBlock* bb = new BasicBlock(cfg, name);
+        bb->exit_true = nullptr;
+        bb->exit_false = nullptr;
+        cfg->add_bb(bb);
+        cfg->current_bb = bb;
+        current_cfg = cfg;
+        BasicBlock * lastBlock = new BasicBlock(cfg,".LLast"+name);
+        cfg->lastBlock = lastBlock;
+        lastBlock->isLastBlock = true;
+        lastBlock->exit_false = nullptr;
+        lastBlock->exit_true = nullptr;
+        bb->exit_true = lastBlock;
+        if (func_type.compare("int") == 0) {
+            current_cfg->add_to_symbol_table("!returnval", Int, 4);
         }
-        current_cfg->add_param(name_var, Int);
+        // Can merge with visitFuncNoParams -> TODO
+        int n_params = (ctx->ID()).size()-1;
+        current_cfg->set_n_params(n_params);
+        vector<PLDCompParser::TypeContext *> type = ctx->type();
+        vector<tree::TerminalNode*> list_id = ctx->ID();
+        // Parameters of the function are returned in list_id[1] to list[n_params]
+        for (int i=1; i<=n_params; i++) {
+            string name_var = list_id[i]->getText();
+            // We dont care about type this time
+            // string t = type[i]->getText();
+            bool valid = current_cfg->add_to_symbol_table(name_var,Int, 4);
+            if (!valid) {
+                variableNameException.setVarName(name_var);
+                throw variableNameException;
+                return NULL;
+            }
+            current_cfg->add_param(name_var, Int);
+        }
+        visit(ctx->statementseq());
+        return NULL;
+    } catch(VariableNameException vne) {
+        cerr << "Exception caught '" << vne.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    visit(ctx->statementseq());
-    return NULL;
 }
 
 antlrcpp::Any IRGenerator::visitStatementseq(PLDCompParser::StatementseqContext *ctx) {
@@ -329,30 +334,32 @@ antlrcpp::Any IRGenerator::visitWhilestatement(PLDCompParser::WhilestatementCont
 }
 
 antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) {
-    if (current_cfg->current_bb->ret_token <= 0) {
-        return NULL;
-    } else {
-        string var = visit(ctx->expr());
-        /*
-        if (var.compare("!return_reg") == 0) {
+    try{
+        if (current_cfg->current_bb->ret_token <= 0) {
+            return NULL;
+        } else {
+            string var = visit(ctx->expr());
+            /*
+            if (var.compare("!return_reg") == 0) {
+                return var;
+            }
+            */
+            if (!current_cfg->find_symbol(var)) {
+                declarationException.setVarName(var);
+                throw declarationException;
+                return NULL;
+            }
+            current_cfg->current_bb->ret_token -= 1;
+            vector<string> params = {"!returnval",var};
+            vector<string> ret_params = {"!returnval"};
+            current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
+            current_cfg->current_bb->add_IRInstr(IRInstr::ret,Int,params);
+            current_cfg->reset_next_temp();
             return var;
         }
-        */
-        if (!current_cfg->find_symbol(var)) {
-            // TODO: Exception
-            cout << "ERROR: " << var << " has not been declared yet " << endl;
-            return NULL;
-        }
-        current_cfg->current_bb->ret_token -= 1;
-        vector<string> params = {"!returnval",var};
-        vector<string> ret_params = {"!returnval"};
-        current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
-        current_cfg->current_bb->add_IRInstr(IRInstr::ret,Int,params);
-        current_cfg->reset_next_temp();
-        return var;
+    } catch(DeclarationException de) {
+        cerr << "Exception caught '" << de.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-
-    
 }
 
 antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
@@ -446,14 +453,18 @@ antlrcpp::Any IRGenerator::visitPar(PLDCompParser::ParContext *ctx) {
 }
 
 antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
-    string name = ctx->ID()->getText();
-    if (current_cfg->find_symbol(name)) {
-        return (string)name;
-    } else {
-        // TODO: throw exception here
-        cout << "ERROR: Variable \'" << name << "\' has not been declared yet " << endl;
+    try{
+        string name = ctx->ID()->getText();
+        if (current_cfg->find_symbol(name)) {
+            return (string)name;
+        } else {
+            declarationException.setVarName(name);
+            throw declarationException;
+        }
+        return (string)(ctx->ID()->getText());
+    } catch(DeclarationException de) {
+        cerr << "Exception caught '" << de.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    return (string)(ctx->ID()->getText());
 }
 
 antlrcpp::Any IRGenerator::visitNegExpr(PLDCompParser::NegExprContext *ctx) {
@@ -544,108 +555,130 @@ antlrcpp::Any IRGenerator::visitLogicalOr(PLDCompParser::LogicalOrContext *ctx) 
 }
 // Variable declaration
 antlrcpp::Any IRGenerator::visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx) {
-    string name = ctx->ID()->getText();
-    string type = ctx->type()->getText();
-    Type t;
-    if (type.compare("int") == 0) {
-        t = Int;
-    } else if (type.compare("char") == 0) {
-        t = Char;
+    try{
+        string name = ctx->ID()->getText();
+        string type = ctx->type()->getText();
+        Type t;
+        if (type.compare("int") == 0) {
+            t = Int;
+        } else if (type.compare("char") == 0) {
+            t = Char;
+        }
+        bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
+        if (!validDeclaration) {
+            throw invalidDeclarationException;
+        }
+        current_cfg->reset_next_temp();
+        return NULL;
+    } catch(InvalidDeclarationException ide) {
+        cerr << "Exception caught '" << ide.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
-    if (!validDeclaration) {
-        cout << "ERROR: invalid declaration " << endl;
-    }
-    current_cfg->reset_next_temp();
-    return NULL;
 }
 
 
 antlrcpp::Any IRGenerator::visitDeclWithAssignment(PLDCompParser::DeclWithAssignmentContext *ctx) {
-    string name = ctx->ID()->getText();
-    string type = ctx->type()->getText();
-    Type t;
-    if (type.compare("int") == 0) {
-        t = Int;
-    } else if (type.compare("char") == 0) {
-        t = Char;
-    }
-    bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
-    if (!validDeclaration) {
-        cout << "ERROR: invalid declaration " << endl;
+    try{
+        string name = ctx->ID()->getText();
+        string type = ctx->type()->getText();
+        Type t;
+        if (type.compare("int") == 0) {
+            t = Int;
+        } else if (type.compare("char") == 0) {
+            t = Char;
+        }
+        bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
+        if (!validDeclaration) {
+            throw invalidDeclarationException;
+            return NULL;
+        }
+        string temp = visit(ctx->expr());
+        vector<string> params = {name, temp};
+        current_cfg->current_bb->add_IRInstr(IRInstr::cpy,t,params);
+        current_cfg->reset_next_temp();
         return NULL;
+    } catch(InvalidDeclarationException ide) {
+        cerr << "Exception caught '" << ide.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    string temp = visit(ctx->expr());
-    vector<string> params = {name, temp};
-    current_cfg->current_bb->add_IRInstr(IRInstr::cpy,t,params);
-    current_cfg->reset_next_temp();
-    return NULL;
 }
 
 antlrcpp::Any IRGenerator::visitDeclArray(PLDCompParser::DeclArrayContext *ctx) {
-    string name = ctx->ID()->getText();
-    string type = ctx->type()->getText();
-    Type t;
-    if (type.compare("int") == 0) {
-        t = IntArray;
-    } else if (type.compare("char") == 0) {
-        t = CharArray;
-    }
-    int size = stoi(ctx->INT()->getText());
-    bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4*size);
-    if (!validDeclaration) {
-        cout << "ERROR: invalid declaration " << endl;
-        return NULL;
-    }
-    int index = current_cfg->get_var_index(name);
-    vector<PLDCompParser::ExprContext *> list_expr = ctx->expr();
-    int n_expr = list_expr.size();
-    string mem = current_cfg->create_new_tempvar(Int);
-    vector<string> params_mem = {mem,to_string(-index)};
-    current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_mem);
-    string offset = current_cfg->create_new_tempvar(Int);
-    vector<string> params_offset = {offset,to_string(4)};
-    current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_offset);
-    vector<string> params_increase = {mem,offset,mem};
-    for (int i=0; i<n_expr; i++) {
-        string expr = visit(list_expr[i]);
-        vector<string> params_wmem = {mem,expr};
-        current_cfg->current_bb->add_IRInstr(IRInstr::wmem,Int,params_wmem); 
-        if (i<n_expr-1) {
-            current_cfg->current_bb->add_IRInstr(IRInstr::add,Int,params_increase);       
+    try{
+        string name = ctx->ID()->getText();
+        string type = ctx->type()->getText();
+        Type t;
+        if (type.compare("int") == 0) {
+            t = IntArray;
+        } else if (type.compare("char") == 0) {
+            t = CharArray;
         }
+        int size = stoi(ctx->INT()->getText());
+        bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4*size);
+        if (!validDeclaration) {
+            throw invalidDeclarationException;
+            return NULL;
+        }
+        int index = current_cfg->get_var_index(name);
+        vector<PLDCompParser::ExprContext *> list_expr = ctx->expr();
+        int n_expr = list_expr.size();
+        string mem = current_cfg->create_new_tempvar(Int);
+        vector<string> params_mem = {mem,to_string(-index)};
+        current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_mem);
+        string offset = current_cfg->create_new_tempvar(Int);
+        vector<string> params_offset = {offset,to_string(4)};
+        current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_offset);
+        vector<string> params_increase = {mem,offset,mem};
+        for (int i=0; i<n_expr; i++) {
+            string expr = visit(list_expr[i]);
+            vector<string> params_wmem = {mem,expr};
+            current_cfg->current_bb->add_IRInstr(IRInstr::wmem,Int,params_wmem); 
+            if (i<n_expr-1) {
+                current_cfg->current_bb->add_IRInstr(IRInstr::add,Int,params_increase);       
+            }
+        }
+        return NULL;
+    } catch(InvalidDeclarationException ide) {
+        cerr << "Exception caught '" << ide.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    return NULL;
 }
 // Assignment
 antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprContext *ctx) {
-    string var = visit(ctx->lvalue());
-    if (var.compare("")==0) {
-        cout << "ERROR: cannot find " << ctx->lvalue()->getText() << endl;
-        return NULL;
-    }
+    try{
+        string var = visit(ctx->lvalue());
+        if (var.compare("")==0) {
+            valueNotFoundException.setValue(ctx->lvalue()->getText());
+            throw valueNotFoundException;
+            return NULL;
+        }
 
-    string temp = visit(ctx->expr());
-    // if var is an actual variable
-    if (var.at(0) != '!') {
-        vector<string> params = {var, temp};
-        current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
-    } else {
-        vector<string> params = {var, temp};
-        current_cfg->current_bb->add_IRInstr(IRInstr::wmem,Int,params);
+        string temp = visit(ctx->expr());
+        // if var is an actual variable
+        if (var.at(0) != '!') {
+            vector<string> params = {var, temp};
+            current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
+        } else {
+            vector<string> params = {var, temp};
+            current_cfg->current_bb->add_IRInstr(IRInstr::wmem,Int,params);
+        }
+        
+        current_cfg->reset_next_temp();
+        return NULL;
+
+    } catch(ValueNotFoundException vnfe) {
+        cerr << "Exception caught '" << vnfe.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    
-    current_cfg->reset_next_temp();
-    return NULL;
 }
 
 antlrcpp::Any IRGenerator::visitIdL(PLDCompParser::IdLContext *ctx) {
-    string name = ctx->ID()->getText();
-    if (!current_cfg->find_symbol(name)){
-        cout << "ERROR: variable has not been declared yet" << endl;
-        return "";
+    try{
+        string name = ctx->ID()->getText();
+        if (!current_cfg->find_symbol(name)){
+            throw declarationException;
+            return "";
+        }
+        return name;
+    } catch(DeclarationException de) {
+        cerr << "Exception caught '" << de.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
-    return name;
 }
 
 antlrcpp::Any IRGenerator::visitArrayL(PLDCompParser::ArrayLContext *ctx) {
@@ -654,33 +687,40 @@ antlrcpp::Any IRGenerator::visitArrayL(PLDCompParser::ArrayLContext *ctx) {
 }
 
 antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
-    string name = ctx->ID()->getText();
-    if (current_cfg->find_symbol(name)) {
-        if (current_cfg->get_var_type(name)!=CharArray 
-            && current_cfg->get_var_type(name)!=IntArray){
-            cout << "ERROR: " << name << " is not an array" << endl;
+    try{
+        string name = ctx->ID()->getText();
+        if (current_cfg->find_symbol(name)) {
+            if (current_cfg->get_var_type(name)!=CharArray 
+                && current_cfg->get_var_type(name)!=IntArray){
+                arrayException.setArrayName(name);
+                throw arrayException;
+                return "";
+            }
+            int mem = current_cfg->get_var_index(name);
+            string expr = visit(ctx->expr());
+            
+            string var = current_cfg->create_new_tempvar(Int);
+            vector<string> params1 = {var,to_string(-mem)};
+            current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params1);
+            string temp4 = current_cfg->create_new_tempvar(Int);
+            vector<string> params_load4 = {temp4,to_string(4)};
+            current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_load4);
+            
+            string offset = current_cfg->create_new_tempvar(Int);
+            vector<string> params_mul = {offset,expr,temp4};
+            current_cfg->current_bb->add_IRInstr(IRInstr::mul,Int,params_mul);
+            vector<string> params2 = {var, offset, var};
+            current_cfg->current_bb->add_IRInstr(IRInstr::add,Int,params2);
+            return var;
+        } else {
+            declarationException.setVarName(name);
+            throw declarationException;
             return "";
         }
-        int mem = current_cfg->get_var_index(name);
-        string expr = visit(ctx->expr());
-        
-        string var = current_cfg->create_new_tempvar(Int);
-        vector<string> params1 = {var,to_string(-mem)};
-        current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params1);
-        string temp4 = current_cfg->create_new_tempvar(Int);
-        vector<string> params_load4 = {temp4,to_string(4)};
-        current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_load4);
-        
-        string offset = current_cfg->create_new_tempvar(Int);
-        vector<string> params_mul = {offset,expr,temp4};
-        current_cfg->current_bb->add_IRInstr(IRInstr::mul,Int,params_mul);
-        vector<string> params2 = {var, offset, var};
-        current_cfg->current_bb->add_IRInstr(IRInstr::add,Int,params2);
-        return var;
-    } else {
-        //TODO throw an exception here
-        cout << "ERROR: Variable \"" << name << "\" has not been declared yet " << endl;
-        return "";
+    } catch(ArrayException ae) {
+        cerr << "Exception caught '" << ae.what() << "'" << endl << "Compilation failed!" << endl << endl;
+    } catch(DeclarationException de) {
+        cerr << "Exception caught '" << de.what() << "'" << endl << "Compilation failed!" << endl << endl;
     }
 }
 
