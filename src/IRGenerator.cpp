@@ -62,6 +62,7 @@ antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::Functiondefini
             // string t = type[i]->getText();
             bool valid = current_cfg->add_to_symbol_table(name_var,Int, 4);
             if (!valid) {
+                VariableNameException variableNameException;
                 variableNameException.setVarName(name_var);
                 throw variableNameException;
                 return NULL;
@@ -369,6 +370,7 @@ antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementCo
             }
             */
             if (!current_cfg->find_symbol(var)) {
+                DeclarationException declarationException;
                 declarationException.setVarName(var);
                 throw declarationException;
                 return NULL;
@@ -510,6 +512,7 @@ antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
         if (current_cfg->find_symbol(name)) {
             return (string)name;
         } else {
+            DeclarationException declarationException;
             declarationException.setVarName(name);
             throw declarationException;
         }
@@ -630,6 +633,7 @@ antlrcpp::Any IRGenerator::visitDeclWithoutAssignment(PLDCompParser::DeclWithout
         }
         bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
         if (!validDeclaration) {
+            InvalidDeclarationException invalidDeclarationException;
             throw invalidDeclarationException;
         }
         current_cfg->reset_next_temp();
@@ -652,6 +656,7 @@ antlrcpp::Any IRGenerator::visitDeclWithAssignment(PLDCompParser::DeclWithAssign
         }
         bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
         if (!validDeclaration) {
+            InvalidDeclarationException invalidDeclarationException;
             throw invalidDeclarationException;
             return NULL;
         }
@@ -678,6 +683,7 @@ antlrcpp::Any IRGenerator::visitDeclArray(PLDCompParser::DeclArrayContext *ctx) 
         int size = stoi(ctx->INT()->getText());
         bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4*size);
         if (!validDeclaration) {
+            InvalidDeclarationException invalidDeclarationException;
             throw invalidDeclarationException;
             return NULL;
         }
@@ -709,6 +715,7 @@ antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprCont
     try{
         string var = visit(ctx->lvalue());
         if (var.compare("")==0) {
+            ValueNotFoundException valueNotFoundException;
             valueNotFoundException.setValue(ctx->lvalue()->getText());
             throw valueNotFoundException;
             return NULL;
@@ -736,6 +743,7 @@ antlrcpp::Any IRGenerator::visitIdL(PLDCompParser::IdLContext *ctx) {
     try{
         string name = ctx->ID()->getText();
         if (!current_cfg->find_symbol(name)){
+            DeclarationException declarationException;
             throw declarationException;
             return "";
         }
@@ -760,6 +768,7 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
         if (current_cfg->find_symbol(name)) {
             if (current_cfg->get_var_type(name)!=CharArray 
                 && current_cfg->get_var_type(name)!=IntArray){
+                ArrayException arrayException;
                 arrayException.setArrayName(name);
                 throw arrayException;
                 return "";
@@ -781,6 +790,7 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
             current_cfg->current_bb->add_IRInstr(IRInstr::add,Int,params2);
             return var;
         } else {
+            DeclarationException declarationException;
             declarationException.setVarName(name);
             throw declarationException;
             return "";

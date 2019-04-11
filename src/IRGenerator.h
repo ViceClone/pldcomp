@@ -63,9 +63,4 @@ public:
 private:
     map<string,CFG*> cfg_list;
     CFG* current_cfg;
-    VariableNameException variableNameException;
-    DeclarationException declarationException;
-    InvalidDeclarationException invalidDeclarationException;
-    ValueNotFoundException valueNotFoundException;
-    ArrayException arrayException;
 };

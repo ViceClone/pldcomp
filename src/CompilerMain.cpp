@@ -9,9 +9,6 @@ using namespace antlr4;
 using namespace std;
 
 int main(int argc, char** argv) {
-    LexerException lexerException;
-    SyntaxException syntaxException;
-
     string filename = argv[1];
     ifstream file(argv[1]);
     string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
@@ -33,6 +30,7 @@ int main(int argc, char** argv) {
         }
 
         if (n_lex_errors>0) {
+            LexerException lexerException;
             lexerException.setLexerErrors(lex_errors + ", number of lexer errors : " + (char*) n_lex_errors);
             throw lexerException;
         }
@@ -43,6 +41,7 @@ int main(int argc, char** argv) {
         tree::ParseTree * tree = parser.prog();
         int n_syntax_errors = parser.getNumberOfSyntaxErrors();
         if (n_syntax_errors>0) {
+            SyntaxException syntaxException;
             syntaxException.setNumberSyntaxErrors(n_syntax_errors);
             throw syntaxException;
         }

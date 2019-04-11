@@ -98,9 +98,9 @@ vector<string> backendFiles = {
 };
 
 vector<string> customFiles = {
-    BASE_TEST_CUSTOM_URL + "emptyMainFunction.c", // Not Working - TODO - mismatched input '}' expecting {'return', 'int', ID}
-    // BASE_TEST_CUSTOM_URL + "emptyFile.c", // Not Working - TODO - Segmentation fault due to empty file - mismatched input '<EOF>' expecting 'int'
-    BASE_TEST_CUSTOM_URL + "declarationWithoutAssignment.c",
+    BASE_TEST_CUSTOM_URL + "emptyMainFunction.c", // Good
+    BASE_TEST_CUSTOM_URL + "emptyFile.c", // Not Working - TODO - Segmentation fault due to empty file - mismatched input '<EOF>' expecting 'int'
+    BASE_TEST_CUSTOM_URL + "declarationWithoutAssignment.c", // Good
     BASE_TEST_CUSTOM_URL + "doubleDeclaration.c",
     BASE_TEST_CUSTOM_URL + "declarationWithAssignment.c",
     BASE_TEST_CUSTOM_URL + "assignementWithoutDeclaration.c",
@@ -122,10 +122,6 @@ vector<string> customFiles = {
     BASE_TEST_CUSTOM_URL + "customTest.c",
     BASE_TEST_CUSTOM_URL + "irtest.c",
 };
-
-
-LexerException lexerException;
-SyntaxException syntaxException;
 
 void Test::lexErrorTests() {
     cerr << endl << endl << "*--------------------->LEXER ERROR TESTS<--------------------*" << endl << endl;
@@ -286,8 +282,8 @@ void Test::customTests() {
                 }
             }
 
-
             if (n_lex_errors>0) {
+                LexerException lexerException;
                 lexerException.setLexerErrors(lex_errors + ", number of lexer errors : " + (char*) n_lex_errors);
                 throw lexerException;
             }    
@@ -299,6 +295,7 @@ void Test::customTests() {
             tree::ParseTree * tree = parser.prog();
             int n_syntax_errors = parser.getNumberOfSyntaxErrors();
             if (n_syntax_errors>0) {
+                SyntaxException syntaxException;
                 syntaxException.setNumberSyntaxErrors(n_syntax_errors);
                 throw syntaxException;
             }
@@ -309,6 +306,7 @@ void Test::customTests() {
             visitor.visit(tree);
             // ofstream o("out.asm",ofstream::out);
             // visitor.output_asm(o);
+            cerr << "Compilation Success!" << endl;
         } catch (exception& e) {
             //remove("out.asm");
             cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl;
