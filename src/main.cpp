@@ -12,6 +12,8 @@ using namespace std;
 
 
 int main(int argc, char* argv[]) {
+
+    cout << "---------------EXECUTING TEST---------------" << endl;
     
     // Test::lexErrorTests();
     // Test::semanticErrorTests();

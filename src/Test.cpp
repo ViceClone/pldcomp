@@ -5,7 +5,7 @@
 #include "PLDCompLexer.h"
 #include "PLDCompParser.h"
 #include "PLDCompBaseVisitor.h"
-#include "Generator.h"
+// #include "Generator.h"
 #include "IRGenerator.h"
 #include "Test.h"
 
@@ -144,9 +144,9 @@ void Test::lexErrorTests() {
         PLDCompParser parser (&token);
         tree::ParseTree * tree = parser.prog();
 
-        Generator visitor("out.asm");
+        // Generator visitor("out.asm");
         try {
-            visitor.visit(tree);
+            // visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
@@ -170,10 +170,10 @@ void Test::semanticErrorTests() {
         PLDCompParser parser (&token);
         tree::ParseTree * tree = parser.prog();
 
-        Generator visitor("out.asm");
+        // Generator visitor("out.asm");
 
         try {
-            visitor.visit(tree);
+            // visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
         } catch (int i) {
             remove("out.asm");
@@ -200,10 +200,10 @@ void Test::syntaxErrorTests() {
         PLDCompParser parser (&token);
         tree::ParseTree * tree = parser.prog();
 
-        Generator visitor("out.asm");
+        // Generator visitor("out.asm");
 
         try {
-            visitor.visit(tree);
+            // visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
@@ -227,10 +227,10 @@ void Test::validProgramsTests() {
         PLDCompParser parser (&token);
         tree::ParseTree * tree = parser.prog();
 
-        Generator visitor("out.asm");
+        // Generator visitor("out.asm");
 
         try {
-            visitor.visit(tree);
+            // visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
@@ -254,10 +254,10 @@ void Test::backendTests() {
         PLDCompParser parser (&token);
         tree::ParseTree * tree = parser.prog();
 
-        Generator visitor("out.asm");
+        // Generator visitor("out.asm");
 
         try {
-            visitor.visit(tree);
+            // visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
@@ -281,10 +281,10 @@ void Test::customTests() {
         PLDCompParser parser (&token);
         tree::ParseTree * tree = parser.prog();
 
-        Generator visitor("out.asm");
+        // Generator visitor("out.asm");
 
         try {
-            visitor.visit(tree);
+            // visitor.visit(tree);
             cout << "Compilation Success!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
@@ -325,8 +325,8 @@ void Test::customTests2() {
     }
 
     cout << "------CODE GENERATOR-----" << endl;
-    IRGenerator visitor;
-    visitor.visit(tree);
+    // IRGenerator visitor;
+    // visitor.visit(tree);
     ofstream o("out.asm",ofstream::out);
-    visitor.output_asm(o);
+    // visitor.output_asm(o);
 }
