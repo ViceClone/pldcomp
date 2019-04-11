@@ -22,16 +22,16 @@ int main(int argc, char** argv) {
         int n_lex_errors = 0;
         string lex_errors = "";
         for (auto it=list_token.begin(); it!=list_token.end();++it) {
-            if ((*it)->getType()==21) {
-                lex_errors = lex_errors + "line " + (char*) (*it)->getLine() +  ":" + (char*) (*it)->getCharPositionInLine() 
-                    +  " unrecognized token \'" +  (*it)->getText() +  "\'";
+            if ((*it)->getType()==PLDCompParser::ERROR) {
+                lex_errors = lex_errors + "line " + to_string((*it)->getLine()) +  ":" + to_string((*it)->getCharPositionInLine())
+                    +  " unrecognized token \'" +  (*it)->getText() +  "\'\n";
                 n_lex_errors++;
             }
         }
 
         if (n_lex_errors>0) {
             LexerException lexerException;
-            lexerException.setLexerErrors(lex_errors + ", number of lexer errors : " + (char*) n_lex_errors);
+            lexerException.setLexerErrors(lex_errors + ", number of lexer errors : " + to_string(n_lex_errors));
             throw lexerException;
         }
         

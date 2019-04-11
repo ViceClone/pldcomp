@@ -205,7 +205,7 @@ void Test::runTest(std::ofstream& testLogStream, string testName, vector<string>
             string lex_errors = "";
             for (auto it=list_token.begin(); it!=list_token.end();++it) {
                 if ((*it)->getType()==21) {
-                    lex_errors = lex_errors + "line " + (char*) (*it)->getLine() +  ":" + (char*) (*it)->getCharPositionInLine() 
+                    lex_errors = lex_errors + "line " + to_string((*it)->getLine()) +  ":" + to_string((*it)->getCharPositionInLine()) 
                         +  " unrecognized token \'" +  (*it)->getText() +  "\'";
                     n_lex_errors++;
                 }
@@ -213,7 +213,7 @@ void Test::runTest(std::ofstream& testLogStream, string testName, vector<string>
 
             if (n_lex_errors>0) {
                 LexerException lexerException;
-                lexerException.setLexerErrors(lex_errors + ", number of lexer errors : " + (char*) n_lex_errors);
+                lexerException.setLexerErrors(lex_errors + ", number of lexer errors : " + to_string(n_lex_errors));
                 throw lexerException;
             }    
             CommonTokenStream token (&lexer);
