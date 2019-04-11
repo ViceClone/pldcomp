@@ -16,6 +16,5 @@ class Test {
         static void validProgramsTests();
         static void backendTests();
         static void customTests();
-        static void customTests2();
     private:
 };

@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
     // Test::syntaxErrorTests();
     // Test::validProgramsTests();
     // Test::backendTests();
-    Test::customTests2();
+    Test::customTests();
 
     return 0;
 }

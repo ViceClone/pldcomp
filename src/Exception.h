@@ -9,9 +9,9 @@ using namespace std;
 class LexerException: public exception {
     public:
         virtual const char* what() const throw();
-        virtual void setNumberLexerErrors(int numberLexerErrors);
+        virtual void setLexerErrors(string lexerErrors);
     private:
-        int numberLexerErrors;
+        string lexerErrors;
 };
 
 class SyntaxException: public exception {

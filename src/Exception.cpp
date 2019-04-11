@@ -8,12 +8,12 @@ using namespace std;
 
 /* Lexer Exception */
 
-void LexerException::setNumberLexerErrors(int numberLexerErrors) {
-    numberLexerErrors = numberLexerErrors;
+void LexerException::setLexerErrors(string lexerErrors) {
+    lexerErrors = lexerErrors;
 }
 
 const char* LexerException::what() const throw() {
-    cerr << "ERROR: " << numberLexerErrors << " lexer errors found" << endl;
+    cerr << "ERROR: " << lexerErrors << endl;
     return "LexerException";
 }
 

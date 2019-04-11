@@ -128,9 +128,9 @@ LexerException lexerException;
 SyntaxException syntaxException;
 
 void Test::lexErrorTests() {
-    cout << endl << endl << "*--------------------->LEXER ERROR TESTS<--------------------*" << endl << endl;
+    cerr << endl << endl << "*--------------------->LEXER ERROR TESTS<--------------------*" << endl << endl;
     for (int i=0 ; i<lexErrorFiles.size() ; i++) {
-        cout << "Fichier : " << lexErrorFiles[i] << endl;
+        cerr << endl << "Fichier : " << lexErrorFiles[i] << endl;
         
         ifstream file(lexErrorFiles[i]);
         string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
@@ -144,19 +144,19 @@ void Test::lexErrorTests() {
         // Generator visitor("out.asm");
         try {
             // visitor.visit(tree);
-            cout << "Compilation Success!" << endl << endl;
+            cerr << "Compilation Success!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+            cerr << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
 
 
 void Test::semanticErrorTests() {
-    cout << endl << endl << "*--------------------->SEMANTIC ERROR TESTS<--------------------*" << endl << endl;
+    cerr << endl << endl << "*--------------------->SEMANTIC ERROR TESTS<--------------------*" << endl << endl;
     for (int i=0 ; i<semanticErrorFiles.size() ; i++) {
-        cout << "Fichier : " << semanticErrorFiles[i] << endl;
+        cerr << "Fichier : " << semanticErrorFiles[i] << endl;
 
         ifstream file(semanticErrorFiles[i]);
         string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
@@ -171,22 +171,22 @@ void Test::semanticErrorTests() {
 
         try {
             // visitor.visit(tree);
-            cout << "Compilation Success!" << endl << endl;
+            cerr << "Compilation Success!" << endl << endl;
         } catch (int i) {
             remove("out.asm");
-            cout << "Compilation failed!" << endl << endl;
+            cerr << "Compilation failed!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+            cerr << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
 
 
 void Test::syntaxErrorTests() {
-    cout << endl << endl << "*--------------------->SYNTAX ERROR TESTS<--------------------*" << endl << endl;
+    cerr << endl << endl << "*--------------------->SYNTAX ERROR TESTS<--------------------*" << endl << endl;
     for (int i=0 ; i<syntaxErrorFiles.size() ; i++) {
-        cout << "Fichier : " << syntaxErrorFiles[i] << endl;
+        cerr << "Fichier : " << syntaxErrorFiles[i] << endl;
 
         ifstream file(syntaxErrorFiles[i]);
         string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
@@ -201,19 +201,19 @@ void Test::syntaxErrorTests() {
 
         try {
             // visitor.visit(tree);
-            cout << "Compilation Success!" << endl << endl;
+            cerr << "Compilation Success!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+            cerr << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
 
 
 void Test::validProgramsTests() {
-    cout << endl << endl << "*--------------------->VALID PROGRAMS TESTS<--------------------*" << endl << endl;
+    cerr << endl << endl << "*--------------------->VALID PROGRAMS TESTS<--------------------*" << endl << endl;
     for (int i=0 ; i<validProgramsFiles.size() ; i++) {
-        cout << "Fichier : " << validProgramsFiles[i] << endl;
+        cerr << "Fichier : " << validProgramsFiles[i] << endl;
 
         ifstream file(validProgramsFiles[i]);
         string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
@@ -228,19 +228,19 @@ void Test::validProgramsTests() {
 
         try {
             // visitor.visit(tree);
-            cout << "Compilation Success!" << endl << endl;
+            cerr << "Compilation Success!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+            cerr << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
 
 
 void Test::backendTests() {
-    cout << endl << endl << "*--------------------->BACKEND TESTS<--------------------*" << endl << endl;
+    cerr << endl << endl << "*--------------------->BACKEND TESTS<--------------------*" << endl << endl;
     for (int i=0 ; i<backendFiles.size() ; i++) {
-        cout << "Fichier : " << backendFiles[i] << endl;
+        cerr << "Fichier : " << backendFiles[i] << endl;
 
         ifstream file(backendFiles[i]);
         string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
@@ -255,74 +255,46 @@ void Test::backendTests() {
 
         try {
             // visitor.visit(tree);
-            cout << "Compilation Success!" << endl << endl;
+            cerr << "Compilation Success!" << endl << endl;
         } catch (exception& e) {
             remove("out.asm");
-            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
+            cerr << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
         }
     }
 }
-
 
 void Test::customTests() {
-    cout << endl << endl << "*--------------------->CUSTOM TESTS<--------------------*" << endl << endl;
+    cerr << endl << endl << "*--------------------->CUSTOM TESTS<--------------------*" << endl << endl;
     for (int i=0 ; i<customFiles.size() ; i++) {
-        cout << "Fichier : " << customFiles[i] << endl;
-
-        ifstream file(customFiles[i]);
-        string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
-
-        ANTLRInputStream input (content);
-        PLDCompLexer lexer (&input);
-        CommonTokenStream token (&lexer);
-        PLDCompParser parser (&token);
-        tree::ParseTree * tree = parser.prog();
-
-        // Generator visitor("out.asm");
-
-        try {
-            // visitor.visit(tree);
-            cout << "Compilation Success!" << endl << endl;
-        } catch (exception& e) {
-            remove("out.asm");
-            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
-        }
-    }
-}
-
-void Test::customTests2() {
-    cout << endl << endl << "*--------------------->CUSTOM TESTS<--------------------*" << endl << endl;
-    for (int i=0 ; i<customFiles.size() ; i++) {
-        cout << "Fichier : " << customFiles[i] << endl;
+        cerr << endl << "File " << i+1 << " : " << customFiles[i] << endl << endl;
         ifstream file(customFiles[i]);
         string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
         
+        try {
         /* Lexer */
-        
-        cout << "------LEXER-----" << endl;
-        ANTLRInputStream input (content);
-        PLDCompLexer lexer (&input);
-        vector<unique_ptr<Token>> list_token = lexer.getAllTokens();
-        int n_lex_errors = 0;
-        for (auto it=list_token.begin(); it!=list_token.end();++it) {
-            if ((*it)->getType()==21) {
-                cout << "line " << (*it)->getLine() << ":" << (*it)->getCharPositionInLine() 
-                    << " unrecognized token \'" << (*it)->getText() << "\'" <<endl;
-                n_lex_errors++;
+            ANTLRInputStream input (content);
+            PLDCompLexer lexer (&input);
+            vector<unique_ptr<Token>> list_token = lexer.getAllTokens();
+            lexer.reset();
+            int n_lex_errors = 0;
+            string lex_errors = "";
+            for (auto it=list_token.begin(); it!=list_token.end();++it) {
+                if ((*it)->getType()==21) {
+                    lex_errors = lex_errors + "line " + (char*) (*it)->getLine() +  ":" + (char*) (*it)->getCharPositionInLine() 
+                        +  " unrecognized token \'" +  (*it)->getText() +  "\'";
+                    n_lex_errors++;
+                }
             }
-        }
 
-        try {
 
             if (n_lex_errors>0) {
-                lexerException.setNumberLexerErrors(n_lex_errors);
+                lexerException.setLexerErrors(lex_errors + ", number of lexer errors : " + (char*) n_lex_errors);
                 throw lexerException;
             }    
             CommonTokenStream token (&lexer);
 
             /* Parser */
-
-            cout << "------PARSER-----" << endl;
+            token.reset();
             PLDCompParser parser (&token);
             tree::ParseTree * tree = parser.prog();
             int n_syntax_errors = parser.getNumberOfSyntaxErrors();
@@ -333,15 +305,13 @@ void Test::customTests2() {
             
             /* Code Generation */
 
-            cout << "------CODE GENERATOR-----" << endl;
-
             IRGenerator visitor;
             visitor.visit(tree);
             // ofstream o("out.asm",ofstream::out);
             // visitor.output_asm(o);
         } catch (exception& e) {
             //remove("out.asm");
-            cout << "Exception caught '" << e.what() << "'" << endl << "Compilation failed!" << endl << endl;
-        }
+            cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl;
+        } 
     }
 }
