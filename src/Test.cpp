@@ -1,12 +1,6 @@
 #include <iostream>
 #include <vector>
 
-#include "antlr4-runtime.h"
-#include "PLDCompLexer.h"
-#include "PLDCompParser.h"
-#include "PLDCompBaseVisitor.h"
-// #include "Generator.h"
-#include "IRGenerator.h"
 #include "Test.h"
 
 using namespace antlr4;
@@ -129,6 +123,9 @@ vector<string> customFiles = {
     BASE_TEST_CUSTOM_URL + "irtest.c",
 };
 
+
+LexerException lexerException;
+SyntaxException syntaxException;
 
 void Test::lexErrorTests() {
     cout << endl << endl << "*--------------------->LEXER ERROR TESTS<--------------------*" << endl << endl;
@@ -315,28 +312,29 @@ void Test::customTests2() {
             }
         }
 
-        if (n_lex_errors>0) {
-            cout << n_lex_errors << " lex errors" << endl;
-            return;
-        }    
-        CommonTokenStream token (&lexer);
-
-        /* Parser */
-
-        cout << "------PARSER-----" << endl;
-        PLDCompParser parser (&token);
-        tree::ParseTree * tree = parser.prog();
-        int n_syntax_errors = parser.getNumberOfSyntaxErrors();
-        if (n_syntax_errors>0) {
-            cout << n_syntax_errors << " syntax errors" << endl;
-            return;
-        }
-        
-        /* Code Generation */
-
-        cout << "------CODE GENERATOR-----" << endl;
-
         try {
+
+            if (n_lex_errors>0) {
+                lexerException.setNumberLexerErrors(n_lex_errors);
+                throw lexerException;
+            }    
+            CommonTokenStream token (&lexer);
+
+            /* Parser */
+
+            cout << "------PARSER-----" << endl;
+            PLDCompParser parser (&token);
+            tree::ParseTree * tree = parser.prog();
+            int n_syntax_errors = parser.getNumberOfSyntaxErrors();
+            if (n_syntax_errors>0) {
+                syntaxException.setNumberSyntaxErrors(n_syntax_errors);
+                throw syntaxException;
+            }
+            
+            /* Code Generation */
+
+            cout << "------CODE GENERATOR-----" << endl;
+
             IRGenerator visitor;
             visitor.visit(tree);
             // ofstream o("out.asm",ofstream::out);

@@ -6,6 +6,28 @@
 
 using namespace std;
 
+/* Lexer Exception */
+
+void LexerException::setNumberLexerErrors(int numberLexerErrors) {
+    numberLexerErrors = numberLexerErrors;
+}
+
+const char* LexerException::what() const throw() {
+    cerr << "ERROR: " << numberLexerErrors << " lexer errors found" << endl;
+    return "LexerException";
+}
+
+/* Syntax Exception */
+
+void SyntaxException::setNumberSyntaxErrors(int numberSyntaxErrors) {
+    numberSyntaxErrors = numberSyntaxErrors;
+}
+
+const char* SyntaxException::what() const throw() {
+    cerr << "ERROR: " << numberSyntaxErrors << " syntax errors found" << endl;
+    return "SyntaxException";
+}
+
 /* Variable Name Exception */
 
 void VariableNameException::setVarName(string varName) {

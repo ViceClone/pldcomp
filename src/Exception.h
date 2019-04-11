@@ -6,6 +6,22 @@
 
 using namespace std;
 
+class LexerException: public exception {
+    public:
+        virtual const char* what() const throw();
+        virtual void setNumberLexerErrors(int numberLexerErrors);
+    private:
+        int numberLexerErrors;
+};
+
+class SyntaxException: public exception {
+    public:
+        virtual const char* what() const throw();
+        virtual void setNumberSyntaxErrors(int numberSyntaxErrors);
+    private:
+        int numberSyntaxErrors;
+};
+
 class VariableNameException: public exception {
     public:
         virtual const char* what() const throw();
@@ -42,3 +58,4 @@ class ArrayException: public exception {
     private:
         string arrayName;
 };
+

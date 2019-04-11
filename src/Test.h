@@ -2,6 +2,7 @@
 #include "PLDCompLexer.h"
 #include "PLDCompParser.h"
 #include "PLDCompBaseVisitor.h"
+#include "IRGenerator.h"
 // #include "Generator.h"
 
 using namespace antlr4;
@@ -16,4 +17,5 @@ class Test {
         static void backendTests();
         static void customTests();
         static void customTests2();
+    private:
 };
