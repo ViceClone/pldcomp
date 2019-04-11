@@ -25,6 +25,7 @@ antlrcpp::Any IRGenerator::visitProg(PLDCompParser::ProgContext *ctx) {
         return visitChildren(ctx);
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -73,6 +74,7 @@ antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::Functiondefini
         return NULL;
     } catch(VariableNameException vne) {
         cerr << "Exception caught " << vne.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -81,6 +83,7 @@ antlrcpp::Any IRGenerator::visitStatementseq(PLDCompParser::StatementseqContext 
         return visitChildren(ctx);
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -101,6 +104,7 @@ antlrcpp::Any IRGenerator::visitStatement(PLDCompParser::StatementContext *ctx) 
         return ret;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -109,6 +113,7 @@ antlrcpp::Any IRGenerator::visitStatement(PLDCompParser::StatementContext *ctx) 
         return visitChildren(ctx);
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
  }
 
@@ -237,6 +242,7 @@ antlrcpp::Any IRGenerator::visitIfstatement(PLDCompParser::IfstatementContext *c
         return NULL;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -355,6 +361,7 @@ antlrcpp::Any IRGenerator::visitWhilestatement(PLDCompParser::WhilestatementCont
         return NULL;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -385,6 +392,7 @@ antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementCo
         }
     } catch(DeclarationException de) {
         cerr << "Exception caught " << de.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -414,6 +422,7 @@ antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
         return NULL;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -428,6 +437,7 @@ antlrcpp::Any IRGenerator::visitArrayExpr(PLDCompParser::ArrayExprContext *ctx) 
         return var;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -437,6 +447,7 @@ antlrcpp::Any IRGenerator::visitCallExpr(PLDCompParser::CallExprContext *ctx) {
         return (string)("!return_reg");
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 antlrcpp::Any IRGenerator::visitConst(PLDCompParser::ConstContext *ctx) {
@@ -447,6 +458,7 @@ antlrcpp::Any IRGenerator::visitConst(PLDCompParser::ConstContext *ctx) {
         return var;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -458,6 +470,7 @@ antlrcpp::Any IRGenerator::visitNegConst(PLDCompParser::NegConstContext *ctx) {
         return var;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -494,6 +507,7 @@ antlrcpp::Any IRGenerator::visitCharConst(PLDCompParser::CharConstContext *ctx) 
         return var;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -503,6 +517,7 @@ antlrcpp::Any IRGenerator::visitPar(PLDCompParser::ParContext *ctx) {
         return var;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -519,6 +534,7 @@ antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
         return (string)(ctx->ID()->getText());
     } catch(DeclarationException de) {
         cerr << "Exception caught " << de.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -535,6 +551,7 @@ antlrcpp::Any IRGenerator::visitNegExpr(PLDCompParser::NegExprContext *ctx) {
         return var;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -561,6 +578,7 @@ antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOp
         return var3;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -589,6 +607,7 @@ antlrcpp::Any IRGenerator::visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx
         return var3;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -640,6 +659,7 @@ antlrcpp::Any IRGenerator::visitDeclWithoutAssignment(PLDCompParser::DeclWithout
         return NULL;
     } catch(InvalidDeclarationException ide) {
         cerr << "Exception caught " << ide.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -667,6 +687,7 @@ antlrcpp::Any IRGenerator::visitDeclWithAssignment(PLDCompParser::DeclWithAssign
         return NULL;
     } catch(InvalidDeclarationException ide) {
         cerr << "Exception caught " << ide.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -708,6 +729,7 @@ antlrcpp::Any IRGenerator::visitDeclArray(PLDCompParser::DeclArrayContext *ctx) 
         return NULL;
     } catch(InvalidDeclarationException ide) {
         cerr << "Exception caught " << ide.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 // Assignment
@@ -736,6 +758,7 @@ antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprCont
 
     } catch(ValueNotFoundException vnfe) {
         cerr << "Exception caught " << vnfe.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -750,6 +773,7 @@ antlrcpp::Any IRGenerator::visitIdL(PLDCompParser::IdLContext *ctx) {
         return name;
     } catch(DeclarationException de) {
         cerr << "Exception caught " << de.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -759,6 +783,7 @@ antlrcpp::Any IRGenerator::visitArrayL(PLDCompParser::ArrayLContext *ctx) {
         return var;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -766,6 +791,7 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
     try{
         string name = ctx->ID()->getText();
         if (current_cfg->find_symbol(name)) {
+            cout << name << endl;
             if (current_cfg->get_var_type(name)!=CharArray 
                 && current_cfg->get_var_type(name)!=IntArray){
                 ArrayException arrayException;
@@ -797,8 +823,10 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
         }
     } catch(ArrayException ae) {
         cerr << "Exception caught " << ae.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     } catch(DeclarationException de) {
         cerr << "Exception caught " << de.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 
@@ -808,6 +836,7 @@ antlrcpp::Any IRGenerator::visitType(PLDCompParser::TypeContext *ctx) {
         return visitChildren(ctx);
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
     }
 }
 

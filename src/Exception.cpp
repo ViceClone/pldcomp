@@ -9,7 +9,7 @@ using namespace std;
 /* Lexer Exception */
 
 void LexerException::setLexerErrors(string lexerErrors) {
-    lexerErrors = lexerErrors;
+    this->lexerErrors = lexerErrors;
 }
 
 const char* LexerException::what() const throw() {
@@ -20,7 +20,7 @@ const char* LexerException::what() const throw() {
 /* Syntax Exception */
 
 void SyntaxException::setNumberSyntaxErrors(int numberSyntaxErrors) {
-    numberSyntaxErrors = numberSyntaxErrors;
+    this->numberSyntaxErrors = numberSyntaxErrors;
 }
 
 const char* SyntaxException::what() const throw() {
@@ -31,7 +31,7 @@ const char* SyntaxException::what() const throw() {
 /* Variable Name Exception */
 
 void VariableNameException::setVarName(string varName) {
-    varName = varName;
+    this->varName = varName;
 }
 
 const char* VariableNameException::what() const throw() {
@@ -42,7 +42,7 @@ const char* VariableNameException::what() const throw() {
 /* Declaration Exception */
 
 void DeclarationException::setVarName(string varName) {
-    varName = varName;
+    this->varName = varName;
 }
 
 const char* DeclarationException::what() const throw() {
@@ -60,7 +60,7 @@ const char* InvalidDeclarationException::what() const throw() {
 /* Value Not Found Exception Exception */
 
 void ValueNotFoundException::setValue(string value) {
-    value = value;
+    this->value = value;
 }
 
 const char* ValueNotFoundException::what() const throw() {
@@ -71,7 +71,7 @@ const char* ValueNotFoundException::what() const throw() {
 /* Array Exception */
 
 void ArrayException::setArrayName(string arrayName) {
-    arrayName = arrayName;
+    this->arrayName = arrayName;
 }
 
 const char* ArrayException::what() const throw() {

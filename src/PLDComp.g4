@@ -63,10 +63,12 @@ expr : '(' expr ')' # Par
     | ID # Var
     ;
 
-type : 'int' | 'char';
+type : 'int' | 'char' | 'void';
 
 RETURN: 'return';
 INT_TYPE: 'int';
+CHAR_TYPE: 'char';
+VOID_TYPE: 'void';
 IF: 'if';
 ELSE: 'else';
 WHILE: 'while';

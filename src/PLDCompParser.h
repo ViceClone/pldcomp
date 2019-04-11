@@ -12,14 +12,15 @@
 class  PLDCompParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, RETURN = 6, INT_TYPE = 7, 
-    IF = 8, ELSE = 9, WHILE = 10, CHAR = 11, ID = 12, INT = 13, LESS = 14, 
-    LESSEQUAL = 15, GREATER = 16, GREATEREQUAL = 17, EQUAL = 18, NOTEQUAL = 19, 
-    AND = 20, OR = 21, ANDAND = 22, OROR = 23, CARET = 24, TILDE = 25, PRIME = 26, 
-    BACKSLASH = 27, ASSIGN = 28, SEMICOLON = 29, COMMA = 30, RIGHT_BRACE = 31, 
-    LEFT_BRACE = 32, LEFT_PARENTHESE = 33, RIGHT_PARENTHESE = 34, PLUS = 35, 
-    MINUS = 36, STAR = 37, DIV = 38, MOD = 39, WHITESPACE = 40, NEWLINE = 41, 
-    BLOCKCOMMENT = 42, LINECOMMENT = 43, ERROR = 44
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, RETURN = 5, INT_TYPE = 6, CHAR_TYPE = 7, 
+    VOID_TYPE = 8, IF = 9, ELSE = 10, WHILE = 11, CHAR = 12, ID = 13, INT = 14, 
+    LESS = 15, LESSEQUAL = 16, GREATER = 17, GREATEREQUAL = 18, EQUAL = 19, 
+    NOTEQUAL = 20, AND = 21, OR = 22, ANDAND = 23, OROR = 24, CARET = 25, 
+    TILDE = 26, PRIME = 27, BACKSLASH = 28, ASSIGN = 29, SEMICOLON = 30, 
+    COMMA = 31, RIGHT_BRACE = 32, LEFT_BRACE = 33, LEFT_PARENTHESE = 34, 
+    RIGHT_PARENTHESE = 35, PLUS = 36, MINUS = 37, STAR = 38, DIV = 39, MOD = 40, 
+    WHITESPACE = 41, NEWLINE = 42, BLOCKCOMMENT = 43, LINECOMMENT = 44, 
+    ERROR = 45
   };
 
   enum {
@@ -578,6 +579,8 @@ public:
     TypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *INT_TYPE();
+    antlr4::tree::TerminalNode *CHAR_TYPE();
+    antlr4::tree::TerminalNode *VOID_TYPE();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

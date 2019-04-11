@@ -53,10 +53,10 @@ int main(int argc, char** argv) {
         ofstream o(outfile,ofstream::out);
         visitor.output_asm(o);
     } catch (LexerException le) {
-        //remove("out.asm");
         cerr << "Exception caught " << le.what() << endl << "Compilation failed!" << endl;
+        exit(1);
     } catch (SyntaxException se) {
-        //remove("out.asm");
         cerr << "Exception caught " << se.what() << endl << "Compilation failed!" << endl;
+        exit(1);
     }
 }
