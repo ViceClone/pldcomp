@@ -3,7 +3,7 @@
 ## Useful commands
 
 ### Build
-Build from directory ./src
+Change directory to ./src
 ```bash
 cd ./src
 ```
