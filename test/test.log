@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ************************* vendredi 12 avril 2019, 08:13:43 (UTC+0000) *************************
+=======
+************************* vendredi 12 avril 2019, 08:13:59 (UTC+0000) *************************
+>>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 **********************************************************************************
 FILE '../test/demo_test/doubleIf.c':
@@ -209,6 +213,7 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
+<<<<<<< HEAD
 FILE '../test/demo_test/while_and_if.c':
 
 int main() {
@@ -242,6 +247,9 @@ Compilation Successful!
 *--------------------->Compilation Of ../test/demo_test/while_and_if.o To Binary Code a.out<--------------------*
 
 Compilation Successful!
+=======
+FILE '../test/backend/Back/5-IfThenElse.c':
+>>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 *--------------------->Execute a.out<--------------------*
 
@@ -1649,19 +1657,59 @@ Return code of 'a.out': 0
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/18_OperatorNeg.c':
 
+<<<<<<< HEAD
 #include <stdint.h>
 
 void main() {
    int32_t a;
    a = 1;
    a = -a;
+=======
+int main() {
+    int a = (1+2)*3/4;
+    int b = 1<<2>>3&0^1|0;
+    int c = ((1 <= 2) == (3 > 1) != (1>=2));
+    int d = -1;
+    d += 1;
+    d -= 1;
+    d *= 1;
+    d /= 1;
+    d %= 1;
+    d &= 1;
+    d |= 1;
+    d ^= 1;
+    d++;
+    d--;
+>>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 }
 
 *--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/18_OperatorNeg.c<--------------------*
 
+<<<<<<< HEAD
 ../test/frontend/ValidPrograms/18_OperatorNeg.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
  void main() {
       ^~~~
+=======
+../test/demo_test/complex_arithmetics.c: In function ‘main’:
+../test/demo_test/complex_arithmetics.c:3:22: warning: suggest parentheses around arithmetic in operand of ‘^’ [-Wparentheses]
+     int b = 1<<2>>3&0^1|0;
+                      ^
+../test/demo_test/complex_arithmetics.c:3:24: warning: suggest parentheses around arithmetic in operand of ‘|’ [-Wparentheses]
+     int b = 1<<2>>3&0^1|0;
+                        ^
+../test/demo_test/complex_arithmetics.c:4:34: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
+     int c = ((1 <= 2) == (3 > 1) != (1>=2));
+                                  ^~
+../test/demo_test/complex_arithmetics.c:4:9: warning: unused variable ‘c’ [-Wunused-variable]
+     int c = ((1 <= 2) == (3 > 1) != (1>=2));
+         ^
+../test/demo_test/complex_arithmetics.c:3:9: warning: unused variable ‘b’ [-Wunused-variable]
+     int b = 1<<2>>3&0^1|0;
+         ^
+../test/demo_test/complex_arithmetics.c:2:9: warning: unused variable ‘a’ [-Wunused-variable]
+     int a = (1+2)*3/4;
+         ^
+>>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/18_OperatorNeg.c To ../test/frontend/ValidPrograms/18_OperatorNeg.asm<--------------------*
@@ -1689,7 +1737,26 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
+<<<<<<< HEAD
 FILE '../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c':
+=======
+FILE '../test/demo_test/factorial.c':
+
+#include <stdint.h>
+
+int32_t factorial(int n)
+{
+    if (n >= 1) {
+        return n*factorial(n-1);
+    }
+    else {
+        return 1;
+    }
+}
+
+*--------------------->gcc Compilation Of ../test/demo_test/factorial.c<--------------------*
+
+>>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 #include <stdint.h>
 
@@ -1718,6 +1785,7 @@ line 4:11 no viable alternative at input 'int64_ta'
 [1;31m../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:[0m 1 syntax errors have been found
 Compilation failed!
 **********************************************************************************
+<<<<<<< HEAD
 FILE '../test/frontend/ValidPrograms/02_IncludeStdint.c':
 
 #include <stdint.h>
@@ -1761,6 +1829,13 @@ OUTPUT
 
 -----
 Return code of 'a.out': 0
+=======
+FILE '../test/demo_test/str_array_while_putchar.c':
+
+int main() {
+    char str[100] = {'c','a','o',' ','x','u','a','n',' ','h','u','y','
+','
+>>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/27_OperatorComp.c':
 
@@ -2421,7 +2496,11 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
+<<<<<<< HEAD
 FILE '../test/frontend/ValidPrograms/26_OperatorXor.c':
+=======
+FILE '../test/frontend/ValidPrograms/21_OperatorIncPost.c':
+>>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 #include <stdint.h>
 
@@ -2808,6 +2887,7 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
+<<<<<<< HEAD
 FILE '../test/frontend/ValidPrograms/53_FunctionCallPutChar.c':
 
 #include <stdint.h>
@@ -2884,6 +2964,9 @@ line 4:23 mismatched input ',' expecting ';'
 Compilation failed!
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/23_OperatorDecPost.c':
+=======
+FILE '../test/frontend/ValidPrograms/46_ArrayDec.c':
+>>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 #include <stdint.h>
 
@@ -2925,6 +3008,7 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
+<<<<<<< HEAD
 FILE '../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c':
 
 void main() {
@@ -2957,6 +3041,11 @@ line 2:3 mismatched input '(' expecting '}'
 Compilation failed!
 **********************************************************************************
 FILE '../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.c':
+=======
+FILE '../test/frontend/ValidPrograms/34_OperatorBitOrAssign.c':
+
+#include <stdint.h>
+>>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 void main() {
    1 2;
@@ -3514,9 +3603,17 @@ OUTPUT
 -----
 
 -----
+<<<<<<< HEAD
 Return code of 'a.out': 42
 **********************************************************************************
 FILE '../test/custom/emptyMainFunction.c':
+=======
+Return code of 'a.out': 0
+**********************************************************************************
+FILE '../test/frontend/ValidPrograms/35_OperatorBitXorAssign.c':
+
+#include <stdint.h>
+>>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 int main() {}
 
