@@ -1,4 +1,4 @@
-************************* vendredi 12 avril 2019, 07:15:02 (UTC+0000) *************************
+************************* vendredi 12 avril 2019, 07:27:06 (UTC+0000) *************************
 
 **********************************************************************************
 FILE '../test/backend/Back/1_empty.c':
@@ -729,10 +729,12 @@ FILE '../test/custom/factorial.c':
 
 int factorial(int n)
 {
-    if (n >= 1)
+    if (n >= 1) {
         return n*factorial(n-1);
-    else
+    }
+    else {
         return 1;
+    }
 }
 
 *--------------------->gcc Compilation Of ../test/custom/factorial.c<--------------------*
@@ -742,12 +744,23 @@ int factorial(int n)
 *--------------------->Compilation Of ../test/custom/factorial.c To ../test/custom/factorial.asm<--------------------*
 
 [1;96m../test/custom/factorial.c:[0m no lexical error has been found 
-line 4:8 missing '{' at 'return'
-line 5:4 missing '}' at 'else'
-line 6:8 missing '{' at 'return'
-line 7:1 missing '}' at '<EOF>'
-[1;31m../test/custom/factorial.c:[0m 4 syntax errors have been found
-Compilation failed!
+[1;96m../test/custom/factorial.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/custom/factorial.s
+
+*--------------------->Compilation Of ../test/custom/factorial.asm To ../test/custom/factorial.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/custom/factorial.o To Binary Code a.out<--------------------*
+
+/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o: In function `_start':
+(.text+0x20): undefined reference to `main'
+collect2: error: ld returned 1 exit status
+
+Compilation Failed!
 **********************************************************************************
 FILE '../test/custom/doubleDeclaration.c':
 
@@ -1265,6 +1278,124 @@ OUTPUT
 
 -----
 Return code of 'a.out': 42
+**********************************************************************************
+FILE '../test/demo_test/doubleIf.c':
+
+int main() {
+    if(1){
+        if(1){
+            return 42;
+        }
+    }
+}
+
+*--------------------->gcc Compilation Of ../test/demo_test/doubleIf.c<--------------------*
+
+
+
+*--------------------->Compilation Of ../test/demo_test/doubleIf.c To ../test/demo_test/doubleIf.asm<--------------------*
+
+[1;96m../test/demo_test/doubleIf.c:[0m no lexical error has been found 
+[1;96m../test/demo_test/doubleIf.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/demo_test/doubleIf.s
+
+*--------------------->Compilation Of ../test/demo_test/doubleIf.asm To ../test/demo_test/doubleIf.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/demo_test/doubleIf.o To Binary Code a.out<--------------------*
+
+Compilation Successful!
+
+*--------------------->Execute a.out<--------------------*
+
+OUTPUT 
+-----
+
+-----
+Return code of 'a.out': 42
+**********************************************************************************
+FILE '../test/demo_test/doubleWhile.c':
+
+int main() {
+    int i = 0;
+    int j = 0;
+    while(i < 10){
+        while(j < 10){
+            j++;
+        }
+        i++;
+    }
+}
+
+*--------------------->gcc Compilation Of ../test/demo_test/doubleWhile.c<--------------------*
+
+
+
+*--------------------->Compilation Of ../test/demo_test/doubleWhile.c To ../test/demo_test/doubleWhile.asm<--------------------*
+
+[1;96m../test/demo_test/doubleWhile.c:[0m no lexical error has been found 
+[1;96m../test/demo_test/doubleWhile.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/demo_test/doubleWhile.s
+
+*--------------------->Compilation Of ../test/demo_test/doubleWhile.asm To ../test/demo_test/doubleWhile.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/demo_test/doubleWhile.o To Binary Code a.out<--------------------*
+
+Compilation Successful!
+
+*--------------------->Execute a.out<--------------------*
+
+OUTPUT 
+-----
+
+-----
+Return code of 'a.out': 0
+**********************************************************************************
+FILE '../test/demo_test/factorial.c':
+
+int factorial(int n)
+{
+    if (n >= 1) {
+        return n*factorial(n-1);
+    }
+    else {
+        return 1;
+    }
+}
+
+*--------------------->gcc Compilation Of ../test/demo_test/factorial.c<--------------------*
+
+
+
+*--------------------->Compilation Of ../test/demo_test/factorial.c To ../test/demo_test/factorial.asm<--------------------*
+
+[1;96m../test/demo_test/factorial.c:[0m no lexical error has been found 
+[1;96m../test/demo_test/factorial.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/demo_test/factorial.s
+
+*--------------------->Compilation Of ../test/demo_test/factorial.asm To ../test/demo_test/factorial.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/demo_test/factorial.o To Binary Code a.out<--------------------*
+
+/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o: In function `_start':
+(.text+0x20): undefined reference to `main'
+collect2: error: ld returned 1 exit status
+
+Compilation Failed!
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/27_OperatorComp.c':
 
