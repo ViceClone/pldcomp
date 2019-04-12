@@ -1,4 +1,4 @@
-************************* vendredi 12 avril 2019, 06:14:04 (UTC+0000) *************************
+************************* vendredi 12 avril 2019, 06:41:26 (UTC+0000) *************************
 
 **********************************************************************************
 FILE '../test/backend/Back/1_empty.c':
@@ -330,6 +330,79 @@ OUTPUT
 -----
 Return code of 'a.out': 14
 **********************************************************************************
+FILE '../test/custom/doubleIf.c':
+
+int main() {
+    if(1){
+        if(1){
+            return 42;
+        }
+    }
+}
+
+*--------------------->Compilation Of ../test/custom/doubleIf.c To ../test/custom/doubleIf.asm<--------------------*
+
+[1;96m../test/custom/doubleIf.c:[0m no lexical error has been found 
+[1;96m../test/custom/doubleIf.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/custom/doubleIf.s
+
+*--------------------->Compilation Of ../test/custom/doubleIf.asm To ../test/custom/doubleIf.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/custom/doubleIf.o To Binary Code a.out<--------------------*
+
+Compilation Successful!
+
+*--------------------->Execute a.out<--------------------*
+
+OUTPUT 
+-----
+
+-----
+Return code of 'a.out': 42
+**********************************************************************************
+FILE '../test/custom/doubleWhile.c':
+
+int main() {
+    int i = 0;
+    int j = 0;
+    while(i < 10){
+        while(j < 10){
+            j++;
+        }
+        i++;
+    }
+}
+
+*--------------------->Compilation Of ../test/custom/doubleWhile.c To ../test/custom/doubleWhile.asm<--------------------*
+
+[1;96m../test/custom/doubleWhile.c:[0m no lexical error has been found 
+[1;96m../test/custom/doubleWhile.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/custom/doubleWhile.s
+
+*--------------------->Compilation Of ../test/custom/doubleWhile.asm To ../test/custom/doubleWhile.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/custom/doubleWhile.o To Binary Code a.out<--------------------*
+
+Compilation Successful!
+
+*--------------------->Execute a.out<--------------------*
+
+OUTPUT 
+-----
+
+-----
+Return code of 'a.out': 0
+**********************************************************************************
 FILE '../test/custom/substractionOperation.c':
 
 int main() {
@@ -504,6 +577,26 @@ OUTPUT
 
 -----
 Return code of 'a.out': 3
+**********************************************************************************
+FILE '../test/custom/factorial.c':
+
+int factorial(int n)
+{
+    if (n >= 1)
+        return n*factorial(n-1);
+    else
+        return 1;
+}
+
+*--------------------->Compilation Of ../test/custom/factorial.c To ../test/custom/factorial.asm<--------------------*
+
+[1;96m../test/custom/factorial.c:[0m no lexical error has been found 
+line 4:8 missing '{' at 'return'
+line 5:4 missing '}' at 'else'
+line 6:8 missing '{' at 'return'
+line 7:1 missing '}' at '<EOF>'
+[1;31m../test/custom/factorial.c:[0m 4 syntax errors have been found
+Compilation failed!
 **********************************************************************************
 FILE '../test/custom/doubleDeclaration.c':
 
