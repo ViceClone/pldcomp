@@ -506,7 +506,9 @@ antlrcpp::Any IRGenerator::visitArrayExpr(PLDCompParser::ArrayExprContext *ctx) 
 antlrcpp::Any IRGenerator::visitCallExpr(PLDCompParser::CallExprContext *ctx) {
     try{
         visit(ctx->call());
-        return (string)("!return_reg");
+        string var = current_cfg->create_new_tempvar(Int);
+        current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,{var,"!return_reg"});
+        return var;
     } catch (exception& e) {
         cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
         exit(1);
@@ -625,11 +627,12 @@ antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOp
     try{
         int address = current_cfg->get_current_address();
         string var1 = visit(ctx->expr(0));
-        string var2 = visit(ctx->expr(1));
+
         if (var1.substr(0,4).compare("!tmp") == 0) {
             current_cfg->move_next_temp(-4);
         }
 
+        string var2 = visit(ctx->expr(1));
         if (var2.substr(0,4).compare("!tmp") == 0) {
             current_cfg->move_next_temp(-4);
         }
