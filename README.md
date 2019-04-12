@@ -45,7 +45,7 @@ If logfile is not defined, results are saved in ./test/test.log
 
 * Firstly, this project takes a lot of time and effort (and a bunch of Red Bull to stay awake). And for me, I would say, the project is quite interesting as I learned a lot from playing around with things like grammars, assembly code, a bunch of compiler (gcc, clang, icc). Even though. I am not satisfied with the outcomes of our project (maybe neither are you), it was a lot of fun doing this kind of thing. (Cao Xuân Huy)
 
-* Having to work on this project showed us how we can build a minimal compiler functionalities with grammars, lexers,  parsers, intermediate representations, execute automatic tests and working as a team on a project. It sure was a university project but we were able to manage it as it we a professional one. Had ups and downs but in the final we managed to make a good delivrable up to the awaited standards by our professors. (Amine M. Boulouma)
+* Having to work on this project showed us how we can build a minimal compiler functionalities with grammars, lexers,  parsers, intermediate representations, execute automatic tests and working as a team on a project. It sure was a university project but we were able to manage it as it was a professional one. Had ups and downs but in the final we managed to make a good delivrable up to the awaited standards by our professors. (Amine M. Boulouma)
 
 Joke aside, let jump into what we've done.
 
