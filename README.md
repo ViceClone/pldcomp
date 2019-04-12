@@ -113,7 +113,7 @@ a++;
 ```
 
 #### Expressions
-List of operator precedence is taken from this [source](https://en.cppreference.com/w/cpp/language/operator_precedence)
+List of operator precedence is taken from this [source](https://en.cppreference.com/w/cpp/language/operator_precedence). All the right-to-left operators have not been implemented correctly in the sense that multiple consecutive operation of the types does not work i.e. `a+=a+=3`.
 * Constant and variable: `int`, `int32_t`, `char`.
 * Array Occurence:
 ```
