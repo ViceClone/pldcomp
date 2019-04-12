@@ -6,7 +6,18 @@
 
 using namespace std;
 
-class LexerException: public exception {
+class CustomException: public exception {
+    public:
+        virtual void setFileName(string filename);
+        virtual void setLine(int line);
+        virtual void setPositionInLine(int pos);
+    protected: 
+        string filename;
+        int line;
+        int pos;
+};
+
+class LexerException: public CustomException {
     public:
         virtual const char* what() const throw();
         virtual void setLexerErrors(string lexerErrors);
@@ -14,7 +25,7 @@ class LexerException: public exception {
         string lexerErrors;
 };
 
-class SyntaxException: public exception {
+class SyntaxException: public CustomException {
     public:
         virtual const char* what() const throw();
         virtual void setNumberSyntaxErrors(int numberSyntaxErrors);
@@ -22,36 +33,25 @@ class SyntaxException: public exception {
         int numberSyntaxErrors;
 };
 
-class VariableNameException: public exception {
+
+class InvalidDeclarationException: public CustomException {
     public:
         virtual const char* what() const throw();
-        virtual void setVarName(string varName);
+        virtual void setVarName(string name);
     private:
         string varName;
+
 };
 
-class DeclarationException: public exception {
+class VarNotFoundException: public CustomException {
     public:
         virtual const char* what() const throw();
-        virtual void setVarName(string varName);
+        virtual void setVar(string varname);
     private:
-        string varName;
+        string var;
 };
 
-class InvalidDeclarationException: public exception {
-    public:
-        virtual const char* what() const throw();
-};
-
-class ValueNotFoundException: public exception {
-    public:
-        virtual const char* what() const throw();
-        virtual void setValue(string value);
-    private:
-        string value;
-};
-
-class ArrayException: public exception {
+class ArrayException: public CustomException {
     public:
         virtual const char* what() const throw();
         virtual void setArrayName(string arrayName);

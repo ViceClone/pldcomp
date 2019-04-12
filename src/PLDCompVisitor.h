@@ -53,6 +53,16 @@ public:
 
     virtual antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *context) = 0;
 
+    virtual antlrcpp::Any visitIncrdecrstatement(PLDCompParser::IncrdecrstatementContext *context) = 0;
+
+    virtual antlrcpp::Any visitIncr_decr(PLDCompParser::Incr_decrContext *context) = 0;
+
+    virtual antlrcpp::Any visitIncr_decr_op(PLDCompParser::Incr_decr_opContext *context) = 0;
+
+    virtual antlrcpp::Any visitCompoundassignment(PLDCompParser::CompoundassignmentContext *context) = 0;
+
+    virtual antlrcpp::Any visitCompoundassignmentstatement(PLDCompParser::CompoundassignmentstatementContext *context) = 0;
+
     virtual antlrcpp::Any visitPar(PLDCompParser::ParContext *context) = 0;
 
     virtual antlrcpp::Any visitCharConst(PLDCompParser::CharConstContext *context) = 0;
@@ -77,7 +87,11 @@ public:
 
     virtual antlrcpp::Any visitBitwiseOr(PLDCompParser::BitwiseOrContext *context) = 0;
 
+    virtual antlrcpp::Any visitShiftOp(PLDCompParser::ShiftOpContext *context) = 0;
+
     virtual antlrcpp::Any visitLogicalAnd(PLDCompParser::LogicalAndContext *context) = 0;
+
+    virtual antlrcpp::Any visitCompoundAssignmentExpr(PLDCompParser::CompoundAssignmentExprContext *context) = 0;
 
     virtual antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *context) = 0;
 
@@ -86,6 +100,8 @@ public:
     virtual antlrcpp::Any visitRel1Expr(PLDCompParser::Rel1ExprContext *context) = 0;
 
     virtual antlrcpp::Any visitCallExpr(PLDCompParser::CallExprContext *context) = 0;
+
+    virtual antlrcpp::Any visitIncDecExpr(PLDCompParser::IncDecExprContext *context) = 0;
 
     virtual antlrcpp::Any visitType(PLDCompParser::TypeContext *context) = 0;
 

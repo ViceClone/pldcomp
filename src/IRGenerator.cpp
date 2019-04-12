@@ -20,6 +20,9 @@ void IRGenerator::output_asm(ostream& o) {
     #endif
 }
 
+void IRGenerator::set_filename(string name) {
+    filename = name;
+}
 antlrcpp::Any IRGenerator::visitProg(PLDCompParser::ProgContext *ctx) {
     try {
         return visitChildren(ctx);
@@ -48,10 +51,13 @@ antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::Functiondefini
         lastBlock->exit_false = nullptr;
         lastBlock->exit_true = nullptr;
         bb->exit_true = lastBlock;
-        if (func_type.compare("int") == 0) {
-            current_cfg->add_to_symbol_table("!returnval", Int, 4);
+        Type t;
+        if (func_type.compare("int") == 0 || func_type.compare("int32_t") == 0) {
+            t = Int;
+        } else if (func_type.compare("char") == 0) {
+            t = Char;
         }
-        // Can merge with visitFuncNoParams -> TODO
+        current_cfg->add_to_symbol_table("!returnval", t, 4);
         int n_params = (ctx->ID()).size()-1;
         current_cfg->set_n_params(n_params);
         vector<PLDCompParser::TypeContext *> type = ctx->type();
@@ -63,17 +69,21 @@ antlrcpp::Any IRGenerator::visitFunctiondefinition(PLDCompParser::Functiondefini
             // string t = type[i]->getText();
             bool valid = current_cfg->add_to_symbol_table(name_var,Int, 4);
             if (!valid) {
-                VariableNameException variableNameException;
-                variableNameException.setVarName(name_var);
-                throw variableNameException;
+                InvalidDeclarationException e;
+                e.setFileName(filename);
+                e.setLine(list_id[i]->getSymbol()->getCharPositionInLine());
+                e.setPositionInLine(list_id[i]->getSymbol()->getCharPositionInLine());
+                e.setVarName(name_var);
+                throw e;
                 return NULL;
             }
             current_cfg->add_param(name_var, Int);
         }
         visit(ctx->statementseq());
         return NULL;
-    } catch(VariableNameException vne) {
-        cerr << "Exception caught " << vne.what() << endl << "Compilation failed!" << endl << endl;
+    } catch(InvalidDeclarationException e) {
+        e.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     }
 }
@@ -371,15 +381,13 @@ antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementCo
             return NULL;
         } else {
             string var = visit(ctx->expr());
-            /*
-            if (var.compare("!return_reg") == 0) {
-                return var;
-            }
-            */
             if (!current_cfg->find_symbol(var)) {
-                DeclarationException declarationException;
-                declarationException.setVarName(var);
-                throw declarationException;
+                VarNotFoundException e;
+                e.setVar(var);
+                e.setFileName(filename);
+                e.setLine(ctx->getStart()->getLine());
+                e.setPositionInLine(ctx->getStart()->getCharPositionInLine());
+                throw e;
                 return NULL;
             }
             current_cfg->current_bb->ret_token -= 1;
@@ -390,8 +398,9 @@ antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementCo
             current_cfg->reset_next_temp();
             return var;
         }
-    } catch(DeclarationException de) {
-        cerr << "Exception caught " << de.what() << endl << "Compilation failed!" << endl << endl;
+    } catch(VarNotFoundException e) {
+        e.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     }
 }
@@ -427,6 +436,58 @@ antlrcpp::Any IRGenerator::visitCall(PLDCompParser::CallContext *ctx) {
 }
 
 // Expression
+
+antlrcpp::Any IRGenerator::visitCompoundassignment(PLDCompParser::CompoundassignmentContext *ctx) {
+    string var;
+    if (ctx->ID()!=nullptr) {
+        var = ctx->ID()->getText();
+    }
+    IRInstr::Operation op;
+    string opstring = ctx->op->getText();
+    string expr = visit(ctx->expr());
+    if (opstring.compare("+=")==0) {
+        op = IRInstr::add;
+    } else if (opstring.compare("-=")==0) {
+        op = IRInstr::sub;
+    } else if (opstring.compare("*=")==0) {
+        op = IRInstr::mul;
+    } else if (opstring.compare("/=")==0) {
+        op = IRInstr::div;
+    } else if (opstring.compare("%=")==0) {
+        op = IRInstr::mod;
+    } else if (opstring.compare("|=")==0) {
+        op = IRInstr::orb;
+    } else if (opstring.compare("&=")==0) {
+        op = IRInstr::andb;
+    } else if (opstring.compare("^=")==0) {
+        op = IRInstr::xorb;
+    }
+    current_cfg->current_bb->add_IRInstr(op,Int,{var,var,expr});
+    cout << var << endl;
+    return var;
+}
+antlrcpp::Any IRGenerator::visitIncr_decr(PLDCompParser::Incr_decrContext *ctx) {
+    string var;
+    if (ctx->ID()!=nullptr) {
+        var = ctx->ID()->getText();
+    } else {
+        //TODO: same thing for array
+    }
+    string temp1 = current_cfg->create_new_tempvar(Int);
+    vector<string> params_const1 = {temp1,to_string(1)};
+    current_cfg->current_bb->add_IRInstr(IRInstr::ldconst,Int,params_const1);
+    IRInstr::Operation op;
+    string opstring = ctx->incr_decr_op()->getText();
+    if (opstring.compare("++")==0) {
+        op = IRInstr::add;
+    } else if (opstring.compare("--")==0) {
+        op = IRInstr::sub;
+    }
+    vector<string> params_add = {var,var,temp1};
+    current_cfg->current_bb->add_IRInstr(op,Int,params_add);
+    current_cfg->move_next_temp(-4);
+    return var;
+}
 
 antlrcpp::Any IRGenerator::visitArrayExpr(PLDCompParser::ArrayExprContext *ctx) {
     try{
@@ -527,13 +588,17 @@ antlrcpp::Any IRGenerator::visitVar(PLDCompParser::VarContext *ctx) {
         if (current_cfg->find_symbol(name)) {
             return (string)name;
         } else {
-            DeclarationException declarationException;
-            declarationException.setVarName(name);
-            throw declarationException;
+            VarNotFoundException e;
+            e.setVar(name);
+            e.setFileName(filename);
+            e.setLine(ctx->getStart()->getLine());
+            e.setPositionInLine(ctx->getStart()->getCharPositionInLine());
+            throw e;
         }
         return (string)(ctx->ID()->getText());
-    } catch(DeclarationException de) {
-        cerr << "Exception caught " << de.what() << endl << "Compilation failed!" << endl << endl;
+    } catch(VarNotFoundException e) {
+        e.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     }
 }
@@ -573,6 +638,10 @@ antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOp
         IRInstr::Operation op;
         if (ctx->op->getText().compare("*") == 0) {
             op = IRInstr::mul;
+        } else if (ctx->op->getText().compare("/") == 0){
+            op = IRInstr::div;
+        } else if (ctx->op->getText().compare("%") == 0){
+            op = IRInstr::mod;
         }
         current_cfg->current_bb->add_IRInstr(op,Int,params);
         return var3;
@@ -584,7 +653,6 @@ antlrcpp::Any IRGenerator::visitMultiplicativeOp(PLDCompParser::MultiplicativeOp
 
 antlrcpp::Any IRGenerator::visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx) {
     try{
-        int address = current_cfg->get_current_address();
         string var1 = visit(ctx->expr(0));
         string var2 = visit(ctx->expr(1));
         if (var1.substr(0,4).compare("!tmp") == 0) {
@@ -611,25 +679,113 @@ antlrcpp::Any IRGenerator::visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx
     }
 }
 
+antlrcpp::Any IRGenerator::visitShiftOp(PLDCompParser::ShiftOpContext *ctx) {
+        try{
+        string var1 = visit(ctx->expr(0));
+        string var2 = visit(ctx->expr(1));
+        if (var1.substr(0,4).compare("!tmp") == 0) {
+            current_cfg->move_next_temp(-4);
+        }
+
+        if (var2.substr(0,4).compare("!tmp") == 0) {
+            current_cfg->move_next_temp(-4);
+        }
+        
+        string var3 = current_cfg->create_new_tempvar(Int);
+        vector<string> params = {var3, var1, var2};
+        IRInstr::Operation op;
+        cout << ctx->op->getText() << endl;
+        if (ctx->op->getText().compare(">>") == 0) {
+            op = IRInstr::rshift;
+        } else if (ctx->op->getText().compare("<<") == 0) {
+            op = IRInstr::lshift;
+        }
+        current_cfg->current_bb->add_IRInstr(op,Int,params);
+        return var3;
+    } catch (exception& e) {
+        cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        exit(1);
+    }
+}
+
 //TODO
 antlrcpp::Any IRGenerator::visitRel1Expr(PLDCompParser::Rel1ExprContext *ctx) {
-    return NULL;
+    string var1 = visit(ctx->expr(0));
+    string var2 = visit(ctx->expr(1));
+    string var3 = current_cfg->create_new_tempvar(Int);
+
+    string opstring = ctx->relop->getText();
+    string type_flag;
+    if (opstring.compare(">")==0) {
+        type_flag = "g";
+    } else if (opstring.compare("<")==0) {
+        type_flag = "l";
+    } else if (opstring.compare(">=")==0) {
+        type_flag = "ge";
+    } else if (opstring.compare("<=")==0) {
+        type_flag = "le";
+    }
+    current_cfg->current_bb->add_IRInstr(IRInstr::getflag,Int,{type_flag,var3,var1,var2});
+    return var3;
 }
 
 antlrcpp::Any IRGenerator::visitRel2Expr(PLDCompParser::Rel2ExprContext *ctx) {
-    return NULL;
+    string var1 = visit(ctx->expr(0));
+    string var2 = visit(ctx->expr(1));
+    string var3 = current_cfg->create_new_tempvar(Int);
+
+    string opstring = ctx->relop->getText();
+    string type_flag;
+    if (opstring.compare("==")==0) {
+        type_flag = "e";
+    } else if (opstring.compare("!=")==0) {
+        type_flag = "ne";
+    } 
+    current_cfg->current_bb->add_IRInstr(IRInstr::getflag,Int,{type_flag,var3,var1,var2});
+    return var3;
 }
 
 antlrcpp::Any IRGenerator::visitBitwiseAnd(PLDCompParser::BitwiseAndContext *ctx) {
-    return NULL;
+    string var1= visit(ctx->expr(0));
+    string var2= visit(ctx->expr(1));
+     if (var1.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+
+    if (var2.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    string var3 = current_cfg->create_new_tempvar(Int);
+    current_cfg->current_bb->add_IRInstr(IRInstr::andb,Int,{var3,var1,var2});
+    return var3;
 }
 
 antlrcpp::Any IRGenerator::visitBitwiseXor(PLDCompParser::BitwiseXorContext *ctx) {
-    return NULL;
+    string var1= visit(ctx->expr(0));
+    string var2= visit(ctx->expr(1));
+    if (var1.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    if (var2.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    string var3 = current_cfg->create_new_tempvar(Int);
+    current_cfg->current_bb->add_IRInstr(IRInstr::xorb,Int,{var3,var1,var2});
+    return var3;
 }
 
 antlrcpp::Any IRGenerator::visitBitwiseOr(PLDCompParser::BitwiseOrContext *ctx) {
-    return NULL;
+    string var1= visit(ctx->expr(0));
+    string var2= visit(ctx->expr(1));
+     if (var1.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    if (var2.substr(0,4).compare("!tmp") == 0) {
+        current_cfg->move_next_temp(-4);
+    }
+    string var3 = current_cfg->create_new_tempvar(Int);
+    current_cfg->current_bb->add_IRInstr(IRInstr::orb,Int,{var3,var1,var2});
+    return var3;
 }
 
 antlrcpp::Any IRGenerator::visitLogicalAnd(PLDCompParser::LogicalAndContext *ctx) {
@@ -642,23 +798,31 @@ antlrcpp::Any IRGenerator::visitLogicalOr(PLDCompParser::LogicalOrContext *ctx) 
 // Variable declaration
 antlrcpp::Any IRGenerator::visitDeclWithoutAssignment(PLDCompParser::DeclWithoutAssignmentContext *ctx) {
     try{
-        string name = ctx->ID()->getText();
-        string type = ctx->type()->getText();
-        Type t;
-        if (type.compare("int") == 0) {
-            t = Int;
-        } else if (type.compare("char") == 0) {
-            t = Char;
-        }
-        bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
-        if (!validDeclaration) {
-            InvalidDeclarationException invalidDeclarationException;
-            throw invalidDeclarationException;
+        int n_id = (ctx->ID()).size();
+        for (int i=0; i<n_id; i++) {
+            string name = ctx->ID(i)->getText();
+            string type = ctx->type()->getText();
+            Type t;
+            if (type.compare("int") == 0 || type.compare("int32_t") == 0 ) {
+                t = Int;
+            } else if (type.compare("char") == 0) {
+                t = Char;
+            }
+            bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
+            if (!validDeclaration) {
+                InvalidDeclarationException e;
+                e.setFileName(filename);
+                e.setLine(ctx->getStart()->getLine());
+                e.setPositionInLine(ctx->getStart()->getCharPositionInLine());
+                e.setVarName(name);
+                throw e;
+            }
         }
         current_cfg->reset_next_temp();
         return NULL;
-    } catch(InvalidDeclarationException ide) {
-        cerr << "Exception caught " << ide.what() << endl << "Compilation failed!" << endl << endl;
+    } catch(InvalidDeclarationException e) {
+        e.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     }
 }
@@ -669,15 +833,19 @@ antlrcpp::Any IRGenerator::visitDeclWithAssignment(PLDCompParser::DeclWithAssign
         string name = ctx->ID()->getText();
         string type = ctx->type()->getText();
         Type t;
-        if (type.compare("int") == 0) {
+        if (type.compare("int") == 0 || type.compare("int32_t") == 0) {
             t = Int;
         } else if (type.compare("char") == 0) {
             t = Char;
         }
         bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4);
         if (!validDeclaration) {
-            InvalidDeclarationException invalidDeclarationException;
-            throw invalidDeclarationException;
+            InvalidDeclarationException e;
+            e.setFileName(filename);
+            e.setLine(ctx->getStart()->getLine());
+            e.setPositionInLine(ctx->getStart()->getCharPositionInLine());
+            e.setVarName(name);
+            throw e;
             return NULL;
         }
         string temp = visit(ctx->expr());
@@ -685,8 +853,9 @@ antlrcpp::Any IRGenerator::visitDeclWithAssignment(PLDCompParser::DeclWithAssign
         current_cfg->current_bb->add_IRInstr(IRInstr::cpy,t,params);
         current_cfg->reset_next_temp();
         return NULL;
-    } catch(InvalidDeclarationException ide) {
-        cerr << "Exception caught " << ide.what() << endl << "Compilation failed!" << endl << endl;
+    } catch(InvalidDeclarationException e) {
+        e.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     }
 }
@@ -696,7 +865,7 @@ antlrcpp::Any IRGenerator::visitDeclArray(PLDCompParser::DeclArrayContext *ctx) 
         string name = ctx->ID()->getText();
         string type = ctx->type()->getText();
         Type t;
-        if (type.compare("int") == 0) {
+        if (type.compare("int") == 0 || type.compare("int32_t") == 0) {
             t = IntArray;
         } else if (type.compare("char") == 0) {
             t = CharArray;
@@ -704,8 +873,12 @@ antlrcpp::Any IRGenerator::visitDeclArray(PLDCompParser::DeclArrayContext *ctx) 
         int size = stoi(ctx->INT()->getText());
         bool validDeclaration = current_cfg->add_to_symbol_table(name,t,4*size);
         if (!validDeclaration) {
-            InvalidDeclarationException invalidDeclarationException;
-            throw invalidDeclarationException;
+            InvalidDeclarationException e;
+            e.setFileName(filename);
+            e.setLine(ctx->getStart()->getLine());
+            e.setPositionInLine(ctx->getStart()->getCharPositionInLine());
+            e.setVarName(name);
+            throw e;
             return NULL;
         }
         int index = current_cfg->get_var_index(name);
@@ -727,8 +900,9 @@ antlrcpp::Any IRGenerator::visitDeclArray(PLDCompParser::DeclArrayContext *ctx) 
             }
         }
         return NULL;
-    } catch(InvalidDeclarationException ide) {
-        cerr << "Exception caught " << ide.what() << endl << "Compilation failed!" << endl << endl;
+    } catch(InvalidDeclarationException e) {
+        e.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     }
 }
@@ -737,9 +911,12 @@ antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprCont
     try{
         string var = visit(ctx->lvalue());
         if (var.compare("")==0) {
-            ValueNotFoundException valueNotFoundException;
-            valueNotFoundException.setValue(ctx->lvalue()->getText());
-            throw valueNotFoundException;
+            VarNotFoundException e;
+            e.setVar(ctx->lvalue()->getText());
+            e.setFileName(filename);
+            e.setLine(ctx->getStart()->getLine());
+            e.setPositionInLine(ctx->getStart()->getCharPositionInLine());
+            throw e;
             return NULL;
         }
 
@@ -756,8 +933,9 @@ antlrcpp::Any IRGenerator::visitAssignmentExpr(PLDCompParser::AssignmentExprCont
         current_cfg->reset_next_temp();
         return NULL;
 
-    } catch(ValueNotFoundException vnfe) {
-        cerr << "Exception caught " << vnfe.what() << endl << "Compilation failed!" << endl << endl;
+    } catch(VarNotFoundException vnfe) {
+        vnfe.what();
+        cerr <<  "Compilation failed!" << endl << endl;
         exit(1);
     }
 }
@@ -766,13 +944,18 @@ antlrcpp::Any IRGenerator::visitIdL(PLDCompParser::IdLContext *ctx) {
     try{
         string name = ctx->ID()->getText();
         if (!current_cfg->find_symbol(name)){
-            DeclarationException declarationException;
-            throw declarationException;
+            VarNotFoundException e;
+            e.setVar(name);
+            e.setFileName(filename);
+            e.setLine(ctx->getStart()->getLine());
+            e.setPositionInLine(ctx->getStart()->getCharPositionInLine());
+            throw e;
             return "";
         }
         return name;
-    } catch(DeclarationException de) {
-        cerr << "Exception caught " << de.what() << endl << "Compilation failed!" << endl << endl;
+    } catch(VarNotFoundException e) {
+        e.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     }
 }
@@ -782,7 +965,8 @@ antlrcpp::Any IRGenerator::visitArrayL(PLDCompParser::ArrayLContext *ctx) {
         string var = visit(ctx->array());
         return var;
     } catch (exception& e) {
-        cerr << "Exception caught " << e.what() << endl << "Compilation failed!" << endl << endl;
+        e.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     }
 }
@@ -794,9 +978,12 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
             cout << name << endl;
             if (current_cfg->get_var_type(name)!=CharArray 
                 && current_cfg->get_var_type(name)!=IntArray){
-                ArrayException arrayException;
-                arrayException.setArrayName(name);
-                throw arrayException;
+                ArrayException e;
+                e.setArrayName(name);
+                e.setFileName(filename);
+                e.setLine(ctx->getStart()->getLine());
+                e.setPositionInLine(ctx->getStart()->getCharPositionInLine());
+                throw e;
                 return "";
             }
             int mem = current_cfg->get_var_index(name);
@@ -816,16 +1003,21 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
             current_cfg->current_bb->add_IRInstr(IRInstr::add,Int,params2);
             return var;
         } else {
-            DeclarationException declarationException;
-            declarationException.setVarName(name);
-            throw declarationException;
+            VarNotFoundException e;
+            e.setVar(name);
+            e.setFileName(filename);
+            e.setLine(ctx->getStart()->getLine());
+            e.setPositionInLine(ctx->getStart()->getCharPositionInLine());
+            throw e;
             return "";
         }
-    } catch(ArrayException ae) {
-        cerr << "Exception caught " << ae.what() << endl << "Compilation failed!" << endl << endl;
+    } catch(ArrayException e) {
+        e.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
-    } catch(DeclarationException de) {
-        cerr << "Exception caught " << de.what() << endl << "Compilation failed!" << endl << endl;
+    } catch(VarNotFoundException e) {
+        e.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     }
 }
