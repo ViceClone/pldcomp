@@ -464,7 +464,6 @@ antlrcpp::Any IRGenerator::visitCompoundassignment(PLDCompParser::Compoundassign
         op = IRInstr::xorb;
     }
     current_cfg->current_bb->add_IRInstr(op,Int,{var,var,expr});
-    cout << var << endl;
     return var;
 }
 antlrcpp::Any IRGenerator::visitIncr_decr(PLDCompParser::Incr_decrContext *ctx) {
@@ -698,7 +697,6 @@ antlrcpp::Any IRGenerator::visitShiftOp(PLDCompParser::ShiftOpContext *ctx) {
         string var3 = current_cfg->create_new_tempvar(Int);
         vector<string> params = {var3, var1, var2};
         IRInstr::Operation op;
-        cout << ctx->op->getText() << endl;
         if (ctx->op->getText().compare(">>") == 0) {
             op = IRInstr::rshift;
         } else if (ctx->op->getText().compare("<<") == 0) {
@@ -979,7 +977,6 @@ antlrcpp::Any IRGenerator::visitArray(PLDCompParser::ArrayContext *ctx) {
     try{
         string name = ctx->ID()->getText();
         if (current_cfg->find_symbol(name)) {
-            cout << name << endl;
             if (current_cfg->get_var_type(name)!=CharArray 
                 && current_cfg->get_var_type(name)!=IntArray){
                 ArrayException e;
