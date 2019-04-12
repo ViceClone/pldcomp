@@ -1,4 +1,4 @@
-************************* vendredi 12 avril 2019, 08:41:17 (UTC+0000) *************************
+************************* vendredi 12 avril 2019, 08:54:07 (UTC+0000) *************************
 
 **********************************************************************************
 FILE '../test/demo_test/doubleIf.c':
@@ -234,7 +234,48 @@ FILE '../test/demo_test/str_array_while_putchar.c':
 
 int main() {
     char str[100] = {'c','a','o',' ','x','u','a','n',' ','h','u','y','
-','
+',0};
+    int i=0;
+    while (str[i]) {
+        putchar(str[i]);
+        i = i+1;
+    }
+    return 0;
+}
+
+*--------------------->gcc Compilation Of ../test/demo_test/str_array_while_putchar.c<--------------------*
+
+../test/demo_test/str_array_while_putchar.c: In function ‘main’:
+../test/demo_test/str_array_while_putchar.c:5:9: warning: implicit declaration of function ‘putchar’ [-Wimplicit-function-declaration]
+         putchar(str[i]);
+         ^~~~~~~
+
+
+*--------------------->Compilation Of ../test/demo_test/str_array_while_putchar.c To ../test/demo_test/str_array_while_putchar.asm<--------------------*
+
+[1;96m../test/demo_test/str_array_while_putchar.c:[0m no lexical error has been found 
+[1;96m../test/demo_test/str_array_while_putchar.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/demo_test/str_array_while_putchar.s
+
+*--------------------->Compilation Of ../test/demo_test/str_array_while_putchar.asm To ../test/demo_test/str_array_while_putchar.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/demo_test/str_array_while_putchar.o To Binary Code a.out<--------------------*
+
+Compilation Successful!
+
+*--------------------->Execute a.out<--------------------*
+
+OUTPUT 
+-----
+cao xuan huy
+
+-----
+Return code of 'a.out': 0
 **********************************************************************************
 FILE '../test/backend/Back/2_putchar.c':
 

@@ -4,7 +4,7 @@ File;CompExitCode;GccExitCode
 ../test/demo_test/factorial.c;0;0
 ../test/demo_test/if_and_while.c;0;0
 ../test/demo_test/doubleWhile.c;0;0
-../test/demo_test/str_array_while_putchar.c;1;0
+../test/demo_test/str_array_while_putchar.c;0;0
 ../test/backend/Back/2_putchar.c;0;0
 ../test/backend/Back/7-testWhileAndVariables.c;0;0
 ../test/backend/Back/3_variables.c;0;0
