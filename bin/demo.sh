@@ -10,6 +10,19 @@ echo "**************************************************************************
 echo "FILE '${file}':\n" >> $tempfile
 cat $file >> $tempfile
 
+echo "\n\n*--------------------->gcc Compilation Of ${file}<--------------------*\n">> $tempfile
+gcc -c -Wall $file >> $tempfile 2>&1 
+
+# if [ $? -ne 0 ]; then
+#     echo $F Errors
+#     else
+#         if grep "warning:" <<<"${out}" >> $tempfile ; then
+#         echo $F Warnings
+#     else
+#         echo $F OK
+#     fi
+# fi
+
 echo "\n\n*--------------------->Compilation Of ${file} To ${filename}.asm<--------------------*\n">> $tempfile
 ./comp $file>> $tempfile 2>&1
 returncode=$?
@@ -53,3 +66,4 @@ returncode=$?
 echo "\n-----\nReturn code of 'a.out': $returncode">> $tempfile
 echo "$(cat $tempfile)"
 rm $tempfile
+
