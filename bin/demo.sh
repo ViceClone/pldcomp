@@ -3,6 +3,7 @@ execDir=`pwd`
 cd $execDir
 
 tempfile=tmp.txt
+csvfile=test.csv
 file=$1
 filename=${file%.*}
 fileextension=${file#*.}
@@ -12,16 +13,7 @@ cat $file >> $tempfile
 
 echo "\n\n*--------------------->gcc Compilation Of ${file}<--------------------*\n">> $tempfile
 gcc -c -Wall $file >> $tempfile 2>&1 
-
-# if [ $? -ne 0 ]; then
-#     echo $F Errors
-#     else
-#         if grep "warning:" <<<"${out}" >> $tempfile ; then
-#         echo $F Warnings
-#     else
-#         echo $F OK
-#     fi
-# fi
+returncodegcc=$?
 
 echo "\n\n*--------------------->Compilation Of ${file} To ${filename}.asm<--------------------*\n">> $tempfile
 ./comp $file>> $tempfile 2>&1
@@ -38,6 +30,8 @@ echo "Assembly code is generated to ${filename}.s\n">> $tempfile
 echo "*--------------------->Compilation Of ${filename}.asm To ${filename}.o<--------------------*\n">> $tempfile
 as -o ${filename}.o ${filename}.asm>> $tempfile 2>&1
 returncode=$?
+returncodecomp=$returncode
+echo "${file};${returncodecomp};${returncodegcc}" >> $csvfile
 if [ $returncode -ne 0 ]
 then
     echo "\nCompilation Failed!">> $tempfile
