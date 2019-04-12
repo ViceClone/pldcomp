@@ -1,4 +1,4 @@
-************************* vendredi 12 avril 2019, 07:54:59 (UTC+0000) *************************
+************************* vendredi 12 avril 2019, 08:01:03 (UTC+0000) *************************
 
 **********************************************************************************
 FILE '../test/backend/Back/1_empty.c':
@@ -134,69 +134,6 @@ OUTPUT
 
 -----
 Return code of 'a.out': 139
-**********************************************************************************
-FILE '../test/backend/Back/1_decls.c':
-
-#include<inttypes.h>
-void toto() {
-  int64_t x;
-  int64_t y;
-  int64_t z;
-}
-
-*--------------------->gcc Compilation Of ../test/backend/Back/1_decls.c<--------------------*
-
-../test/backend/Back/1_decls.c: In function ‘toto’:
-../test/backend/Back/1_decls.c:5:11: warning: unused variable ‘z’ [-Wunused-variable]
-   int64_t z;
-           ^
-../test/backend/Back/1_decls.c:4:11: warning: unused variable ‘y’ [-Wunused-variable]
-   int64_t y;
-           ^
-../test/backend/Back/1_decls.c:3:11: warning: unused variable ‘x’ [-Wunused-variable]
-   int64_t x;
-           ^
-
-
-*--------------------->Compilation Of ../test/backend/Back/1_decls.c To ../test/backend/Back/1_decls.asm<--------------------*
-
-[1;96m../test/backend/Back/1_decls.c:[0m no lexical error has been found 
-line 3:10 no viable alternative at input 'int64_tx'
-[1;31m../test/backend/Back/1_decls.c:[0m 1 syntax errors have been found
-Compilation failed!
-**********************************************************************************
-FILE '../test/backend/Back/6-While.c':
-
-#include<inttypes.h>
-void main(void){
-  int64_t i;
-  i=0;
-  
-  while(i<5)  {
-      putchar('V');
-      i=i+1;
-    } 
-  putchar('
-');
-}
-
-*--------------------->gcc Compilation Of ../test/backend/Back/6-While.c<--------------------*
-
-../test/backend/Back/6-While.c:2:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main(void){
-      ^~~~
-../test/backend/Back/6-While.c: In function ‘main’:
-../test/backend/Back/6-While.c:7:7: warning: implicit declaration of function ‘putchar’ [-Wimplicit-function-declaration]
-       putchar('V');
-       ^~~~~~~
-
-
-*--------------------->Compilation Of ../test/backend/Back/6-While.c To ../test/backend/Back/6-While.asm<--------------------*
-
-[1;96m../test/backend/Back/6-While.c:[0m no lexical error has been found 
-line 3:10 no viable alternative at input 'int64_ti'
-[1;31m../test/backend/Back/6-While.c:[0m 1 syntax errors have been found
-Compilation failed!
 **********************************************************************************
 FILE '../test/backend/Back/5-IfThenElse.c':
 
@@ -1372,9 +1309,11 @@ int main() {
     d *= 1;
     d /= 1;
     d %= 1;
+    d &= 1;
+    d |= 1;
+    d ^= 1;
     d++;
     d--;
-    printf(d);
 }
 
 *--------------------->gcc Compilation Of ../test/demo_test/complex_arithmetics.c<--------------------*
@@ -1389,18 +1328,6 @@ int main() {
 ../test/demo_test/complex_arithmetics.c:4:34: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
      int c = ((1 <= 2) == (3 > 1) != (1>=2));
                                   ^~
-../test/demo_test/complex_arithmetics.c:13:5: warning: implicit declaration of function ‘printf’ [-Wimplicit-function-declaration]
-     printf(d);
-     ^~~~~~
-../test/demo_test/complex_arithmetics.c:13:5: warning: incompatible implicit declaration of built-in function ‘printf’
-../test/demo_test/complex_arithmetics.c:13:5: note: include ‘<stdio.h>’ or provide a declaration of ‘printf’
-../test/demo_test/complex_arithmetics.c:13:12: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [-Wint-conversion]
-     printf(d);
-            ^
-../test/demo_test/complex_arithmetics.c:13:12: note: expected ‘const char *’ but argument is of type ‘int’
-../test/demo_test/complex_arithmetics.c:13:5: warning: format not a string literal and no format arguments [-Wformat-security]
-     printf(d);
-     ^~~~~~
 ../test/demo_test/complex_arithmetics.c:4:9: warning: unused variable ‘c’ [-Wunused-variable]
      int c = ((1 <= 2) == (3 > 1) != (1>=2));
          ^
@@ -1435,7 +1362,7 @@ OUTPUT
 -----
 
 -----
-Return code of 'a.out': 139
+Return code of 'a.out': 0
 **********************************************************************************
 FILE '../test/demo_test/factorial.c':
 
@@ -1473,48 +1400,6 @@ Compilation Successful!
 collect2: error: ld returned 1 exit status
 
 Compilation Failed!
-**********************************************************************************
-FILE '../test/demo_test/while_and_if.c':
-
-int main() {
-    int i = 0;
-    int j = 0;
-    while(i < 10){
-        if(j < 10){
-            j++;
-        }
-        i++;
-    }
-}
-
-*--------------------->gcc Compilation Of ../test/demo_test/while_and_if.c<--------------------*
-
-
-
-*--------------------->Compilation Of ../test/demo_test/while_and_if.c To ../test/demo_test/while_and_if.asm<--------------------*
-
-[1;96m../test/demo_test/while_and_if.c:[0m no lexical error has been found 
-[1;96m../test/demo_test/while_and_if.c:[0m no syntax error has been found 
-
-Compilation Successful!
-
-Assembly code is generated to ../test/demo_test/while_and_if.s
-
-*--------------------->Compilation Of ../test/demo_test/while_and_if.asm To ../test/demo_test/while_and_if.o<--------------------*
-
-Compilation Successful!
-
-*--------------------->Compilation Of ../test/demo_test/while_and_if.o To Binary Code a.out<--------------------*
-
-Compilation Successful!
-
-*--------------------->Execute a.out<--------------------*
-
-OUTPUT 
------
-
------
-Return code of 'a.out': 0
 **********************************************************************************
 FILE '../test/demo_test/str_array_while_putchar.c':
 
@@ -2125,32 +2010,6 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
-FILE '../test/frontend/ValidPrograms/57_VarInitialization.c':
-
-#include <stdint.h>
-
-void main() {
-   int64_t a = 5;
-}
-
-*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/57_VarInitialization.c<--------------------*
-
-../test/frontend/ValidPrograms/57_VarInitialization.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main() {
-      ^~~~
-../test/frontend/ValidPrograms/57_VarInitialization.c: In function ‘main’:
-../test/frontend/ValidPrograms/57_VarInitialization.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
-    int64_t a = 5;
-            ^
-
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/57_VarInitialization.c To ../test/frontend/ValidPrograms/57_VarInitialization.asm<--------------------*
-
-[1;96m../test/frontend/ValidPrograms/57_VarInitialization.c:[0m no lexical error has been found 
-line 4:11 no viable alternative at input 'int64_ta'
-[1;31m../test/frontend/ValidPrograms/57_VarInitialization.c:[0m 1 syntax errors have been found
-Compilation failed!
-**********************************************************************************
 FILE '../test/frontend/ValidPrograms/21_OperatorIncPost.c':
 
 #include <stdint.h>
@@ -2532,40 +2391,6 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
-FILE '../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c':
-
-#include <stdint.h>
-
-void main() {
-   int64_t a = 3, b = 2, c;
-}
-
-*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c<--------------------*
-
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main() {
-      ^~~~
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c: In function ‘main’:
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:4:26: warning: unused variable ‘c’ [-Wunused-variable]
-    int64_t a = 3, b = 2, c;
-                          ^
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:4:19: warning: unused variable ‘b’ [-Wunused-variable]
-    int64_t a = 3, b = 2, c;
-                   ^
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
-    int64_t a = 3, b = 2, c;
-            ^
-
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c To ../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.asm<--------------------*
-
-[1;96m../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:[0m no lexical error has been found 
-line 4:11 no viable alternative at input 'int64_ta'
-line 4:16 mismatched input ',' expecting ';'
-line 4:23 mismatched input ',' expecting ';'
-[1;31m../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:[0m 3 syntax errors have been found
-Compilation failed!
-**********************************************************************************
 FILE '../test/frontend/ValidPrograms/46_ArrayDec.c':
 
 #include <stdint.h>
@@ -2609,32 +2434,6 @@ OUTPUT
 
 -----
 Return code of 'a.out': 0
-**********************************************************************************
-FILE '../test/frontend/ValidPrograms/52_Int64Dec.c':
-
-#include <stdint.h>
-
-void main() {
-   int64_t a;
-}
-
-*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/52_Int64Dec.c<--------------------*
-
-../test/frontend/ValidPrograms/52_Int64Dec.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main() {
-      ^~~~
-../test/frontend/ValidPrograms/52_Int64Dec.c: In function ‘main’:
-../test/frontend/ValidPrograms/52_Int64Dec.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
-    int64_t a;
-            ^
-
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/52_Int64Dec.c To ../test/frontend/ValidPrograms/52_Int64Dec.asm<--------------------*
-
-[1;96m../test/frontend/ValidPrograms/52_Int64Dec.c:[0m no lexical error has been found 
-line 4:11 no viable alternative at input 'int64_ta'
-[1;31m../test/frontend/ValidPrograms/52_Int64Dec.c:[0m 1 syntax errors have been found
-Compilation failed!
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/34_OperatorBitOrAssign.c':
 
@@ -3173,35 +2972,6 @@ OUTPUT
 
 -----
 Return code of 'a.out': 0
-**********************************************************************************
-FILE '../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c':
-
-#include <stdint.h>
-
-void main() {
-   int64_t a, b;
-}
-
-*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c<--------------------*
-
-../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main() {
-      ^~~~
-../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c: In function ‘main’:
-../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:4:15: warning: unused variable ‘b’ [-Wunused-variable]
-    int64_t a, b;
-               ^
-../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
-    int64_t a, b;
-            ^
-
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c To ../test/frontend/ValidPrograms/58_MultipleVarDeclarations.asm<--------------------*
-
-[1;96m../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:[0m no lexical error has been found 
-line 4:11 no viable alternative at input 'int64_ta'
-[1;31m../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:[0m 1 syntax errors have been found
-Compilation failed!
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/35_OperatorBitXorAssign.c':
 
