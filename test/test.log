@@ -1,4 +1,4 @@
-************************* vendredi 12 avril 2019, 07:27:06 (UTC+0000) *************************
+************************* vendredi 12 avril 2019, 07:36:04 (UTC+0000) *************************
 
 **********************************************************************************
 FILE '../test/backend/Back/1_empty.c':
@@ -623,7 +623,7 @@ OUTPUT
 -----
 
 -----
-Return code of 'a.out': 2
+Return code of 'a.out': 1
 **********************************************************************************
 FILE '../test/custom/returnVariable.c':
 
@@ -920,7 +920,7 @@ OUTPUT
 -----
 
 -----
-Return code of 'a.out': 2
+Return code of 'a.out': 1
 **********************************************************************************
 FILE '../test/custom/negativeExpressionWithoutParentheses.c':
 
@@ -1012,8 +1012,6 @@ int main() {
 
 [1;96m../test/custom/irtest.c:[0m no lexical error has been found 
 [1;96m../test/custom/irtest.c:[0m no syntax error has been found 
-str
-str
 
 Compilation Successful!
 
@@ -1360,6 +1358,66 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
+FILE '../test/demo_test/complex_arithmetics.c':
+
+int main() {
+    int a = (1+2)*3/4;
+    int b = 1<<2>>3&0^1|0;
+    int c = ((1 <= 2) == (3 > 1) != (1>=2));
+    int d = -1;
+}
+
+*--------------------->gcc Compilation Of ../test/demo_test/complex_arithmetics.c<--------------------*
+
+../test/demo_test/complex_arithmetics.c: In function ‘main’:
+../test/demo_test/complex_arithmetics.c:3:22: warning: suggest parentheses around arithmetic in operand of ‘^’ [-Wparentheses]
+     int b = 1<<2>>3&0^1|0;
+                      ^
+../test/demo_test/complex_arithmetics.c:3:24: warning: suggest parentheses around arithmetic in operand of ‘|’ [-Wparentheses]
+     int b = 1<<2>>3&0^1|0;
+                        ^
+../test/demo_test/complex_arithmetics.c:4:34: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
+     int c = ((1 <= 2) == (3 > 1) != (1>=2));
+                                  ^~
+../test/demo_test/complex_arithmetics.c:5:9: warning: unused variable ‘d’ [-Wunused-variable]
+     int d = -1;
+         ^
+../test/demo_test/complex_arithmetics.c:4:9: warning: unused variable ‘c’ [-Wunused-variable]
+     int c = ((1 <= 2) == (3 > 1) != (1>=2));
+         ^
+../test/demo_test/complex_arithmetics.c:3:9: warning: unused variable ‘b’ [-Wunused-variable]
+     int b = 1<<2>>3&0^1|0;
+         ^
+../test/demo_test/complex_arithmetics.c:2:9: warning: unused variable ‘a’ [-Wunused-variable]
+     int a = (1+2)*3/4;
+         ^
+
+
+*--------------------->Compilation Of ../test/demo_test/complex_arithmetics.c To ../test/demo_test/complex_arithmetics.asm<--------------------*
+
+[1;96m../test/demo_test/complex_arithmetics.c:[0m no lexical error has been found 
+[1;96m../test/demo_test/complex_arithmetics.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/demo_test/complex_arithmetics.s
+
+*--------------------->Compilation Of ../test/demo_test/complex_arithmetics.asm To ../test/demo_test/complex_arithmetics.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/demo_test/complex_arithmetics.o To Binary Code a.out<--------------------*
+
+Compilation Successful!
+
+*--------------------->Execute a.out<--------------------*
+
+OUTPUT 
+-----
+
+-----
+Return code of 'a.out': 0
+**********************************************************************************
 FILE '../test/demo_test/factorial.c':
 
 int factorial(int n)
@@ -1582,7 +1640,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/28_OperatorPlusAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/28_OperatorPlusAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -1893,7 +1950,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/32_OperatorModAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/32_OperatorModAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -1981,7 +2037,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/30_OperatorMultAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/30_OperatorMultAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -2181,7 +2236,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/20_OperatorRightShift.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/20_OperatorRightShift.c:[0m no syntax error has been found 
->>
 
 Compilation Successful!
 
@@ -2345,8 +2399,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/47_ArrayUse.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/47_ArrayUse.c:[0m no syntax error has been found 
-a
-a
 
 Compilation Successful!
 
@@ -2538,7 +2590,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/34_OperatorBitOrAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/34_OperatorBitOrAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -2584,7 +2635,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/19_OperatorLeftShift.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/19_OperatorLeftShift.c:[0m no syntax error has been found 
-<<
 
 Compilation Successful!
 
@@ -2627,7 +2677,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/29_OperatorMinusAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/29_OperatorMinusAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -3108,7 +3157,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/35_OperatorBitXorAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/35_OperatorBitXorAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -3151,7 +3199,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/31_OperatorDivAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/31_OperatorDivAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -3419,7 +3466,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/33_OperatorBitAndAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/33_OperatorBitAndAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
