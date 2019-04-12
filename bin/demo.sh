@@ -3,7 +3,7 @@ execDir=`pwd`
 cd $execDir
 
 tempfile=tmp.txt
-csvfile=test.csv
+csvfile=../test/test.csv
 file=$1
 filename=${file%.*}
 fileextension=${file#*.}
@@ -14,13 +14,15 @@ cat $file >> $tempfile
 echo "\n\n*--------------------->gcc Compilation Of ${file}<--------------------*\n">> $tempfile
 gcc -c -Wall $file >> $tempfile 2>&1 
 returncodegcc=$?
-
 echo "\n\n*--------------------->Compilation Of ${file} To ${filename}.asm<--------------------*\n">> $tempfile
 ./comp $file>> $tempfile 2>&1
 returncode=$?
+returncodecomp=$returncode
 if [ $returncode -ne 0 ]
 then
     echo "$(cat $tempfile)"
+    $returncodecomp
+    echo "${file};${returncodecomp};${returncodegcc}" >> $csvfile
     rm $tempfile
     exit 1
 fi
@@ -30,16 +32,16 @@ echo "Assembly code is generated to ${filename}.s\n">> $tempfile
 echo "*--------------------->Compilation Of ${filename}.asm To ${filename}.o<--------------------*\n">> $tempfile
 as -o ${filename}.o ${filename}.asm>> $tempfile 2>&1
 returncode=$?
-returncodecomp=$returncode
-echo "${file};${returncodecomp};${returncodegcc}" >> $csvfile
 if [ $returncode -ne 0 ]
 then
     echo "\nCompilation Failed!">> $tempfile
     echo "$(cat $tempfile)"
+    $returncodecomp=1
+    echo "${file};${returncodecomp};${returncodegcc}" >> $csvfile
     rm $tempfile
     exit 1
 fi
-
+echo "${file};${returncodecomp};${returncodegcc}" >> $csvfile
 echo "Compilation Successful!\n">> $tempfile
 echo "*--------------------->Compilation Of ${filename}.o To Binary Code a.out<--------------------*\n">> $tempfile
 gcc ${filename}.o>> $tempfile 2>&1

@@ -10,6 +10,9 @@ else
     logfile=../test/test.log
 fi
 
+csvfile=../test/test.csv
+echo "File;CompExitCode;GccExitCode" > $csvfile
+
 echo "*************************" $(date -u) "*************************\n" > $logfile
 list=`find ../test -name "*.c"`
 for i in $list
