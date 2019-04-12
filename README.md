@@ -54,9 +54,15 @@ By contrast, we do not care about the value return by a statement. Instead, how 
 ### Memory management
 In the effort of optimizing memory management, after every single statement, we reset the temporary memory address, that means we pull it back to the first memory address which has not been used by permanent variables. Even though, due to the lack of time, we are not use if some parts of memory management will be working as intended.
 
-### A list non-exhaustive of what we have done
+### Error handling
+Considering lexical errors, as they are not handled automatically by antlr4, we create a lex rule `ERROR: .;` at the least prioritized token of the lexer. If a token reach this level, it will produce a lexer exception.
+
+Syntax errors are handled directly by antlr4.
+
+Code generating errors produce an exception to the main compiler program. Once an exception is spotted, the compiler will stop its work.
+### A list non-exhaustive of what we have done so far
 #### Type
-`char`, `char[]`, `int`, `int[]` are implemented, even though `char` is basically an `int` as they all use 4 bytes of memory.
+`char`, `char[]`, `int`, `int[]`, `int32_t` are implemented, even though `char` is basically an `int` as they all use 4 bytes of memory.
 #### Statements
 * Variable Declaration: A variable cannot be declared more than one time and multiple declarations with assignment are not possible
 ```c
@@ -66,3 +72,53 @@ char e = 'a';
 char f = 97;
 char str[100] = {'c','a','o',' ','x','u','a','n',' ','h','u','y','\n',0};
 ```
+* Assignment Statement: LHS can be a variable or an array occurence, RHS is an expression
+```c
+a = 32;
+a = a>>3;
+b = a++;
+```
+* If-Else statement: The compiler can understand an if-else complete structure or an if-without-else structure. Multiple condition structure 'else if' has not been implemented yet. Logical operations (and, or) have not been implemented either. The compiler will make some **warning** if some line of code cannot be reached.
+```c
+if (a==1) {
+    if (func(a,b)) {
+        evaluateThisTeam(20);
+    } else {
+        evaluateThisTeam(19);
+    }
+}
+```
+* While Loop: Same problem with If-Else Statement, we have not done logical operations yet. During this project, we spotted some critical erros in the lecture notes which caused If-Else Statement and While-Loop not being able to be put inside another. We found the solution that all the basic blocks must be linked before building the statement's body.
+```c
+// this is an infinite loop btw
+while (1) {
+    putchar('a');
+}
+```
+* Function Call: Only function with less than 6 parameters can be called, otherwise, the compiler does not understand what you say.
+```c
+evaluateThisTeam(20,a,b,c,d[1],x+10*5>>3);
+```
+* Compound Assignment: Single assigment such as `a+=b+10*5-1<3` is possible, but `a+=a+=a` is not.
+```
+a+=1;
+b+=a+10;
+```
+* Suffix/Postfix increment/decrement: LHS can only be a variable name
+```c
+a++;
+```
+
+#### Expressions
+* Constant and variable: `int`, `int32_t`, `char`.
+* Array Occurence:
+```
+int x = a[12>>1];
+```
+* Arithmetic expression: addition, multiplication, division, modulo, relation operations (<,>,<=,>=,==,!=), shift, bitwise operations,... Hmm except logical operations have not been implemented as we need to seperate their role in If-Else, While-Loop vs. a returning-value expression.
+* Function Call: return value cannot be an array yet.
+```c
+int32_t blackhole = getphoto('f');
+```
+* Suffix/Postfix increment/decrement: Mentionned above.
+* Compound Assignment: Mentionned above.
