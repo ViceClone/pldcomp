@@ -1,5 +1,8 @@
 int main() {
-    int a =32;
-    a%=3;
-    return a;
+    while(1) {
+        while (1) {
+            return 10;
+            int a = 11;
+        }
+    }
 }

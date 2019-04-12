@@ -395,6 +395,7 @@ antlrcpp::Any IRGenerator::visitReturnstatement(PLDCompParser::ReturnstatementCo
             vector<string> ret_params = {"!returnval"};
             current_cfg->current_bb->add_IRInstr(IRInstr::cpy,Int,params);
             current_cfg->current_bb->add_IRInstr(IRInstr::ret,Int,params);
+            current_cfg->current_bb->exit_true = current_cfg->lastBlock;
             current_cfg->reset_next_temp();
             return var;
         }
