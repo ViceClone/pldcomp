@@ -1,10 +1,17 @@
-************************* vendredi 12 avril 2019, 06:41:26 (UTC+0000) *************************
+************************* vendredi 12 avril 2019, 07:27:06 (UTC+0000) *************************
 
 **********************************************************************************
 FILE '../test/backend/Back/1_empty.c':
 
 void main() {
 }
+
+*--------------------->gcc Compilation Of ../test/backend/Back/1_empty.c<--------------------*
+
+../test/backend/Back/1_empty.c:1:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
 
 *--------------------->Compilation Of ../test/backend/Back/1_empty.c To ../test/backend/Back/1_empty.asm<--------------------*
 
@@ -39,6 +46,17 @@ void main() {
   putchar('K');
   putchar(' ');
 }
+
+*--------------------->gcc Compilation Of ../test/backend/Back/2_putchar.c<--------------------*
+
+../test/backend/Back/2_putchar.c:2:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/backend/Back/2_putchar.c: In function ‘main’:
+../test/backend/Back/2_putchar.c:3:3: warning: implicit declaration of function ‘putchar’ [-Wimplicit-function-declaration]
+   putchar('O');
+   ^~~~~~~
+
 
 *--------------------->Compilation Of ../test/backend/Back/2_putchar.c To ../test/backend/Back/2_putchar.asm<--------------------*
 
@@ -81,6 +99,17 @@ void main(void){
 ');
 }
 
+*--------------------->gcc Compilation Of ../test/backend/Back/4-VarConstAddCall.c<--------------------*
+
+../test/backend/Back/4-VarConstAddCall.c:2:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main(void){
+      ^~~~
+../test/backend/Back/4-VarConstAddCall.c: In function ‘main’:
+../test/backend/Back/4-VarConstAddCall.c:9:3: warning: implicit declaration of function ‘putchar’ [-Wimplicit-function-declaration]
+   putchar(b);
+   ^~~~~~~
+
+
 *--------------------->Compilation Of ../test/backend/Back/4-VarConstAddCall.c To ../test/backend/Back/4-VarConstAddCall.asm<--------------------*
 
 [1;96m../test/backend/Back/4-VarConstAddCall.c:[0m no lexical error has been found 
@@ -115,6 +144,20 @@ void toto() {
   int64_t z;
 }
 
+*--------------------->gcc Compilation Of ../test/backend/Back/1_decls.c<--------------------*
+
+../test/backend/Back/1_decls.c: In function ‘toto’:
+../test/backend/Back/1_decls.c:5:11: warning: unused variable ‘z’ [-Wunused-variable]
+   int64_t z;
+           ^
+../test/backend/Back/1_decls.c:4:11: warning: unused variable ‘y’ [-Wunused-variable]
+   int64_t y;
+           ^
+../test/backend/Back/1_decls.c:3:11: warning: unused variable ‘x’ [-Wunused-variable]
+   int64_t x;
+           ^
+
+
 *--------------------->Compilation Of ../test/backend/Back/1_decls.c To ../test/backend/Back/1_decls.asm<--------------------*
 
 [1;96m../test/backend/Back/1_decls.c:[0m no lexical error has been found 
@@ -137,6 +180,17 @@ void main(void){
 ');
 }
 
+*--------------------->gcc Compilation Of ../test/backend/Back/6-While.c<--------------------*
+
+../test/backend/Back/6-While.c:2:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main(void){
+      ^~~~
+../test/backend/Back/6-While.c: In function ‘main’:
+../test/backend/Back/6-While.c:7:7: warning: implicit declaration of function ‘putchar’ [-Wimplicit-function-declaration]
+       putchar('V');
+       ^~~~~~~
+
+
 *--------------------->Compilation Of ../test/backend/Back/6-While.c To ../test/backend/Back/6-While.asm<--------------------*
 
 [1;96m../test/backend/Back/6-While.c:[0m no lexical error has been found 
@@ -157,6 +211,17 @@ void main(void){
   putchar('
 ');
 }
+
+*--------------------->gcc Compilation Of ../test/backend/Back/5-IfThenElse.c<--------------------*
+
+../test/backend/Back/5-IfThenElse.c:2:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main(void){
+      ^~~~
+../test/backend/Back/5-IfThenElse.c: In function ‘main’:
+../test/backend/Back/5-IfThenElse.c:4:7: warning: implicit declaration of function ‘putchar’ [-Wimplicit-function-declaration]
+       putchar('V');
+       ^~~~~~~
+
 
 *--------------------->Compilation Of ../test/backend/Back/5-IfThenElse.c To ../test/backend/Back/5-IfThenElse.asm<--------------------*
 
@@ -196,6 +261,17 @@ void main(void) {
   putchar(c);
   putchar(a);
 }
+
+*--------------------->gcc Compilation Of ../test/backend/Back/3_variables.c<--------------------*
+
+../test/backend/Back/3_variables.c:1:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main(void) {
+      ^~~~
+../test/backend/Back/3_variables.c: In function ‘main’:
+../test/backend/Back/3_variables.c:7:3: warning: implicit declaration of function ‘putchar’ [-Wimplicit-function-declaration]
+   putchar(b);
+   ^~~~~~~
+
 
 *--------------------->Compilation Of ../test/backend/Back/3_variables.c To ../test/backend/Back/3_variables.asm<--------------------*
 
@@ -237,6 +313,17 @@ void main(void){
 ');
 }
 
+*--------------------->gcc Compilation Of ../test/backend/Back/7-testWhileAndVariables.c<--------------------*
+
+../test/backend/Back/7-testWhileAndVariables.c:2:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main(void){
+      ^~~~
+../test/backend/Back/7-testWhileAndVariables.c: In function ‘main’:
+../test/backend/Back/7-testWhileAndVariables.c:7:4: warning: implicit declaration of function ‘putchar’ [-Wimplicit-function-declaration]
+    putchar(i);
+    ^~~~~~~
+
+
 *--------------------->Compilation Of ../test/backend/Back/7-testWhileAndVariables.c To ../test/backend/Back/7-testWhileAndVariables.asm<--------------------*
 
 [1;96m../test/backend/Back/7-testWhileAndVariables.c:[0m no lexical error has been found 
@@ -267,6 +354,20 @@ FILE '../test/custom/multipleAssignmentLine.c':
 int main() {
     int a,b,c;
 }
+
+*--------------------->gcc Compilation Of ../test/custom/multipleAssignmentLine.c<--------------------*
+
+../test/custom/multipleAssignmentLine.c: In function ‘main’:
+../test/custom/multipleAssignmentLine.c:2:13: warning: unused variable ‘c’ [-Wunused-variable]
+     int a,b,c;
+             ^
+../test/custom/multipleAssignmentLine.c:2:11: warning: unused variable ‘b’ [-Wunused-variable]
+     int a,b,c;
+           ^
+../test/custom/multipleAssignmentLine.c:2:9: warning: unused variable ‘a’ [-Wunused-variable]
+     int a,b,c;
+         ^
+
 
 *--------------------->Compilation Of ../test/custom/multipleAssignmentLine.c To ../test/custom/multipleAssignmentLine.asm<--------------------*
 
@@ -305,6 +406,10 @@ int main () {
     return c;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/multipleOperationsLine.c<--------------------*
+
+
+
 *--------------------->Compilation Of ../test/custom/multipleOperationsLine.c To ../test/custom/multipleOperationsLine.asm<--------------------*
 
 [1;96m../test/custom/multipleOperationsLine.c:[0m no lexical error has been found 
@@ -339,6 +444,10 @@ int main() {
         }
     }
 }
+
+*--------------------->gcc Compilation Of ../test/custom/doubleIf.c<--------------------*
+
+
 
 *--------------------->Compilation Of ../test/custom/doubleIf.c To ../test/custom/doubleIf.asm<--------------------*
 
@@ -378,6 +487,10 @@ int main() {
     }
 }
 
+*--------------------->gcc Compilation Of ../test/custom/doubleWhile.c<--------------------*
+
+
+
 *--------------------->Compilation Of ../test/custom/doubleWhile.c To ../test/custom/doubleWhile.asm<--------------------*
 
 [1;96m../test/custom/doubleWhile.c:[0m no lexical error has been found 
@@ -409,6 +522,10 @@ int main() {
     int a = 2 - 1;
     return a;
 }
+
+*--------------------->gcc Compilation Of ../test/custom/substractionOperation.c<--------------------*
+
+
 
 *--------------------->Compilation Of ../test/custom/substractionOperation.c To ../test/custom/substractionOperation.asm<--------------------*
 
@@ -443,6 +560,10 @@ int main() {
     return b;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/customTest.c<--------------------*
+
+
+
 *--------------------->Compilation Of ../test/custom/customTest.c To ../test/custom/customTest.asm<--------------------*
 
 [1;96m../test/custom/customTest.c:[0m no lexical error has been found 
@@ -474,6 +595,10 @@ int main() {
     int a = 2 / 1;
     return a;
 }
+
+*--------------------->gcc Compilation Of ../test/custom/divisiveOperation.c<--------------------*
+
+
 
 *--------------------->Compilation Of ../test/custom/divisiveOperation.c To ../test/custom/divisiveOperation.asm<--------------------*
 
@@ -507,6 +632,10 @@ int main() {
     return a;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/returnVariable.c<--------------------*
+
+
+
 *--------------------->Compilation Of ../test/custom/returnVariable.c To ../test/custom/returnVariable.asm<--------------------*
 
 [1;96m../test/custom/returnVariable.c:[0m no lexical error has been found 
@@ -539,6 +668,20 @@ int main() {
     int a = 3;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/doubleDeclarationWithAssignement.c<--------------------*
+
+../test/custom/doubleDeclarationWithAssignement.c: In function ‘main’:
+../test/custom/doubleDeclarationWithAssignement.c:3:9: error: redeclaration of ‘a’ with no linkage
+     int a = 3;
+         ^
+../test/custom/doubleDeclarationWithAssignement.c:2:9: note: previous declaration of ‘a’ was here
+     int a;
+         ^
+../test/custom/doubleDeclarationWithAssignement.c:3:9: warning: unused variable ‘a’ [-Wunused-variable]
+     int a = 3;
+         ^
+
+
 *--------------------->Compilation Of ../test/custom/doubleDeclarationWithAssignement.c To ../test/custom/doubleDeclarationWithAssignement.asm<--------------------*
 
 [1;96m../test/custom/doubleDeclarationWithAssignement.c:[0m no lexical error has been found 
@@ -552,6 +695,10 @@ int main() {
     int a = 2 + 1;
     return a;
 }
+
+*--------------------->gcc Compilation Of ../test/custom/additionOperation.c<--------------------*
+
+
 
 *--------------------->Compilation Of ../test/custom/additionOperation.c To ../test/custom/additionOperation.asm<--------------------*
 
@@ -582,21 +729,38 @@ FILE '../test/custom/factorial.c':
 
 int factorial(int n)
 {
-    if (n >= 1)
+    if (n >= 1) {
         return n*factorial(n-1);
-    else
+    }
+    else {
         return 1;
+    }
 }
+
+*--------------------->gcc Compilation Of ../test/custom/factorial.c<--------------------*
+
+
 
 *--------------------->Compilation Of ../test/custom/factorial.c To ../test/custom/factorial.asm<--------------------*
 
 [1;96m../test/custom/factorial.c:[0m no lexical error has been found 
-line 4:8 missing '{' at 'return'
-line 5:4 missing '}' at 'else'
-line 6:8 missing '{' at 'return'
-line 7:1 missing '}' at '<EOF>'
-[1;31m../test/custom/factorial.c:[0m 4 syntax errors have been found
-Compilation failed!
+[1;96m../test/custom/factorial.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/custom/factorial.s
+
+*--------------------->Compilation Of ../test/custom/factorial.asm To ../test/custom/factorial.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/custom/factorial.o To Binary Code a.out<--------------------*
+
+/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o: In function `_start':
+(.text+0x20): undefined reference to `main'
+collect2: error: ld returned 1 exit status
+
+Compilation Failed!
 **********************************************************************************
 FILE '../test/custom/doubleDeclaration.c':
 
@@ -604,6 +768,20 @@ int main() {
     int a;
     int a;
 }
+
+*--------------------->gcc Compilation Of ../test/custom/doubleDeclaration.c<--------------------*
+
+../test/custom/doubleDeclaration.c: In function ‘main’:
+../test/custom/doubleDeclaration.c:3:9: error: redeclaration of ‘a’ with no linkage
+     int a;
+         ^
+../test/custom/doubleDeclaration.c:2:9: note: previous declaration of ‘a’ was here
+     int a;
+         ^
+../test/custom/doubleDeclaration.c:3:9: warning: unused variable ‘a’ [-Wunused-variable]
+     int a;
+         ^
+
 
 *--------------------->Compilation Of ../test/custom/doubleDeclaration.c To ../test/custom/doubleDeclaration.asm<--------------------*
 
@@ -618,6 +796,17 @@ int main() {
     int a =;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/declarationAssignmentEmptyRight.c<--------------------*
+
+../test/custom/declarationAssignmentEmptyRight.c: In function ‘main’:
+../test/custom/declarationAssignmentEmptyRight.c:2:12: error: expected expression before ‘;’ token
+     int a =;
+            ^
+../test/custom/declarationAssignmentEmptyRight.c:2:9: warning: unused variable ‘a’ [-Wunused-variable]
+     int a =;
+         ^
+
+
 *--------------------->Compilation Of ../test/custom/declarationAssignmentEmptyRight.c To ../test/custom/declarationAssignmentEmptyRight.asm<--------------------*
 
 [1;96m../test/custom/declarationAssignmentEmptyRight.c:[0m no lexical error has been found 
@@ -631,6 +820,10 @@ int main() {
     int a = 2;
     return - (a);
 }
+
+*--------------------->gcc Compilation Of ../test/custom/negativeExpressionWithParentheses.c<--------------------*
+
+
 
 *--------------------->Compilation Of ../test/custom/negativeExpressionWithParentheses.c To ../test/custom/negativeExpressionWithParentheses.asm<--------------------*
 
@@ -664,6 +857,10 @@ int main() {
     return a;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/moduloOperation.c<--------------------*
+
+
+
 *--------------------->Compilation Of ../test/custom/moduloOperation.c To ../test/custom/moduloOperation.asm<--------------------*
 
 [1;96m../test/custom/moduloOperation.c:[0m no lexical error has been found 
@@ -695,6 +892,10 @@ int main() {
     int a = 2 * 1;
     return a;
 }
+
+*--------------------->gcc Compilation Of ../test/custom/multiplicativeOperation.c<--------------------*
+
+
 
 *--------------------->Compilation Of ../test/custom/multiplicativeOperation.c To ../test/custom/multiplicativeOperation.asm<--------------------*
 
@@ -728,6 +929,10 @@ int main() {
     return - a;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/negativeExpressionWithoutParentheses.c<--------------------*
+
+
+
 *--------------------->Compilation Of ../test/custom/negativeExpressionWithoutParentheses.c To ../test/custom/negativeExpressionWithoutParentheses.asm<--------------------*
 
 [1;96m../test/custom/negativeExpressionWithoutParentheses.c:[0m no lexical error has been found 
@@ -754,6 +959,10 @@ OUTPUT
 Return code of 'a.out': 254
 **********************************************************************************
 FILE '../test/custom/emptyFile.c':
+
+
+
+*--------------------->gcc Compilation Of ../test/custom/emptyFile.c<--------------------*
 
 
 
@@ -791,6 +1000,14 @@ int main() {
     return 0;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/irtest.c<--------------------*
+
+../test/custom/irtest.c: In function ‘main’:
+../test/custom/irtest.c:5:9: warning: implicit declaration of function ‘putchar’ [-Wimplicit-function-declaration]
+         putchar(str[i]);
+         ^~~~~~~
+
+
 *--------------------->Compilation Of ../test/custom/irtest.c To ../test/custom/irtest.asm<--------------------*
 
 [1;96m../test/custom/irtest.c:[0m no lexical error has been found 
@@ -824,6 +1041,14 @@ int main() {
     int a = 42;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/declarationWithAssignment.c<--------------------*
+
+../test/custom/declarationWithAssignment.c: In function ‘main’:
+../test/custom/declarationWithAssignment.c:2:9: warning: unused variable ‘a’ [-Wunused-variable]
+     int a = 42;
+         ^
+
+
 *--------------------->Compilation Of ../test/custom/declarationWithAssignment.c To ../test/custom/declarationWithAssignment.asm<--------------------*
 
 [1;96m../test/custom/declarationWithAssignment.c:[0m no lexical error has been found 
@@ -855,6 +1080,15 @@ int main () {
     a = 42;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/assignementWithoutDeclaration.c<--------------------*
+
+../test/custom/assignementWithoutDeclaration.c: In function ‘main’:
+../test/custom/assignementWithoutDeclaration.c:2:5: error: ‘a’ undeclared (first use in this function)
+     a = 42;
+     ^
+../test/custom/assignementWithoutDeclaration.c:2:5: note: each undeclared identifier is reported only once for each function it appears in
+
+
 *--------------------->Compilation Of ../test/custom/assignementWithoutDeclaration.c To ../test/custom/assignementWithoutDeclaration.asm<--------------------*
 
 [1;96m../test/custom/assignementWithoutDeclaration.c:[0m no lexical error has been found 
@@ -865,6 +1099,10 @@ Compilation failed!
 FILE '../test/custom/emptyMainFunction.c':
 
 int main() {}
+
+*--------------------->gcc Compilation Of ../test/custom/emptyMainFunction.c<--------------------*
+
+
 
 *--------------------->Compilation Of ../test/custom/emptyMainFunction.c To ../test/custom/emptyMainFunction.asm<--------------------*
 
@@ -897,6 +1135,14 @@ int main() {
     int a;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/declarationWithoutAssignment.c<--------------------*
+
+../test/custom/declarationWithoutAssignment.c: In function ‘main’:
+../test/custom/declarationWithoutAssignment.c:2:9: warning: unused variable ‘a’ [-Wunused-variable]
+     int a;
+         ^
+
+
 *--------------------->Compilation Of ../test/custom/declarationWithoutAssignment.c To ../test/custom/declarationWithoutAssignment.asm<--------------------*
 
 [1;96m../test/custom/declarationWithoutAssignment.c:[0m no lexical error has been found 
@@ -927,6 +1173,10 @@ FILE '../test/custom/returnValue.c':
 int main() {
     return 42;
 }
+
+*--------------------->gcc Compilation Of ../test/custom/returnValue.c<--------------------*
+
+
 
 *--------------------->Compilation Of ../test/custom/returnValue.c To ../test/custom/returnValue.asm<--------------------*
 
@@ -964,6 +1214,10 @@ int main ()
     return c;
 }
 
+*--------------------->gcc Compilation Of ../test/custom/miParcoursTest.c<--------------------*
+
+
+
 *--------------------->Compilation Of ../test/custom/miParcoursTest.c To ../test/custom/miParcoursTest.asm<--------------------*
 
 [1;96m../test/custom/miParcoursTest.c:[0m no lexical error has been found 
@@ -996,6 +1250,10 @@ int main() {
     return (a);
 }
 
+*--------------------->gcc Compilation Of ../test/custom/expressionWithParentheses.c<--------------------*
+
+
+
 *--------------------->Compilation Of ../test/custom/expressionWithParentheses.c To ../test/custom/expressionWithParentheses.asm<--------------------*
 
 [1;96m../test/custom/expressionWithParentheses.c:[0m no lexical error has been found 
@@ -1021,6 +1279,124 @@ OUTPUT
 -----
 Return code of 'a.out': 42
 **********************************************************************************
+FILE '../test/demo_test/doubleIf.c':
+
+int main() {
+    if(1){
+        if(1){
+            return 42;
+        }
+    }
+}
+
+*--------------------->gcc Compilation Of ../test/demo_test/doubleIf.c<--------------------*
+
+
+
+*--------------------->Compilation Of ../test/demo_test/doubleIf.c To ../test/demo_test/doubleIf.asm<--------------------*
+
+[1;96m../test/demo_test/doubleIf.c:[0m no lexical error has been found 
+[1;96m../test/demo_test/doubleIf.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/demo_test/doubleIf.s
+
+*--------------------->Compilation Of ../test/demo_test/doubleIf.asm To ../test/demo_test/doubleIf.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/demo_test/doubleIf.o To Binary Code a.out<--------------------*
+
+Compilation Successful!
+
+*--------------------->Execute a.out<--------------------*
+
+OUTPUT 
+-----
+
+-----
+Return code of 'a.out': 42
+**********************************************************************************
+FILE '../test/demo_test/doubleWhile.c':
+
+int main() {
+    int i = 0;
+    int j = 0;
+    while(i < 10){
+        while(j < 10){
+            j++;
+        }
+        i++;
+    }
+}
+
+*--------------------->gcc Compilation Of ../test/demo_test/doubleWhile.c<--------------------*
+
+
+
+*--------------------->Compilation Of ../test/demo_test/doubleWhile.c To ../test/demo_test/doubleWhile.asm<--------------------*
+
+[1;96m../test/demo_test/doubleWhile.c:[0m no lexical error has been found 
+[1;96m../test/demo_test/doubleWhile.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/demo_test/doubleWhile.s
+
+*--------------------->Compilation Of ../test/demo_test/doubleWhile.asm To ../test/demo_test/doubleWhile.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/demo_test/doubleWhile.o To Binary Code a.out<--------------------*
+
+Compilation Successful!
+
+*--------------------->Execute a.out<--------------------*
+
+OUTPUT 
+-----
+
+-----
+Return code of 'a.out': 0
+**********************************************************************************
+FILE '../test/demo_test/factorial.c':
+
+int factorial(int n)
+{
+    if (n >= 1) {
+        return n*factorial(n-1);
+    }
+    else {
+        return 1;
+    }
+}
+
+*--------------------->gcc Compilation Of ../test/demo_test/factorial.c<--------------------*
+
+
+
+*--------------------->Compilation Of ../test/demo_test/factorial.c To ../test/demo_test/factorial.asm<--------------------*
+
+[1;96m../test/demo_test/factorial.c:[0m no lexical error has been found 
+[1;96m../test/demo_test/factorial.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/demo_test/factorial.s
+
+*--------------------->Compilation Of ../test/demo_test/factorial.asm To ../test/demo_test/factorial.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/demo_test/factorial.o To Binary Code a.out<--------------------*
+
+/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o: In function `_start':
+(.text+0x20): undefined reference to `main'
+collect2: error: ld returned 1 exit status
+
+Compilation Failed!
+**********************************************************************************
 FILE '../test/frontend/ValidPrograms/27_OperatorComp.c':
 
 #include <stdint.h>
@@ -1029,6 +1405,17 @@ void main() {
    int32_t a;
    a = ~1;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/27_OperatorComp.c<--------------------*
+
+../test/frontend/ValidPrograms/27_OperatorComp.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/27_OperatorComp.c: In function ‘main’:
+../test/frontend/ValidPrograms/27_OperatorComp.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/27_OperatorComp.c To ../test/frontend/ValidPrograms/27_OperatorComp.asm<--------------------*
 
@@ -1045,6 +1432,17 @@ void main() {
    int32_t a;
    a = (1 + 2) * 3;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/37_Par.c<--------------------*
+
+../test/frontend/ValidPrograms/37_Par.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/37_Par.c: In function ‘main’:
+../test/frontend/ValidPrograms/37_Par.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/37_Par.c To ../test/frontend/ValidPrograms/37_Par.asm<--------------------*
 
@@ -1086,6 +1484,13 @@ void main() {
    }
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/41_IfElse.c<--------------------*
+
+../test/frontend/ValidPrograms/41_IfElse.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/41_IfElse.c To ../test/frontend/ValidPrograms/41_IfElse.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/41_IfElse.c:[0m no lexical error has been found 
@@ -1119,6 +1524,17 @@ void main() {
    int32_t a;
    a = 1 > 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/08_OperatorSup.c<--------------------*
+
+../test/frontend/ValidPrograms/08_OperatorSup.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/08_OperatorSup.c: In function ‘main’:
+../test/frontend/ValidPrograms/08_OperatorSup.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/08_OperatorSup.c To ../test/frontend/ValidPrograms/08_OperatorSup.asm<--------------------*
 
@@ -1155,6 +1571,13 @@ void main() {
    a += 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/28_OperatorPlusAssign.c<--------------------*
+
+../test/frontend/ValidPrograms/28_OperatorPlusAssign.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/28_OperatorPlusAssign.c To ../test/frontend/ValidPrograms/28_OperatorPlusAssign.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/28_OperatorPlusAssign.c:[0m no lexical error has been found 
@@ -1190,6 +1613,13 @@ void main() {
    a = 1;
    a = -a;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/18_OperatorNeg.c<--------------------*
+
+../test/frontend/ValidPrograms/18_OperatorNeg.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/18_OperatorNeg.c To ../test/frontend/ValidPrograms/18_OperatorNeg.asm<--------------------*
 
@@ -1233,6 +1663,13 @@ void main() {
    }
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/44_IfElseIf.c<--------------------*
+
+../test/frontend/ValidPrograms/44_IfElseIf.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/44_IfElseIf.c To ../test/frontend/ValidPrograms/44_IfElseIf.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/44_IfElseIf.c:[0m no lexical error has been found 
@@ -1265,6 +1702,17 @@ FILE '../test/frontend/ValidPrograms/02_IncludeStdint.c':
 void main() {
    int32_t a;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/02_IncludeStdint.c<--------------------*
+
+../test/frontend/ValidPrograms/02_IncludeStdint.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/02_IncludeStdint.c: In function ‘main’:
+../test/frontend/ValidPrograms/02_IncludeStdint.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/02_IncludeStdint.c To ../test/frontend/ValidPrograms/02_IncludeStdint.asm<--------------------*
 
@@ -1301,6 +1749,13 @@ void main() {
    a--;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/23_OperatorDecPost.c<--------------------*
+
+../test/frontend/ValidPrograms/23_OperatorDecPost.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/23_OperatorDecPost.c To ../test/frontend/ValidPrograms/23_OperatorDecPost.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/23_OperatorDecPost.c:[0m no lexical error has been found 
@@ -1336,6 +1791,17 @@ void main() {
 ';
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/51_CharConstSpecial.c<--------------------*
+
+../test/frontend/ValidPrograms/51_CharConstSpecial.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/51_CharConstSpecial.c: In function ‘main’:
+../test/frontend/ValidPrograms/51_CharConstSpecial.c:4:9: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    char a;
+         ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/51_CharConstSpecial.c To ../test/frontend/ValidPrograms/51_CharConstSpecial.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/51_CharConstSpecial.c:[0m no lexical error has been found 
@@ -1369,6 +1835,17 @@ void main() {
    int32_t a;
    a = 1 + 2*4 - ((4/2 + 3%2) - 2);
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/39_ArithmeticExpressionWithPar.c<--------------------*
+
+../test/frontend/ValidPrograms/39_ArithmeticExpressionWithPar.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/39_ArithmeticExpressionWithPar.c: In function ‘main’:
+../test/frontend/ValidPrograms/39_ArithmeticExpressionWithPar.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/39_ArithmeticExpressionWithPar.c To ../test/frontend/ValidPrograms/39_ArithmeticExpressionWithPar.asm<--------------------*
 
@@ -1405,6 +1882,13 @@ void main() {
    a %= 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/32_OperatorModAssign.c<--------------------*
+
+../test/frontend/ValidPrograms/32_OperatorModAssign.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/32_OperatorModAssign.c To ../test/frontend/ValidPrograms/32_OperatorModAssign.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/32_OperatorModAssign.c:[0m no lexical error has been found 
@@ -1439,6 +1923,17 @@ void main() {
    int32_t a;
    a = 1 < 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/07_OperatorInf.c<--------------------*
+
+../test/frontend/ValidPrograms/07_OperatorInf.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/07_OperatorInf.c: In function ‘main’:
+../test/frontend/ValidPrograms/07_OperatorInf.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/07_OperatorInf.c To ../test/frontend/ValidPrograms/07_OperatorInf.asm<--------------------*
 
@@ -1475,6 +1970,13 @@ void main() {
    a *= 3;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/30_OperatorMultAssign.c<--------------------*
+
+../test/frontend/ValidPrograms/30_OperatorMultAssign.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/30_OperatorMultAssign.c To ../test/frontend/ValidPrograms/30_OperatorMultAssign.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/30_OperatorMultAssign.c:[0m no lexical error has been found 
@@ -1509,6 +2011,17 @@ void main() {
    int64_t a = 5;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/57_VarInitialization.c<--------------------*
+
+../test/frontend/ValidPrograms/57_VarInitialization.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/57_VarInitialization.c: In function ‘main’:
+../test/frontend/ValidPrograms/57_VarInitialization.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
+    int64_t a = 5;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/57_VarInitialization.c To ../test/frontend/ValidPrograms/57_VarInitialization.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/57_VarInitialization.c:[0m no lexical error has been found 
@@ -1525,6 +2038,13 @@ void main() {
    a = 1;
    a++;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/21_OperatorIncPost.c<--------------------*
+
+../test/frontend/ValidPrograms/21_OperatorIncPost.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/21_OperatorIncPost.c To ../test/frontend/ValidPrograms/21_OperatorIncPost.asm<--------------------*
 
@@ -1564,6 +2084,13 @@ void main() {
    function('a');
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/54_FunctionCallCustom.c<--------------------*
+
+../test/frontend/ValidPrograms/54_FunctionCallCustom.c:8:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/54_FunctionCallCustom.c To ../test/frontend/ValidPrograms/54_FunctionCallCustom.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/54_FunctionCallCustom.c:[0m no lexical error has been found 
@@ -1598,6 +2125,13 @@ void main() {
    putchar('a');
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/53_FunctionCallPutChar.c<--------------------*
+
+../test/frontend/ValidPrograms/53_FunctionCallPutChar.c:4:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/53_FunctionCallPutChar.c To ../test/frontend/ValidPrograms/53_FunctionCallPutChar.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/53_FunctionCallPutChar.c:[0m no lexical error has been found 
@@ -1631,6 +2165,17 @@ void main() {
    int32_t a;
    a = 8 >> 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/20_OperatorRightShift.c<--------------------*
+
+../test/frontend/ValidPrograms/20_OperatorRightShift.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/20_OperatorRightShift.c: In function ‘main’:
+../test/frontend/ValidPrograms/20_OperatorRightShift.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/20_OperatorRightShift.c To ../test/frontend/ValidPrograms/20_OperatorRightShift.asm<--------------------*
 
@@ -1667,6 +2212,17 @@ void main() {
    a = 1 && 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/14_OperatorAnd.c<--------------------*
+
+../test/frontend/ValidPrograms/14_OperatorAnd.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/14_OperatorAnd.c: In function ‘main’:
+../test/frontend/ValidPrograms/14_OperatorAnd.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/14_OperatorAnd.c To ../test/frontend/ValidPrograms/14_OperatorAnd.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/14_OperatorAnd.c:[0m no lexical error has been found 
@@ -1682,6 +2238,17 @@ void main() {
    int32_t a;
    a = 1 ^ 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/26_OperatorXor.c<--------------------*
+
+../test/frontend/ValidPrograms/26_OperatorXor.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/26_OperatorXor.c: In function ‘main’:
+../test/frontend/ValidPrograms/26_OperatorXor.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/26_OperatorXor.c To ../test/frontend/ValidPrograms/26_OperatorXor.asm<--------------------*
 
@@ -1717,6 +2284,17 @@ void main() {
    a = 1 <= 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/09_OperatorLeq.c<--------------------*
+
+../test/frontend/ValidPrograms/09_OperatorLeq.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/09_OperatorLeq.c: In function ‘main’:
+../test/frontend/ValidPrograms/09_OperatorLeq.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/09_OperatorLeq.c To ../test/frontend/ValidPrograms/09_OperatorLeq.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/09_OperatorLeq.c:[0m no lexical error has been found 
@@ -1751,6 +2329,17 @@ void main() {
    a[0] = 0;
    a[1] = 1;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/47_ArrayUse.c<--------------------*
+
+../test/frontend/ValidPrograms/47_ArrayUse.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/47_ArrayUse.c: In function ‘main’:
+../test/frontend/ValidPrograms/47_ArrayUse.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a[10];
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/47_ArrayUse.c To ../test/frontend/ValidPrograms/47_ArrayUse.asm<--------------------*
 
@@ -1788,6 +2377,17 @@ void main() {
    a = 'a';
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/50_CharConst.c<--------------------*
+
+../test/frontend/ValidPrograms/50_CharConst.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/50_CharConst.c: In function ‘main’:
+../test/frontend/ValidPrograms/50_CharConst.c:4:9: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    char a;
+         ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/50_CharConst.c To ../test/frontend/ValidPrograms/50_CharConst.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/50_CharConst.c:[0m no lexical error has been found 
@@ -1821,6 +2421,23 @@ void main() {
    int64_t a = 3, b = 2, c;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c<--------------------*
+
+../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c: In function ‘main’:
+../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:4:26: warning: unused variable ‘c’ [-Wunused-variable]
+    int64_t a = 3, b = 2, c;
+                          ^
+../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:4:19: warning: unused variable ‘b’ [-Wunused-variable]
+    int64_t a = 3, b = 2, c;
+                   ^
+../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
+    int64_t a = 3, b = 2, c;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c To ../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:[0m no lexical error has been found 
@@ -1837,6 +2454,17 @@ FILE '../test/frontend/ValidPrograms/46_ArrayDec.c':
 void main() {
    int32_t a[10];
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/46_ArrayDec.c<--------------------*
+
+../test/frontend/ValidPrograms/46_ArrayDec.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/46_ArrayDec.c: In function ‘main’:
+../test/frontend/ValidPrograms/46_ArrayDec.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
+    int32_t a[10];
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/46_ArrayDec.c To ../test/frontend/ValidPrograms/46_ArrayDec.asm<--------------------*
 
@@ -1871,6 +2499,17 @@ void main() {
    int64_t a;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/52_Int64Dec.c<--------------------*
+
+../test/frontend/ValidPrograms/52_Int64Dec.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/52_Int64Dec.c: In function ‘main’:
+../test/frontend/ValidPrograms/52_Int64Dec.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
+    int64_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/52_Int64Dec.c To ../test/frontend/ValidPrograms/52_Int64Dec.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/52_Int64Dec.c:[0m no lexical error has been found 
@@ -1887,6 +2526,13 @@ void main() {
    a = 1;
    a |= 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/34_OperatorBitOrAssign.c<--------------------*
+
+../test/frontend/ValidPrograms/34_OperatorBitOrAssign.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/34_OperatorBitOrAssign.c To ../test/frontend/ValidPrograms/34_OperatorBitOrAssign.asm<--------------------*
 
@@ -1922,6 +2568,17 @@ void main() {
    int32_t a;
    a = 2 << 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/19_OperatorLeftShift.c<--------------------*
+
+../test/frontend/ValidPrograms/19_OperatorLeftShift.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/19_OperatorLeftShift.c: In function ‘main’:
+../test/frontend/ValidPrograms/19_OperatorLeftShift.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/19_OperatorLeftShift.c To ../test/frontend/ValidPrograms/19_OperatorLeftShift.asm<--------------------*
 
@@ -1959,6 +2616,13 @@ void main() {
    a -= 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/29_OperatorMinusAssign.c<--------------------*
+
+../test/frontend/ValidPrograms/29_OperatorMinusAssign.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/29_OperatorMinusAssign.c To ../test/frontend/ValidPrograms/29_OperatorMinusAssign.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/29_OperatorMinusAssign.c:[0m no lexical error has been found 
@@ -1990,6 +2654,17 @@ FILE '../test/frontend/ValidPrograms/01_SimpleDeclaration.c':
 void main() {
    char a;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/01_SimpleDeclaration.c<--------------------*
+
+../test/frontend/ValidPrograms/01_SimpleDeclaration.c:1:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/01_SimpleDeclaration.c: In function ‘main’:
+../test/frontend/ValidPrograms/01_SimpleDeclaration.c:2:9: warning: unused variable ‘a’ [-Wunused-variable]
+    char a;
+         ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/01_SimpleDeclaration.c To ../test/frontend/ValidPrograms/01_SimpleDeclaration.asm<--------------------*
 
@@ -2025,6 +2700,17 @@ void main() {
    a = 1 == 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/11_OperatorEqu.c<--------------------*
+
+../test/frontend/ValidPrograms/11_OperatorEqu.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/11_OperatorEqu.c: In function ‘main’:
+../test/frontend/ValidPrograms/11_OperatorEqu.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/11_OperatorEqu.c To ../test/frontend/ValidPrograms/11_OperatorEqu.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/11_OperatorEqu.c:[0m no lexical error has been found 
@@ -2059,6 +2745,17 @@ void main() {
    a = ~1;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/25_OperatorNot.c<--------------------*
+
+../test/frontend/ValidPrograms/25_OperatorNot.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/25_OperatorNot.c: In function ‘main’:
+../test/frontend/ValidPrograms/25_OperatorNot.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/25_OperatorNot.c To ../test/frontend/ValidPrograms/25_OperatorNot.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/25_OperatorNot.c:[0m no lexical error has been found 
@@ -2074,6 +2771,17 @@ void main() {
    int32_t a;
    a = 1 != 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/12_OperatorDiff.c<--------------------*
+
+../test/frontend/ValidPrograms/12_OperatorDiff.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/12_OperatorDiff.c: In function ‘main’:
+../test/frontend/ValidPrograms/12_OperatorDiff.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/12_OperatorDiff.c To ../test/frontend/ValidPrograms/12_OperatorDiff.asm<--------------------*
 
@@ -2109,6 +2817,17 @@ void main() {
    a = 1 + 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/03_OperatorPlus.c<--------------------*
+
+../test/frontend/ValidPrograms/03_OperatorPlus.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/03_OperatorPlus.c: In function ‘main’:
+../test/frontend/ValidPrograms/03_OperatorPlus.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/03_OperatorPlus.c To ../test/frontend/ValidPrograms/03_OperatorPlus.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/03_OperatorPlus.c:[0m no lexical error has been found 
@@ -2143,6 +2862,20 @@ void main() {
    a = 1, 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/36_OperatorComma.c<--------------------*
+
+../test/frontend/ValidPrograms/36_OperatorComma.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/36_OperatorComma.c: In function ‘main’:
+../test/frontend/ValidPrograms/36_OperatorComma.c:5:9: warning: right-hand operand of comma expression has no effect [-Wunused-value]
+    a = 1, 2;
+         ^
+../test/frontend/ValidPrograms/36_OperatorComma.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/36_OperatorComma.c To ../test/frontend/ValidPrograms/36_OperatorComma.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/36_OperatorComma.c:[0m no lexical error has been found 
@@ -2161,6 +2894,13 @@ void main() {
       a = a-1;
    }
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/42_While.c<--------------------*
+
+../test/frontend/ValidPrograms/42_While.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/42_While.c To ../test/frontend/ValidPrograms/42_While.asm<--------------------*
 
@@ -2199,6 +2939,13 @@ void main() {
    }
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/40_If.c<--------------------*
+
+../test/frontend/ValidPrograms/40_If.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/40_If.c To ../test/frontend/ValidPrograms/40_If.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/40_If.c:[0m no lexical error has been found 
@@ -2234,6 +2981,13 @@ void main() {
    ++a;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/22_OperatorIncPre.c<--------------------*
+
+../test/frontend/ValidPrograms/22_OperatorIncPre.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/22_OperatorIncPre.c To ../test/frontend/ValidPrograms/22_OperatorIncPre.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/22_OperatorIncPre.c:[0m no lexical error has been found 
@@ -2268,6 +3022,17 @@ void main() {
    a = 1 | 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/16_OperatorBOr.c<--------------------*
+
+../test/frontend/ValidPrograms/16_OperatorBOr.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/16_OperatorBOr.c: In function ‘main’:
+../test/frontend/ValidPrograms/16_OperatorBOr.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/16_OperatorBOr.c To ../test/frontend/ValidPrograms/16_OperatorBOr.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/16_OperatorBOr.c:[0m no lexical error has been found 
@@ -2301,6 +3066,20 @@ void main() {
    int64_t a, b;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c<--------------------*
+
+../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c: In function ‘main’:
+../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:4:15: warning: unused variable ‘b’ [-Wunused-variable]
+    int64_t a, b;
+               ^
+../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
+    int64_t a, b;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c To ../test/frontend/ValidPrograms/58_MultipleVarDeclarations.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:[0m no lexical error has been found 
@@ -2317,6 +3096,13 @@ void main() {
    a = 1;
    a ^= 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/35_OperatorBitXorAssign.c<--------------------*
+
+../test/frontend/ValidPrograms/35_OperatorBitXorAssign.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/35_OperatorBitXorAssign.c To ../test/frontend/ValidPrograms/35_OperatorBitXorAssign.asm<--------------------*
 
@@ -2354,6 +3140,13 @@ void main() {
    a /= 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/31_OperatorDivAssign.c<--------------------*
+
+../test/frontend/ValidPrograms/31_OperatorDivAssign.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/31_OperatorDivAssign.c To ../test/frontend/ValidPrograms/31_OperatorDivAssign.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/31_OperatorDivAssign.c:[0m no lexical error has been found 
@@ -2389,6 +3182,17 @@ void main() {
    a = 1 >= 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/10_OperatorGeq.c<--------------------*
+
+../test/frontend/ValidPrograms/10_OperatorGeq.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/10_OperatorGeq.c: In function ‘main’:
+../test/frontend/ValidPrograms/10_OperatorGeq.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/10_OperatorGeq.c To ../test/frontend/ValidPrograms/10_OperatorGeq.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/10_OperatorGeq.c:[0m no lexical error has been found 
@@ -2422,6 +3226,17 @@ void main() {
    int32_t a;
    a = 4 / 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/05_OperatorDiv.c<--------------------*
+
+../test/frontend/ValidPrograms/05_OperatorDiv.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/05_OperatorDiv.c: In function ‘main’:
+../test/frontend/ValidPrograms/05_OperatorDiv.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/05_OperatorDiv.c To ../test/frontend/ValidPrograms/05_OperatorDiv.asm<--------------------*
 
@@ -2457,6 +3272,17 @@ void main() {
    a = 2 - 1;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/04_OperatorMinus.c<--------------------*
+
+../test/frontend/ValidPrograms/04_OperatorMinus.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/04_OperatorMinus.c: In function ‘main’:
+../test/frontend/ValidPrograms/04_OperatorMinus.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/04_OperatorMinus.c To ../test/frontend/ValidPrograms/04_OperatorMinus.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/04_OperatorMinus.c:[0m no lexical error has been found 
@@ -2491,6 +3317,17 @@ void main() {
    a = 1 % 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/13_OperatorMod.c<--------------------*
+
+../test/frontend/ValidPrograms/13_OperatorMod.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/13_OperatorMod.c: In function ‘main’:
+../test/frontend/ValidPrograms/13_OperatorMod.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/13_OperatorMod.c To ../test/frontend/ValidPrograms/13_OperatorMod.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/13_OperatorMod.c:[0m no lexical error has been found 
@@ -2524,6 +3361,17 @@ void main() {
    int32_t a;
    a = 4 * 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/06_OperatorMult.c<--------------------*
+
+../test/frontend/ValidPrograms/06_OperatorMult.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/06_OperatorMult.c: In function ‘main’:
+../test/frontend/ValidPrograms/06_OperatorMult.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/06_OperatorMult.c To ../test/frontend/ValidPrograms/06_OperatorMult.asm<--------------------*
 
@@ -2560,6 +3408,13 @@ void main() {
    a &= 3;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/33_OperatorBitAndAssign.c<--------------------*
+
+../test/frontend/ValidPrograms/33_OperatorBitAndAssign.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/33_OperatorBitAndAssign.c To ../test/frontend/ValidPrograms/33_OperatorBitAndAssign.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/33_OperatorBitAndAssign.c:[0m no lexical error has been found 
@@ -2595,6 +3450,17 @@ void main() {
    a = 1 & 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/17_OperatorBAnd.c<--------------------*
+
+../test/frontend/ValidPrograms/17_OperatorBAnd.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/17_OperatorBAnd.c: In function ‘main’:
+../test/frontend/ValidPrograms/17_OperatorBAnd.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/17_OperatorBAnd.c To ../test/frontend/ValidPrograms/17_OperatorBAnd.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/17_OperatorBAnd.c:[0m no lexical error has been found 
@@ -2628,6 +3494,17 @@ void main() {
    int32_t a;
    a = 1 + 2*4 - 4/2 + 3%2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/38_ArithmeticExpression.c<--------------------*
+
+../test/frontend/ValidPrograms/38_ArithmeticExpression.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/38_ArithmeticExpression.c: In function ‘main’:
+../test/frontend/ValidPrograms/38_ArithmeticExpression.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/38_ArithmeticExpression.c To ../test/frontend/ValidPrograms/38_ArithmeticExpression.asm<--------------------*
 
@@ -2663,6 +3540,13 @@ void main() {
    a = 1;
    --a;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/24_OperatorDecPre.c<--------------------*
+
+../test/frontend/ValidPrograms/24_OperatorDecPre.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/24_OperatorDecPre.c To ../test/frontend/ValidPrograms/24_OperatorDecPre.asm<--------------------*
 
@@ -2703,6 +3587,13 @@ void main() {
    a = function(a);
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/55_Return.c<--------------------*
+
+../test/frontend/ValidPrograms/55_Return.c:7:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/55_Return.c To ../test/frontend/ValidPrograms/55_Return.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/55_Return.c:[0m no lexical error has been found 
@@ -2737,6 +3628,17 @@ void main() {
    a = 1 || 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/15_OperatorOr.c<--------------------*
+
+../test/frontend/ValidPrograms/15_OperatorOr.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/ValidPrograms/15_OperatorOr.c: In function ‘main’:
+../test/frontend/ValidPrograms/15_OperatorOr.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    int32_t a;
+            ^
+
+
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/15_OperatorOr.c To ../test/frontend/ValidPrograms/15_OperatorOr.asm<--------------------*
 
 [1;96m../test/frontend/ValidPrograms/15_OperatorOr.c:[0m no lexical error has been found 
@@ -2749,6 +3651,18 @@ FILE '../test/frontend/SemanticError/01_MissingVarDeclaration.c':
 void main() {
    a = 1;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/SemanticError/01_MissingVarDeclaration.c<--------------------*
+
+../test/frontend/SemanticError/01_MissingVarDeclaration.c:1:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/SemanticError/01_MissingVarDeclaration.c: In function ‘main’:
+../test/frontend/SemanticError/01_MissingVarDeclaration.c:2:4: error: ‘a’ undeclared (first use in this function)
+    a = 1;
+    ^
+../test/frontend/SemanticError/01_MissingVarDeclaration.c:2:4: note: each undeclared identifier is reported only once for each function it appears in
+
 
 *--------------------->Compilation Of ../test/frontend/SemanticError/01_MissingVarDeclaration.c To ../test/frontend/SemanticError/01_MissingVarDeclaration.asm<--------------------*
 
@@ -2764,6 +3678,21 @@ FILE '../test/frontend/LexError/02_LexError_InvalidCharInStreamWithinProgram.c':
 void main() { $
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/LexError/02_LexError_InvalidCharInStreamWithinProgram.c<--------------------*
+
+../test/frontend/LexError/02_LexError_InvalidCharInStreamWithinProgram.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() { $
+      ^~~~
+../test/frontend/LexError/02_LexError_InvalidCharInStreamWithinProgram.c: In function ‘main’:
+../test/frontend/LexError/02_LexError_InvalidCharInStreamWithinProgram.c:3:15: error: ‘$’ undeclared (first use in this function)
+ void main() { $
+               ^
+../test/frontend/LexError/02_LexError_InvalidCharInStreamWithinProgram.c:3:15: note: each undeclared identifier is reported only once for each function it appears in
+../test/frontend/LexError/02_LexError_InvalidCharInStreamWithinProgram.c:4:1: error: expected ‘;’ before ‘}’ token
+ }
+ ^
+
+
 *--------------------->Compilation Of ../test/frontend/LexError/02_LexError_InvalidCharInStreamWithinProgram.c To ../test/frontend/LexError/02_LexError_InvalidCharInStreamWithinProgram.asm<--------------------*
 
 [1m../test/frontend/LexError/02_LexError_InvalidCharInStreamWithinProgram.c:3:14:[1;31m error: [0munrecognized token '$'
@@ -2773,6 +3702,13 @@ Compilation failed!
 FILE '../test/frontend/LexError/01_LexError_InvalidCharInStream.c':
 
 @
+
+*--------------------->gcc Compilation Of ../test/frontend/LexError/01_LexError_InvalidCharInStream.c<--------------------*
+
+../test/frontend/LexError/01_LexError_InvalidCharInStream.c:1:1: error: stray ‘@’ in program
+ @
+ ^
+
 
 *--------------------->Compilation Of ../test/frontend/LexError/01_LexError_InvalidCharInStream.c To ../test/frontend/LexError/01_LexError_InvalidCharInStream.asm<--------------------*
 
@@ -2785,6 +3721,21 @@ FILE '../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c':
 void main() {
    ( 1 + 2 ) );
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c<--------------------*
+
+../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c:1:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c: In function ‘main’:
+../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c:2:4: warning: statement with no effect [-Wunused-value]
+    ( 1 + 2 ) );
+    ^
+../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c:2:14: error: expected ‘;’ before ‘)’ token
+    ( 1 + 2 ) );
+              ^
+../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c:2:14: error: expected statement before ‘)’ token
+
 
 *--------------------->Compilation Of ../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c To ../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.asm<--------------------*
 
@@ -2799,6 +3750,20 @@ void main() {
    1 + 2
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/SyntaxError/03_SyntaxError_MissingSemicolon.c<--------------------*
+
+../test/frontend/SyntaxError/03_SyntaxError_MissingSemicolon.c:1:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/SyntaxError/03_SyntaxError_MissingSemicolon.c: In function ‘main’:
+../test/frontend/SyntaxError/03_SyntaxError_MissingSemicolon.c:2:4: warning: statement with no effect [-Wunused-value]
+    1 + 2
+    ^
+../test/frontend/SyntaxError/03_SyntaxError_MissingSemicolon.c:3:1: error: expected ‘;’ before ‘}’ token
+ }
+ ^
+
+
 *--------------------->Compilation Of ../test/frontend/SyntaxError/03_SyntaxError_MissingSemicolon.c To ../test/frontend/SyntaxError/03_SyntaxError_MissingSemicolon.asm<--------------------*
 
 [1;96m../test/frontend/SyntaxError/03_SyntaxError_MissingSemicolon.c:[0m no lexical error has been found 
@@ -2811,6 +3776,23 @@ FILE '../test/frontend/SyntaxError/04_SyntaxError_MissingPar.c':
 void main() {
    1 + ( 2 * 3;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/SyntaxError/04_SyntaxError_MissingPar.c<--------------------*
+
+../test/frontend/SyntaxError/04_SyntaxError_MissingPar.c:1:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/SyntaxError/04_SyntaxError_MissingPar.c: In function ‘main’:
+../test/frontend/SyntaxError/04_SyntaxError_MissingPar.c:2:15: error: expected ‘)’ before ‘;’ token
+    1 + ( 2 * 3;
+               ^
+../test/frontend/SyntaxError/04_SyntaxError_MissingPar.c:2:4: warning: statement with no effect [-Wunused-value]
+    1 + ( 2 * 3;
+    ^
+../test/frontend/SyntaxError/04_SyntaxError_MissingPar.c:3:1: error: expected ‘;’ before ‘}’ token
+ }
+ ^
+
 
 *--------------------->Compilation Of ../test/frontend/SyntaxError/04_SyntaxError_MissingPar.c To ../test/frontend/SyntaxError/04_SyntaxError_MissingPar.asm<--------------------*
 
@@ -2825,6 +3807,17 @@ void main() {
    1 * + 2;
 }
 
+*--------------------->gcc Compilation Of ../test/frontend/SyntaxError/01_SyntaxError_TwoOperators.c<--------------------*
+
+../test/frontend/SyntaxError/01_SyntaxError_TwoOperators.c:1:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/SyntaxError/01_SyntaxError_TwoOperators.c: In function ‘main’:
+../test/frontend/SyntaxError/01_SyntaxError_TwoOperators.c:2:4: warning: statement with no effect [-Wunused-value]
+    1 * + 2;
+    ^
+
+
 *--------------------->Compilation Of ../test/frontend/SyntaxError/01_SyntaxError_TwoOperators.c To ../test/frontend/SyntaxError/01_SyntaxError_TwoOperators.asm<--------------------*
 
 [1;96m../test/frontend/SyntaxError/01_SyntaxError_TwoOperators.c:[0m no lexical error has been found 
@@ -2837,6 +3830,20 @@ FILE '../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.c':
 void main() {
    1 2;
 }
+
+*--------------------->gcc Compilation Of ../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.c<--------------------*
+
+../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.c:1:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+ void main() {
+      ^~~~
+../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.c: In function ‘main’:
+../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.c:2:4: warning: statement with no effect [-Wunused-value]
+    1 2;
+    ^
+../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.c:2:6: error: expected ‘;’ before numeric constant
+    1 2;
+      ^
+
 
 *--------------------->Compilation Of ../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.c To ../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.asm<--------------------*
 
