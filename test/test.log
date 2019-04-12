@@ -1,4 +1,4 @@
-************************* vendredi 12 avril 2019, 07:49:29 (UTC+0000) *************************
+************************* vendredi 12 avril 2019, 07:54:59 (UTC+0000) *************************
 
 **********************************************************************************
 FILE '../test/demo_test/doubleIf.c':
@@ -1077,48 +1077,9 @@ Return code of 'a.out': 0
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/07_OperatorInf.c':
 
-#include <stdint.h>
-
-void main() {
-   int32_t a;
-   a = 1 < 2;
-}
-
-*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/07_OperatorInf.c<--------------------*
-
-../test/frontend/ValidPrograms/07_OperatorInf.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main() {
-      ^~~~
-../test/frontend/ValidPrograms/07_OperatorInf.c: In function ‘main’:
-../test/frontend/ValidPrograms/07_OperatorInf.c:4:12: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
-    int32_t a;
-            ^
-
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/07_OperatorInf.c To ../test/frontend/ValidPrograms/07_OperatorInf.asm<--------------------*
-
-[1;96m../test/frontend/ValidPrograms/07_OperatorInf.c:[0m no lexical error has been found 
-[1;96m../test/frontend/ValidPrograms/07_OperatorInf.c:[0m no syntax error has been found 
-
-Compilation Successful!
-
-Assembly code is generated to ../test/frontend/ValidPrograms/07_OperatorInf.s
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/07_OperatorInf.asm To ../test/frontend/ValidPrograms/07_OperatorInf.o<--------------------*
-
-Compilation Successful!
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/07_OperatorInf.o To Binary Code a.out<--------------------*
-
-Compilation Successful!
-
-*--------------------->Execute a.out<--------------------*
-
-OUTPUT 
------
-
------
-Return code of 'a.out': 0
+int main() {
+    char str[100] = {'c','a','o',' ','x','u','a','n',' ','h','u','y','
+','
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/39_ArithmeticExpressionWithPar.c':
 
@@ -1529,21 +1490,98 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
-FILE '../test/frontend/ValidPrograms/18_OperatorNeg.c':
+FILE '../test/demo_test/if_and_while.c':
 
-#include <stdint.h>
+int main() {
+    int i = 0;
+    int j = 0;
+    if(i < 10){
+        while(j < 10){
+            j++;
+        }
+        i++;
+    }
+}
 
-void main() {
-   int32_t a;
-   a = 1;
-   a = -a;
+*--------------------->gcc Compilation Of ../test/demo_test/if_and_while.c<--------------------*
+
+
+
+*--------------------->Compilation Of ../test/demo_test/if_and_while.c To ../test/demo_test/if_and_while.asm<--------------------*
+
+[1;96m../test/demo_test/if_and_while.c:[0m no lexical error has been found 
+[1;96m../test/demo_test/if_and_while.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/demo_test/if_and_while.s
+
+*--------------------->Compilation Of ../test/demo_test/if_and_while.asm To ../test/demo_test/if_and_while.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/demo_test/if_and_while.o To Binary Code a.out<--------------------*
+
+Compilation Successful!
+
+*--------------------->Execute a.out<--------------------*
+
+OUTPUT 
+-----
+
+-----
+Return code of 'a.out': 0
+**********************************************************************************
+FILE '../test/demo_test/complex_arithmetics.c':
+
+int main() {
+    int a = (1+2)*3/4;
+    int b = 1<<2>>3&0^1|0;
+    int c = ((1 <= 2) == (3 > 1) != (1>=2));
+    int d = -1;
+    d += 1;
+    d -= 1;
+    d *= 1;
+    d /= 1;
+    d %= 1;
+    d++;
+    d--;
+    printf(d);
 }
 
 *--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/18_OperatorNeg.c<--------------------*
 
-../test/frontend/ValidPrograms/18_OperatorNeg.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main() {
-      ^~~~
+../test/demo_test/complex_arithmetics.c: In function ‘main’:
+../test/demo_test/complex_arithmetics.c:3:22: warning: suggest parentheses around arithmetic in operand of ‘^’ [-Wparentheses]
+     int b = 1<<2>>3&0^1|0;
+                      ^
+../test/demo_test/complex_arithmetics.c:3:24: warning: suggest parentheses around arithmetic in operand of ‘|’ [-Wparentheses]
+     int b = 1<<2>>3&0^1|0;
+                        ^
+../test/demo_test/complex_arithmetics.c:4:34: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
+     int c = ((1 <= 2) == (3 > 1) != (1>=2));
+                                  ^~
+../test/demo_test/complex_arithmetics.c:13:5: warning: implicit declaration of function ‘printf’ [-Wimplicit-function-declaration]
+     printf(d);
+     ^~~~~~
+../test/demo_test/complex_arithmetics.c:13:5: warning: incompatible implicit declaration of built-in function ‘printf’
+../test/demo_test/complex_arithmetics.c:13:5: note: include ‘<stdio.h>’ or provide a declaration of ‘printf’
+../test/demo_test/complex_arithmetics.c:13:12: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [-Wint-conversion]
+     printf(d);
+            ^
+../test/demo_test/complex_arithmetics.c:13:12: note: expected ‘const char *’ but argument is of type ‘int’
+../test/demo_test/complex_arithmetics.c:13:5: warning: format not a string literal and no format arguments [-Wformat-security]
+     printf(d);
+     ^~~~~~
+../test/demo_test/complex_arithmetics.c:4:9: warning: unused variable ‘c’ [-Wunused-variable]
+     int c = ((1 <= 2) == (3 > 1) != (1>=2));
+         ^
+../test/demo_test/complex_arithmetics.c:3:9: warning: unused variable ‘b’ [-Wunused-variable]
+     int b = 1<<2>>3&0^1|0;
+         ^
+../test/demo_test/complex_arithmetics.c:2:9: warning: unused variable ‘a’ [-Wunused-variable]
+     int a = (1+2)*3/4;
+         ^
 
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/18_OperatorNeg.c To ../test/frontend/ValidPrograms/18_OperatorNeg.asm<--------------------*
@@ -1569,7 +1607,7 @@ OUTPUT
 -----
 
 -----
-Return code of 'a.out': 0
+Return code of 'a.out': 139
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c':
 
@@ -1643,6 +1681,54 @@ OUTPUT
 
 -----
 Return code of 'a.out': 0
+**********************************************************************************
+FILE '../test/demo_test/while_and_if.c':
+
+int main() {
+    int i = 0;
+    int j = 0;
+    while(i < 10){
+        if(j < 10){
+            j++;
+        }
+        i++;
+    }
+}
+
+*--------------------->gcc Compilation Of ../test/demo_test/while_and_if.c<--------------------*
+
+
+
+*--------------------->Compilation Of ../test/demo_test/while_and_if.c To ../test/demo_test/while_and_if.asm<--------------------*
+
+[1;96m../test/demo_test/while_and_if.c:[0m no lexical error has been found 
+[1;96m../test/demo_test/while_and_if.c:[0m no syntax error has been found 
+
+Compilation Successful!
+
+Assembly code is generated to ../test/demo_test/while_and_if.s
+
+*--------------------->Compilation Of ../test/demo_test/while_and_if.asm To ../test/demo_test/while_and_if.o<--------------------*
+
+Compilation Successful!
+
+*--------------------->Compilation Of ../test/demo_test/while_and_if.o To Binary Code a.out<--------------------*
+
+Compilation Successful!
+
+*--------------------->Execute a.out<--------------------*
+
+OUTPUT 
+-----
+
+-----
+Return code of 'a.out': 0
+**********************************************************************************
+FILE '../test/demo_test/str_array_while_putchar.c':
+
+int main() {
+    char str[100] = {'c','a','o',' ','x','u','a','n',' ','h','u','y','
+','
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/27_OperatorComp.c':
 
