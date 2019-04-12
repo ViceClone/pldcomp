@@ -3,15 +3,12 @@ File;CompExitCode;GccExitCode
 ../test/demo_test/complex_arithmetics.c;0;0
 ../test/demo_test/factorial.c;0;0
 ../test/demo_test/if_and_while.c;0;0
-../test/demo_test/while_and_if.c;0;0
 ../test/demo_test/doubleWhile.c;0;0
 ../test/demo_test/str_array_while_putchar.c;1;0
-../test/backend/Back/1_decls.c;1;0
 ../test/backend/Back/2_putchar.c;0;0
 ../test/backend/Back/7-testWhileAndVariables.c;0;0
 ../test/backend/Back/3_variables.c;0;0
 ../test/backend/Back/4-VarConstAddCall.c;0;0
-../test/backend/Back/6-While.c;1;0
 ../test/backend/Back/5-IfThenElse.c;0;0
 ../test/backend/Back/1_empty.c;0;0
 ../test/frontend/SemanticError/01_MissingVarDeclaration.c;1;1
@@ -31,7 +28,6 @@ File;CompExitCode;GccExitCode
 ../test/frontend/ValidPrograms/39_ArithmeticExpressionWithPar.c;0;0
 ../test/frontend/ValidPrograms/15_OperatorOr.c;1;0
 ../test/frontend/ValidPrograms/29_OperatorMinusAssign.c;0;0
-../test/frontend/ValidPrograms/52_Int64Dec.c;1;0
 ../test/frontend/ValidPrograms/44_IfElseIf.c;0;0
 ../test/frontend/ValidPrograms/13_OperatorMod.c;0;0
 ../test/frontend/ValidPrograms/51_CharConstSpecial.c;0;0
@@ -39,7 +35,6 @@ File;CompExitCode;GccExitCode
 ../test/frontend/ValidPrograms/21_OperatorIncPost.c;0;0
 ../test/frontend/ValidPrograms/33_OperatorBitAndAssign.c;0;0
 ../test/frontend/ValidPrograms/18_OperatorNeg.c;0;0
-../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c;1;0
 ../test/frontend/ValidPrograms/02_IncludeStdint.c;0;0
 ../test/frontend/ValidPrograms/27_OperatorComp.c;1;0
 ../test/frontend/ValidPrograms/03_OperatorPlus.c;0;0
@@ -51,7 +46,6 @@ File;CompExitCode;GccExitCode
 ../test/frontend/ValidPrograms/42_While.c;0;0
 ../test/frontend/ValidPrograms/09_OperatorLeq.c;0;0
 ../test/frontend/ValidPrograms/05_OperatorDiv.c;0;0
-../test/frontend/ValidPrograms/57_VarInitialization.c;1;0
 ../test/frontend/ValidPrograms/32_OperatorModAssign.c;0;0
 ../test/frontend/ValidPrograms/19_OperatorLeftShift.c;0;0
 ../test/frontend/ValidPrograms/41_IfElse.c;0;0
@@ -67,7 +61,6 @@ File;CompExitCode;GccExitCode
 ../test/frontend/ValidPrograms/38_ArithmeticExpression.c;0;0
 ../test/frontend/ValidPrograms/30_OperatorMultAssign.c;0;0
 ../test/frontend/ValidPrograms/53_FunctionCallPutChar.c;0;0
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c;1;0
 ../test/frontend/ValidPrograms/23_OperatorDecPost.c;0;0
 ../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c;1;1
 ../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.c;1;1

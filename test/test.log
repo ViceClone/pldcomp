@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-************************* vendredi 12 avril 2019, 08:13:43 (UTC+0000) *************************
-=======
-************************* vendredi 12 avril 2019, 08:13:59 (UTC+0000) *************************
->>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
+************************* vendredi 12 avril 2019, 08:41:17 (UTC+0000) *************************
 
 **********************************************************************************
 FILE '../test/demo_test/doubleIf.c':
@@ -56,9 +52,11 @@ int main() {
     d *= 1;
     d /= 1;
     d %= 1;
+    d &= 1;
+    d |= 1;
+    d ^= 1;
     d++;
     d--;
-    printf(d);
 }
 
 *--------------------->gcc Compilation Of ../test/demo_test/complex_arithmetics.c<--------------------*
@@ -73,24 +71,6 @@ int main() {
 ../test/demo_test/complex_arithmetics.c:4:34: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
      int c = ((1 <= 2) == (3 > 1) != (1>=2));
                                   ^~
-../test/demo_test/complex_arithmetics.c:13:5: warning: implicit declaration of function ‘printf’ [-Wimplicit-function-declaration]
-     printf(d);
-     ^~~~~~
-../test/demo_test/complex_arithmetics.c:13:5: warning: incompatible implicit declaration of built-in function ‘printf’
-../test/demo_test/complex_arithmetics.c:13:5: note: include ‘<stdio.h>’ or provide a declaration of ‘printf’
-../test/demo_test/complex_arithmetics.c:1:1:
-+#include <stdio.h>
- int main() {
-../test/demo_test/complex_arithmetics.c:13:5:
-     printf(d);
-     ^~~~~~
-../test/demo_test/complex_arithmetics.c:13:12: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [-Wint-conversion]
-     printf(d);
-            ^
-../test/demo_test/complex_arithmetics.c:13:12: note: expected ‘const char *’ but argument is of type ‘int’
-../test/demo_test/complex_arithmetics.c:13:5: warning: format not a string literal and no format arguments [-Wformat-security]
-     printf(d);
-     ^~~~~~
 ../test/demo_test/complex_arithmetics.c:4:9: warning: unused variable ‘c’ [-Wunused-variable]
      int c = ((1 <= 2) == (3 > 1) != (1>=2));
          ^
@@ -106,13 +86,6 @@ int main() {
 
 [1;96m../test/demo_test/complex_arithmetics.c:[0m no lexical error has been found 
 [1;96m../test/demo_test/complex_arithmetics.c:[0m no syntax error has been found 
-<<
->>
-d
-d
-d
-d
-d
 
 Compilation Successful!
 
@@ -136,7 +109,9 @@ Return code of 'a.out': 0
 **********************************************************************************
 FILE '../test/demo_test/factorial.c':
 
-int factorial(int n)
+#include <stdint.h>
+
+int32_t factorial(int n)
 {
     if (n >= 1) {
         return n*factorial(n-1);
@@ -213,52 +188,6 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
-<<<<<<< HEAD
-FILE '../test/demo_test/while_and_if.c':
-
-int main() {
-    int i = 0;
-    int j = 0;
-    while(i < 10){
-        if(j < 10){
-            j++;
-        }
-        i++;
-    }
-}
-
-*--------------------->gcc Compilation Of ../test/demo_test/while_and_if.c<--------------------*
-
-
-
-*--------------------->Compilation Of ../test/demo_test/while_and_if.c To ../test/demo_test/while_and_if.asm<--------------------*
-
-[1;96m../test/demo_test/while_and_if.c:[0m no lexical error has been found 
-[1;96m../test/demo_test/while_and_if.c:[0m no syntax error has been found 
-
-Compilation Successful!
-
-Assembly code is generated to ../test/demo_test/while_and_if.s
-
-*--------------------->Compilation Of ../test/demo_test/while_and_if.asm To ../test/demo_test/while_and_if.o<--------------------*
-
-Compilation Successful!
-
-*--------------------->Compilation Of ../test/demo_test/while_and_if.o To Binary Code a.out<--------------------*
-
-Compilation Successful!
-=======
-FILE '../test/backend/Back/5-IfThenElse.c':
->>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
-
-*--------------------->Execute a.out<--------------------*
-
-OUTPUT 
------
-
------
-Return code of 'a.out': 0
-**********************************************************************************
 FILE '../test/demo_test/doubleWhile.c':
 
 int main() {
@@ -306,36 +235,6 @@ FILE '../test/demo_test/str_array_while_putchar.c':
 int main() {
     char str[100] = {'c','a','o',' ','x','u','a','n',' ','h','u','y','
 ','
-**********************************************************************************
-FILE '../test/backend/Back/1_decls.c':
-
-#include<inttypes.h>
-void toto() {
-  int64_t x;
-  int64_t y;
-  int64_t z;
-}
-
-*--------------------->gcc Compilation Of ../test/backend/Back/1_decls.c<--------------------*
-
-../test/backend/Back/1_decls.c: In function ‘toto’:
-../test/backend/Back/1_decls.c:5:11: warning: unused variable ‘z’ [-Wunused-variable]
-   int64_t z;
-           ^
-../test/backend/Back/1_decls.c:4:11: warning: unused variable ‘y’ [-Wunused-variable]
-   int64_t y;
-           ^
-../test/backend/Back/1_decls.c:3:11: warning: unused variable ‘x’ [-Wunused-variable]
-   int64_t x;
-           ^
-
-
-*--------------------->Compilation Of ../test/backend/Back/1_decls.c To ../test/backend/Back/1_decls.asm<--------------------*
-
-[1;96m../test/backend/Back/1_decls.c:[0m no lexical error has been found 
-line 3:10 no viable alternative at input 'int64_tx'
-[1;31m../test/backend/Back/1_decls.c:[0m 1 syntax errors have been found
-Compilation failed!
 **********************************************************************************
 FILE '../test/backend/Back/2_putchar.c':
 
@@ -537,39 +436,6 @@ OP
 
 -----
 Return code of 'a.out': 0
-**********************************************************************************
-FILE '../test/backend/Back/6-While.c':
-
-#include<inttypes.h>
-void main(void){
-  int64_t i;
-  i=0;
-  
-  while(i<5)  {
-      putchar('V');
-      i=i+1;
-    } 
-  putchar('
-');
-}
-
-*--------------------->gcc Compilation Of ../test/backend/Back/6-While.c<--------------------*
-
-../test/backend/Back/6-While.c:2:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main(void){
-      ^~~~
-../test/backend/Back/6-While.c: In function ‘main’:
-../test/backend/Back/6-While.c:7:7: warning: implicit declaration of function ‘putchar’ [-Wimplicit-function-declaration]
-       putchar('V');
-       ^~~~~~~
-
-
-*--------------------->Compilation Of ../test/backend/Back/6-While.c To ../test/backend/Back/6-While.asm<--------------------*
-
-[1;96m../test/backend/Back/6-While.c:[0m no lexical error has been found 
-line 3:10 no viable alternative at input 'int64_ti'
-[1;31m../test/backend/Back/6-While.c:[0m 1 syntax errors have been found
-Compilation failed!
 **********************************************************************************
 FILE '../test/backend/Back/5-IfThenElse.c':
 
@@ -841,8 +707,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/47_ArrayUse.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/47_ArrayUse.c:[0m no syntax error has been found 
-a
-a
 
 Compilation Successful!
 
@@ -1091,7 +955,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/31_OperatorDivAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/31_OperatorDivAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -1134,7 +997,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/28_OperatorPlusAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/28_OperatorPlusAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -1339,7 +1201,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/29_OperatorMinusAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/29_OperatorMinusAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -1360,32 +1221,6 @@ OUTPUT
 
 -----
 Return code of 'a.out': 0
-**********************************************************************************
-FILE '../test/frontend/ValidPrograms/52_Int64Dec.c':
-
-#include <stdint.h>
-
-void main() {
-   int64_t a;
-}
-
-*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/52_Int64Dec.c<--------------------*
-
-../test/frontend/ValidPrograms/52_Int64Dec.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main() {
-      ^~~~
-../test/frontend/ValidPrograms/52_Int64Dec.c: In function ‘main’:
-../test/frontend/ValidPrograms/52_Int64Dec.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
-    int64_t a;
-            ^
-
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/52_Int64Dec.c To ../test/frontend/ValidPrograms/52_Int64Dec.asm<--------------------*
-
-[1;96m../test/frontend/ValidPrograms/52_Int64Dec.c:[0m no lexical error has been found 
-line 4:11 no viable alternative at input 'int64_ta'
-[1;31m../test/frontend/ValidPrograms/52_Int64Dec.c:[0m 1 syntax errors have been found
-Compilation failed!
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/44_IfElseIf.c':
 
@@ -1548,7 +1383,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/34_OperatorBitOrAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/34_OperatorBitOrAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -1633,7 +1467,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/33_OperatorBitAndAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/33_OperatorBitAndAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -1657,59 +1490,19 @@ Return code of 'a.out': 0
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/18_OperatorNeg.c':
 
-<<<<<<< HEAD
 #include <stdint.h>
 
 void main() {
    int32_t a;
    a = 1;
    a = -a;
-=======
-int main() {
-    int a = (1+2)*3/4;
-    int b = 1<<2>>3&0^1|0;
-    int c = ((1 <= 2) == (3 > 1) != (1>=2));
-    int d = -1;
-    d += 1;
-    d -= 1;
-    d *= 1;
-    d /= 1;
-    d %= 1;
-    d &= 1;
-    d |= 1;
-    d ^= 1;
-    d++;
-    d--;
->>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 }
 
 *--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/18_OperatorNeg.c<--------------------*
 
-<<<<<<< HEAD
 ../test/frontend/ValidPrograms/18_OperatorNeg.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
  void main() {
       ^~~~
-=======
-../test/demo_test/complex_arithmetics.c: In function ‘main’:
-../test/demo_test/complex_arithmetics.c:3:22: warning: suggest parentheses around arithmetic in operand of ‘^’ [-Wparentheses]
-     int b = 1<<2>>3&0^1|0;
-                      ^
-../test/demo_test/complex_arithmetics.c:3:24: warning: suggest parentheses around arithmetic in operand of ‘|’ [-Wparentheses]
-     int b = 1<<2>>3&0^1|0;
-                        ^
-../test/demo_test/complex_arithmetics.c:4:34: warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
-     int c = ((1 <= 2) == (3 > 1) != (1>=2));
-                                  ^~
-../test/demo_test/complex_arithmetics.c:4:9: warning: unused variable ‘c’ [-Wunused-variable]
-     int c = ((1 <= 2) == (3 > 1) != (1>=2));
-         ^
-../test/demo_test/complex_arithmetics.c:3:9: warning: unused variable ‘b’ [-Wunused-variable]
-     int b = 1<<2>>3&0^1|0;
-         ^
-../test/demo_test/complex_arithmetics.c:2:9: warning: unused variable ‘a’ [-Wunused-variable]
-     int a = (1+2)*3/4;
-         ^
->>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 
 *--------------------->Compilation Of ../test/frontend/ValidPrograms/18_OperatorNeg.c To ../test/frontend/ValidPrograms/18_OperatorNeg.asm<--------------------*
@@ -1737,55 +1530,6 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
-<<<<<<< HEAD
-FILE '../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c':
-=======
-FILE '../test/demo_test/factorial.c':
-
-#include <stdint.h>
-
-int32_t factorial(int n)
-{
-    if (n >= 1) {
-        return n*factorial(n-1);
-    }
-    else {
-        return 1;
-    }
-}
-
-*--------------------->gcc Compilation Of ../test/demo_test/factorial.c<--------------------*
-
->>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
-
-#include <stdint.h>
-
-void main() {
-   int64_t a, b;
-}
-
-*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c<--------------------*
-
-../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main() {
-      ^~~~
-../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c: In function ‘main’:
-../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:4:15: warning: unused variable ‘b’ [-Wunused-variable]
-    int64_t a, b;
-               ^
-../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
-    int64_t a, b;
-            ^
-
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c To ../test/frontend/ValidPrograms/58_MultipleVarDeclarations.asm<--------------------*
-
-[1;96m../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:[0m no lexical error has been found 
-line 4:11 no viable alternative at input 'int64_ta'
-[1;31m../test/frontend/ValidPrograms/58_MultipleVarDeclarations.c:[0m 1 syntax errors have been found
-Compilation failed!
-**********************************************************************************
-<<<<<<< HEAD
 FILE '../test/frontend/ValidPrograms/02_IncludeStdint.c':
 
 #include <stdint.h>
@@ -1829,13 +1573,6 @@ OUTPUT
 
 -----
 Return code of 'a.out': 0
-=======
-FILE '../test/demo_test/str_array_while_putchar.c':
-
-int main() {
-    char str[100] = {'c','a','o',' ','x','u','a','n',' ','h','u','y','
-','
->>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 **********************************************************************************
 FILE '../test/frontend/ValidPrograms/27_OperatorComp.c':
 
@@ -1930,7 +1667,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/35_OperatorBitXorAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/35_OperatorBitXorAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -2242,32 +1978,6 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
-FILE '../test/frontend/ValidPrograms/57_VarInitialization.c':
-
-#include <stdint.h>
-
-void main() {
-   int64_t a = 5;
-}
-
-*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/57_VarInitialization.c<--------------------*
-
-../test/frontend/ValidPrograms/57_VarInitialization.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main() {
-      ^~~~
-../test/frontend/ValidPrograms/57_VarInitialization.c: In function ‘main’:
-../test/frontend/ValidPrograms/57_VarInitialization.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
-    int64_t a = 5;
-            ^
-
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/57_VarInitialization.c To ../test/frontend/ValidPrograms/57_VarInitialization.asm<--------------------*
-
-[1;96m../test/frontend/ValidPrograms/57_VarInitialization.c:[0m no lexical error has been found 
-line 4:11 no viable alternative at input 'int64_ta'
-[1;31m../test/frontend/ValidPrograms/57_VarInitialization.c:[0m 1 syntax errors have been found
-Compilation failed!
-**********************************************************************************
 FILE '../test/frontend/ValidPrograms/32_OperatorModAssign.c':
 
 #include <stdint.h>
@@ -2289,7 +1999,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/32_OperatorModAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/32_OperatorModAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -2335,7 +2044,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/19_OperatorLeftShift.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/19_OperatorLeftShift.c:[0m no syntax error has been found 
-<<
 
 Compilation Successful!
 
@@ -2428,7 +2136,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/20_OperatorRightShift.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/20_OperatorRightShift.c:[0m no syntax error has been found 
->>
 
 Compilation Successful!
 
@@ -2496,11 +2203,7 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
-<<<<<<< HEAD
 FILE '../test/frontend/ValidPrograms/26_OperatorXor.c':
-=======
-FILE '../test/frontend/ValidPrograms/21_OperatorIncPost.c':
->>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 #include <stdint.h>
 
@@ -2865,7 +2568,6 @@ void main() {
 
 [1;96m../test/frontend/ValidPrograms/30_OperatorMultAssign.c:[0m no lexical error has been found 
 [1;96m../test/frontend/ValidPrograms/30_OperatorMultAssign.c:[0m no syntax error has been found 
-a
 
 Compilation Successful!
 
@@ -2887,7 +2589,6 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
-<<<<<<< HEAD
 FILE '../test/frontend/ValidPrograms/53_FunctionCallPutChar.c':
 
 #include <stdint.h>
@@ -2929,44 +2630,7 @@ a
 -----
 Return code of 'a.out': 0
 **********************************************************************************
-FILE '../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c':
-
-#include <stdint.h>
-
-void main() {
-   int64_t a = 3, b = 2, c;
-}
-
-*--------------------->gcc Compilation Of ../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c<--------------------*
-
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:3:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
- void main() {
-      ^~~~
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c: In function ‘main’:
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:4:26: warning: unused variable ‘c’ [-Wunused-variable]
-    int64_t a = 3, b = 2, c;
-                          ^
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:4:19: warning: unused variable ‘b’ [-Wunused-variable]
-    int64_t a = 3, b = 2, c;
-                   ^
-../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:4:12: warning: unused variable ‘a’ [-Wunused-variable]
-    int64_t a = 3, b = 2, c;
-            ^
-
-
-*--------------------->Compilation Of ../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c To ../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.asm<--------------------*
-
-[1;96m../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:[0m no lexical error has been found 
-line 4:11 no viable alternative at input 'int64_ta'
-line 4:16 mismatched input ',' expecting ';'
-line 4:23 mismatched input ',' expecting ';'
-[1;31m../test/frontend/ValidPrograms/59_MixedDeclarationsInitializations.c:[0m 3 syntax errors have been found
-Compilation failed!
-**********************************************************************************
 FILE '../test/frontend/ValidPrograms/23_OperatorDecPost.c':
-=======
-FILE '../test/frontend/ValidPrograms/46_ArrayDec.c':
->>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 #include <stdint.h>
 
@@ -3008,7 +2672,6 @@ OUTPUT
 -----
 Return code of 'a.out': 0
 **********************************************************************************
-<<<<<<< HEAD
 FILE '../test/frontend/SyntaxError/05_SyntaxError_TooManyClosingPar.c':
 
 void main() {
@@ -3041,11 +2704,6 @@ line 2:3 mismatched input '(' expecting '}'
 Compilation failed!
 **********************************************************************************
 FILE '../test/frontend/SyntaxError/02_SyntaxError_TwoOperands.c':
-=======
-FILE '../test/frontend/ValidPrograms/34_OperatorBitOrAssign.c':
-
-#include <stdint.h>
->>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 void main() {
    1 2;
@@ -3603,17 +3261,9 @@ OUTPUT
 -----
 
 -----
-<<<<<<< HEAD
 Return code of 'a.out': 42
 **********************************************************************************
 FILE '../test/custom/emptyMainFunction.c':
-=======
-Return code of 'a.out': 0
-**********************************************************************************
-FILE '../test/frontend/ValidPrograms/35_OperatorBitXorAssign.c':
-
-#include <stdint.h>
->>>>>>> 2c5a145819f5cf4a0aa5862ed3997d22667e10b9
 
 int main() {}
 

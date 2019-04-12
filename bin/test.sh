@@ -20,3 +20,8 @@ do
     echo "Testing $i"
     ./demo.sh $i >> $logfile
 done
+
+rm -rf a.out
+find . -type f -name '*.o' -delete
+cd `pwd`/../test
+find . -type f -name '*.o' -delete
