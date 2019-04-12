@@ -23,40 +23,43 @@ int main(int argc, char** argv) {
         string lex_errors = "";
         for (auto it=list_token.begin(); it!=list_token.end();++it) {
             if ((*it)->getType()==PLDCompParser::ERROR) {
-                lex_errors = lex_errors + "line " + to_string((*it)->getLine()) +  ":" + to_string((*it)->getCharPositionInLine())
-                    +  " unrecognized token \'" +  (*it)->getText() +  "\'\n";
+                lex_errors = lex_errors + "\033[1m" + filename + ":" + to_string((*it)->getLine()) +  ":" + to_string((*it)->getCharPositionInLine())
+                    +  ":\033[1;31m error: \033[0munrecognized token \'" +  (*it)->getText() +  "\'\n";
                 n_lex_errors++;
             }
         }
 
         if (n_lex_errors>0) {
             LexerException lexerException;
-            lexerException.setLexerErrors(lex_errors + ", number of lexer errors : " + to_string(n_lex_errors));
+            lexerException.setLexerErrors(lex_errors + "\033[1m" + filename + ": \033[31m" + to_string(n_lex_errors) + " lexical errors have been found \033[0m" );
             throw lexerException;
         }
-        
+        cout << "\033[1;96m" << filename << ":\033[0m no lexical error has been found " << endl;
         token.reset();
-        //cout << "------PARSER-----" << endl;
         PLDCompParser parser (&token);
         tree::ParseTree * tree = parser.prog();
         int n_syntax_errors = parser.getNumberOfSyntaxErrors();
         if (n_syntax_errors>0) {
+            cerr << "\033[1;31m" << filename << ":\033[0m " << n_syntax_errors << " syntax errors have been found" << endl;
             SyntaxException syntaxException;
             syntaxException.setNumberSyntaxErrors(n_syntax_errors);
             throw syntaxException;
         }
-        
-        cout << "------CODE GENERATOR-----" << endl;
+        cout << "\033[1;96m" << filename << ":\033[0m no syntax error has been found " << endl;
         IRGenerator visitor;
+        visitor.set_filename(filename);
         visitor.visit(tree);
         string outfile = filename.substr(0,filename.length()-2)+".asm";
         ofstream o(outfile,ofstream::out);
         visitor.output_asm(o);
+        return 0;
     } catch (LexerException le) {
-        cerr << "Exception caught " << le.what() << endl << "Compilation failed!" << endl;
+        le.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     } catch (SyntaxException se) {
-        cerr << "Exception caught " << se.what() << endl << "Compilation failed!" << endl;
+        se.what();
+        cerr << "Compilation failed!" << endl;
         exit(1);
     }
 }

@@ -12,22 +12,26 @@
 class  PLDCompParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, RETURN = 5, INT_TYPE = 6, CHAR_TYPE = 7, 
-    VOID_TYPE = 8, IF = 9, ELSE = 10, WHILE = 11, CHAR = 12, ID = 13, INT = 14, 
-    LESS = 15, LESSEQUAL = 16, GREATER = 17, GREATEREQUAL = 18, EQUAL = 19, 
-    NOTEQUAL = 20, AND = 21, OR = 22, ANDAND = 23, OROR = 24, CARET = 25, 
-    TILDE = 26, PRIME = 27, BACKSLASH = 28, ASSIGN = 29, SEMICOLON = 30, 
-    COMMA = 31, RIGHT_BRACE = 32, LEFT_BRACE = 33, LEFT_PARENTHESE = 34, 
-    RIGHT_PARENTHESE = 35, PLUS = 36, MINUS = 37, STAR = 38, DIV = 39, MOD = 40, 
-    WHITESPACE = 41, NEWLINE = 42, BLOCKCOMMENT = 43, LINECOMMENT = 44, 
-    ERROR = 45
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, RETURN = 5, INT_TYPE = 6, INT32_TYPE = 7, 
+    CHAR_TYPE = 8, VOID_TYPE = 9, IF = 10, ELSE = 11, WHILE = 12, CHAR = 13, 
+    ID = 14, INT = 15, LESS = 16, LESSEQUAL = 17, GREATER = 18, GREATEREQUAL = 19, 
+    EQUAL = 20, NOTEQUAL = 21, PLUSPLUS = 22, MINUSMINUS = 23, SHIFTL = 24, 
+    SHIFTR = 25, ADDE = 26, SUBE = 27, MULE = 28, DIVE = 29, MODE = 30, 
+    ORE = 31, XORE = 32, ANDE = 33, AND = 34, OR = 35, ANDAND = 36, OROR = 37, 
+    CARET = 38, TILDE = 39, PRIME = 40, BACKSLASH = 41, ASSIGN = 42, SEMICOLON = 43, 
+    COMMA = 44, RIGHT_BRACE = 45, LEFT_BRACE = 46, LEFT_PARENTHESE = 47, 
+    RIGHT_PARENTHESE = 48, PLUS = 49, MINUS = 50, STAR = 51, DIV = 52, MOD = 53, 
+    WHITESPACE = 54, NEWLINE = 55, BLOCKCOMMENT = 56, LINECOMMENT = 57, 
+    DIRECTIVE = 58, ERROR = 59
   };
 
   enum {
     RuleProg = 0, RuleFunctiondefinition = 1, RuleStatementseq = 2, RuleStatement = 3, 
     RuleIfstatement = 4, RuleWhilestatement = 5, RuleForstatement = 6, RuleCallstatement = 7, 
     RuleCall = 8, RuleVardeclaration = 9, RuleAssignmentstat = 10, RuleLvalue = 11, 
-    RuleArray = 12, RuleReturnstatement = 13, RuleExpr = 14, RuleType = 15
+    RuleArray = 12, RuleReturnstatement = 13, RuleIncrdecrstatement = 14, 
+    RuleIncr_decr = 15, RuleIncr_decr_op = 16, RuleCompoundassignment = 17, 
+    RuleCompoundassignmentstatement = 18, RuleExpr = 19, RuleType = 20
   };
 
   PLDCompParser(antlr4::TokenStream *input);
@@ -54,6 +58,11 @@ public:
   class LvalueContext;
   class ArrayContext;
   class ReturnstatementContext;
+  class IncrdecrstatementContext;
+  class Incr_decrContext;
+  class Incr_decr_opContext;
+  class CompoundassignmentContext;
+  class CompoundassignmentstatementContext;
   class ExprContext;
   class TypeContext; 
 
@@ -85,6 +94,7 @@ public:
     antlr4::tree::TerminalNode *LEFT_BRACE();
     StatementseqContext *statementseq();
     antlr4::tree::TerminalNode *RIGHT_BRACE();
+    antlr4::tree::TerminalNode *VOID_TYPE();
     std::vector<antlr4::tree::TerminalNode *> COMMA();
     antlr4::tree::TerminalNode* COMMA(size_t i);
 
@@ -120,6 +130,8 @@ public:
     CallstatementContext *callstatement();
     ReturnstatementContext *returnstatement();
     AssignmentstatContext *assignmentstat();
+    IncrdecrstatementContext *incrdecrstatement();
+    CompoundassignmentstatementContext *compoundassignmentstatement();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -242,8 +254,11 @@ public:
     DeclWithoutAssignmentContext(VardeclarationContext *ctx);
 
     TypeContext *type();
-    antlr4::tree::TerminalNode *ID();
+    std::vector<antlr4::tree::TerminalNode *> ID();
+    antlr4::tree::TerminalNode* ID(size_t i);
     antlr4::tree::TerminalNode *SEMICOLON();
+    std::vector<antlr4::tree::TerminalNode *> COMMA();
+    antlr4::tree::TerminalNode* COMMA(size_t i);
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -371,6 +386,87 @@ public:
 
   ReturnstatementContext* returnstatement();
 
+  class  IncrdecrstatementContext : public antlr4::ParserRuleContext {
+  public:
+    IncrdecrstatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Incr_decrContext *incr_decr();
+    antlr4::tree::TerminalNode *SEMICOLON();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  IncrdecrstatementContext* incrdecrstatement();
+
+  class  Incr_decrContext : public antlr4::ParserRuleContext {
+  public:
+    Incr_decrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Incr_decr_opContext *incr_decr_op();
+    antlr4::tree::TerminalNode *ID();
+    ArrayContext *array();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Incr_decrContext* incr_decr();
+
+  class  Incr_decr_opContext : public antlr4::ParserRuleContext {
+  public:
+    Incr_decr_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *PLUSPLUS();
+    antlr4::tree::TerminalNode *MINUSMINUS();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Incr_decr_opContext* incr_decr_op();
+
+  class  CompoundassignmentContext : public antlr4::ParserRuleContext {
+  public:
+    antlr4::Token *op = nullptr;;
+    CompoundassignmentContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ExprContext *expr();
+    antlr4::tree::TerminalNode *ID();
+    ArrayContext *array();
+    antlr4::tree::TerminalNode *ADDE();
+    antlr4::tree::TerminalNode *SUBE();
+    antlr4::tree::TerminalNode *MULE();
+    antlr4::tree::TerminalNode *DIVE();
+    antlr4::tree::TerminalNode *ORE();
+    antlr4::tree::TerminalNode *ANDE();
+    antlr4::tree::TerminalNode *XORE();
+    antlr4::tree::TerminalNode *MODE();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CompoundassignmentContext* compoundassignment();
+
+  class  CompoundassignmentstatementContext : public antlr4::ParserRuleContext {
+  public:
+    CompoundassignmentstatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    CompoundassignmentContext *compoundassignment();
+    antlr4::tree::TerminalNode *SEMICOLON();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CompoundassignmentstatementContext* compoundassignmentstatement();
+
   class  ExprContext : public antlr4::ParserRuleContext {
   public:
     ExprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -441,9 +537,7 @@ public:
     NegExprContext(ExprContext *ctx);
 
     antlr4::tree::TerminalNode *MINUS();
-    antlr4::tree::TerminalNode *LEFT_PARENTHESE();
     ExprContext *expr();
-    antlr4::tree::TerminalNode *RIGHT_PARENTHESE();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -513,6 +607,19 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  ShiftOpContext : public ExprContext {
+  public:
+    ShiftOpContext(ExprContext *ctx);
+
+    antlr4::Token *op = nullptr;
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    antlr4::tree::TerminalNode *SHIFTR();
+    antlr4::tree::TerminalNode *SHIFTL();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  LogicalAndContext : public ExprContext {
   public:
     LogicalAndContext(ExprContext *ctx);
@@ -520,6 +627,15 @@ public:
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
     antlr4::tree::TerminalNode *ANDAND();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  CompoundAssignmentExprContext : public ExprContext {
+  public:
+    CompoundAssignmentExprContext(ExprContext *ctx);
+
+    CompoundassignmentContext *compoundassignment();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -572,6 +688,15 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  IncDecExprContext : public ExprContext {
+  public:
+    IncDecExprContext(ExprContext *ctx);
+
+    Incr_decrContext *incr_decr();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   ExprContext* expr();
   ExprContext* expr(int precedence);
   class  TypeContext : public antlr4::ParserRuleContext {
@@ -579,6 +704,7 @@ public:
     TypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *INT_TYPE();
+    antlr4::tree::TerminalNode *INT32_TYPE();
     antlr4::tree::TerminalNode *CHAR_TYPE();
     antlr4::tree::TerminalNode *VOID_TYPE();
 

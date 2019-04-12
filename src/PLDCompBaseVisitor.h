@@ -83,6 +83,26 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitIncrdecrstatement(PLDCompParser::IncrdecrstatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitIncr_decr(PLDCompParser::Incr_decrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitIncr_decr_op(PLDCompParser::Incr_decr_opContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCompoundassignment(PLDCompParser::CompoundassignmentContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCompoundassignmentstatement(PLDCompParser::CompoundassignmentstatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitPar(PLDCompParser::ParContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -131,7 +151,15 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitShiftOp(PLDCompParser::ShiftOpContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitLogicalAnd(PLDCompParser::LogicalAndContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitCompoundAssignmentExpr(PLDCompParser::CompoundAssignmentExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -148,6 +176,10 @@ public:
   }
 
   virtual antlrcpp::Any visitCallExpr(PLDCompParser::CallExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitIncDecExpr(PLDCompParser::IncDecExprContext *ctx) override {
     return visitChildren(ctx);
   }
 

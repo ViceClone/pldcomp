@@ -66,6 +66,94 @@ void IRInstr::gen_asm(ostream& o){
             o<< "    movl " << "%" <<"eax, " << get_reg_name(params[0]) <<endl;
         }
         break;
+        case div: {
+            #ifdef DEBUG
+            cout << "div " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< " # " << "div " << params[0] << " " << params[1] << " " << params[2] << endl;
+            #endif
+            o<< "    movl "<< get_reg_name(params[1])<<", " << "%"<<"eax" << endl;
+            o<< "    cltd" << endl;
+            o<< "    movl "<< get_reg_name(params[2])<<", " << "%"<<"ecx" << endl;
+            o<< "    idivl " << "%" << "ecx" << endl;
+            o<< "    movl " << "%" << "eax, " << get_reg_name(params[0]) << endl;
+        }
+        break;
+        case mod: {
+            #ifdef DEBUG
+            cout << "mod " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< " # " << "mod " << params[0] << " " << params[1] << " " << params[2] << endl;
+            #endif
+            o<< "    movl "<< get_reg_name(params[1])<<", " << "%"<<"eax" << endl;
+            o<< "    cltd" << endl;
+            o<< "    movl "<< get_reg_name(params[2])<<", " << "%"<<"ecx" << endl;
+            o<< "    idivl " << "%" << "ecx" << endl;
+            o<< "    movl " << "%" << "edx, " << get_reg_name(params[0]) << endl;
+        }
+        break;
+        case lshift:{
+            #ifdef DEBUG
+            cout << "lshift " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< " # " << "lshift " << params[0] << " " << params[1] << " " << params[2] << endl;
+            #endif
+            o<< "    movl "<< get_reg_name(params[2])<<", " << "%"<<"ecx" << endl;
+            o<< "    movl "<< get_reg_name(params[1])<<", " << "%"<<"edx" << endl;
+            o<< "    shll "<<"%"<<"cl, "<<"%"<<"edx" << endl;
+            o<< "    movl "<<"%"<<"edx, "<<get_reg_name(params[0])<<endl;
+        }
+        break;
+        case rshift:{
+            #ifdef DEBUG
+            cout << "rshift " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< " # " << "rshift " << params[0] << " " << params[1] << " " << params[2] << endl;
+            #endif
+            o<< "    movl "<< get_reg_name(params[2])<<", " << "%"<<"ecx" << endl;
+            o<< "    movl "<< get_reg_name(params[1])<<", " << "%"<<"edx" << endl;
+            o<< "    sarl "<<"%"<<"cl, "<<"%"<<"edx" << endl;
+            o<< "    movl "<<"%"<<"edx, "<<get_reg_name(params[0])<<endl;
+        }
+        break;
+        case andb: {
+            #ifdef DEBUG
+            cout << "and " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< " # " << "and " << params[0] << " " << params[1] << " " << params[2] << endl;
+            #endif
+            o<< "    movl " << get_reg_name(params[2]) <<", " << "%"<<"eax" << endl;
+            o<< "    andl "<< get_reg_name(params[1])<<", " <<"%"<<"eax"<< endl;
+            o<< "    movl " << "%" <<"eax, " << get_reg_name(params[0]) <<endl;
+        }
+        break;
+        case orb: {
+            #ifdef DEBUG
+            cout << "or " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< " # " << "or " << params[0] << " " << params[1] << " " << params[2] << endl;
+            #endif
+            o<< "    movl " << get_reg_name(params[1]) <<", " << "%"<<"eax" << endl;
+            o<< "    orl "<< get_reg_name(params[2])<<", " <<"%"<<"eax"<< endl;
+            o<< "    movl " << "%" <<"eax, " << get_reg_name(params[0]) <<endl;
+        }
+        break;
+        case xorb: {
+            #ifdef DEBUG
+            cout << "xor " << params[0] << " " << params[1] << " " << params[2] << endl;
+            o<< " # " << "xor " << params[0] << " " << params[1] << " " << params[2] << endl;
+            #endif
+            o<< "    movl " << get_reg_name(params[1]) <<", " << "%"<<"eax" << endl;
+            o<< "    xorl "<< get_reg_name(params[2])<<", " <<"%"<<"eax"<< endl;
+            o<< "    movl " << "%" <<"eax, " << get_reg_name(params[0]) <<endl;
+        }
+        break;
+        case getflag: {
+            #ifdef DEBUG
+            cout << "getflag" << params[0] << " " << params[1] << " " << params[2] << params[3] <<endl;
+            o<< " # " << "getflag" << params[0] << " " << params[1] << " " << params[2] << params[3] << endl;
+            #endif
+            o<< "    movl " << get_reg_name(params[2]) <<", " << "%"<<"eax" << endl;
+            o<< "    cmpl " << get_reg_name(params[3]) <<", " << "%"<<"eax" << endl;
+            o<< "    set"<<params[0]<<" %"<<"al"<<endl;
+            o<< "    movzbl %"<<"al, "<<"%"<<"eax"<<endl;
+            o<< "    movl " << "%" <<"eax, " << get_reg_name(params[1]) <<endl;
+        }
+        break;
         case cpy: {
             #ifdef DEBUG
             cout << "cpy " << params[0] << " " << params[1] << endl;
@@ -204,7 +292,11 @@ BasicBlock::BasicBlock(CFG* cfg, string entry_label) {
 void BasicBlock::gen_asm(ostream& o){
     if (isGenerated) return;
     isGenerated = true;
-    if (instrs.size()==0) return;
+    if (instrs.size()==0) {
+        o << "    jmp " << exit_true->label << endl;
+        o << endl;
+        return;
+    }
     auto it = instrs.begin();
     bool stop = false;
     while (!stop && it!=instrs.end()) {
@@ -280,6 +372,7 @@ void CFG::gen_asm_prologue(ostream& o) {
         o << "    movl " << reg_name[i] << ", -" 
             << SymbolIndex[params_name[i]] << "("<<"%"<<"rbp)" << endl; 
     }
+    o << "    movl $0, -" << to_string(get_var_index("!returnval")) << "("<<"%"<<"rbp)" << endl;
     o << "# end of prologue" << endl;
 }
 

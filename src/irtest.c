@@ -1,4 +1,5 @@
-int func() {
-    int a = 10;
-    int a = 11;
+int main() {
+    int a =32;
+    a%=3;
+    return a;
 }

@@ -14,6 +14,7 @@ class IRGenerator : public PLDCompBaseVisitor {
 public:
     IRGenerator() {}
     void output_asm(ostream& o);
+    void set_filename(string name);
     antlrcpp::Any visitProg(PLDCompParser::ProgContext *ctx);
     
     antlrcpp::Any visitFunctiondefinition(PLDCompParser::FunctiondefinitionContext *ctx);
@@ -41,6 +42,8 @@ public:
     
     antlrcpp::Any visitReturnstatement(PLDCompParser::ReturnstatementContext *ctx) ;
     
+    antlrcpp::Any visitCompoundassignment(PLDCompParser::CompoundassignmentContext *ctx);
+    antlrcpp::Any visitIncr_decr(PLDCompParser::Incr_decrContext *ctx);
     antlrcpp::Any visitArrayExpr(PLDCompParser::ArrayExprContext *ctx);
     antlrcpp::Any visitPar(PLDCompParser::ParContext *ctx); 
     antlrcpp::Any visitVar(PLDCompParser::VarContext *ctx);  
@@ -48,6 +51,7 @@ public:
     antlrcpp::Any visitConst(PLDCompParser::ConstContext *ctx);
     antlrcpp::Any visitCharConst(PLDCompParser::CharConstContext *ctx);
     antlrcpp::Any visitAdditiveOp(PLDCompParser::AdditiveOpContext *ctx);
+    antlrcpp::Any visitShiftOp(PLDCompParser::ShiftOpContext *ctx);
     antlrcpp::Any visitNegExpr(PLDCompParser::NegExprContext *ctx);
     antlrcpp::Any visitNegConst(PLDCompParser::NegConstContext *ctx);
     antlrcpp::Any visitCallExpr(PLDCompParser::CallExprContext *ctx);
@@ -63,4 +67,5 @@ public:
 private:
     map<string,CFG*> cfg_list;
     CFG* current_cfg;
+    string filename;
 };
